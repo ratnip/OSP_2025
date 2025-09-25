@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1 Uvod | Programirajmo u R-u</title>
+  <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1 Uvod | Programirajmo u R-u" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1 Uvod | Programirajmo u R-u" />
+  
+  <meta name="twitter:description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  
+
+<meta name="author" content="Damir Pintar" />
+
+
+<meta name="date" content="2025-09-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+.showopt {
+  background-color: #004c93;
+  color: #FFFFFF; 
+  width: 140px;
+  height: 4	0px;
+  text-align: center;
+  vertical-align: middle !important;
+  float: right;
+  font-family: sans-serif;
+  font-size:10 pt;
+  border-radius: 8px;
+}
+
+.showopt:hover {
+    background-color: #dfe4f2;
+    color: #004c93;
+}
+
+pre.plot {
+  background-color: white !important;
+}
+</style>
+
+<script>
+ $(document).ready(function() {
+
+  $chunks = $('.fold');
+
+  $chunks.each(function () {
+
+    // add button to source code chunks
+    if ( $(this).hasClass('s') ) {
+      $('pre.r', this).prepend("<div class=\"showopt\">Prikaži rješenje</div><br style=\"line-height:22px;\"/>");
+      $('pre.r', this).children('code').attr('class', 'folded');
+    }
+
+    // add button to output chunks
+    if ( $(this).hasClass('o') ) {
+      $('pre:not(.r)', this).has('code').prepend("<div class=\"showopt\">Prikaži ispis</div><br style=\"line-height:22px;\"/>");
+      $('pre:not(.r)', this).children('code:not(r)').addClass('folded');
+
+      // add button to plots
+      $(this).find('img').wrap('<pre class=\"plot\"></pre>');
+      $('pre.plot', this).prepend("<div class=\"showopt\">Prikaži sliku</div><br style=\"line-height:22px;\"/>");
+      $('pre.plot', this).children('img').addClass('folded');
+
+    }
+  });
+
+  // hide all chunks when document is loaded
+  $('.folded').css('display', 'none')
+
+  // function to toggle the visibility
+  $('.showopt').click(function() {
+    var label = $(this).html();
+    if (label.indexOf("Prikaži") >= 0) {
+      $(this).html(label.replace("Prikaži", "Sakrij"));
+    } else {
+      $(this).html(label.replace("Sakrij", "Prikaži"));
+    }
+    $(this).siblings('code, img').slideToggle('fast', 'swing');
+  });
+});
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>(Udžbenik za predmet “Osnove statističkog programiranja”)</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#predgovor"><i class="fa fa-check"></i>Predgovor</a></li>
+</ul></li>
+<li class="part"><span><b>I Osnovni elementi jezika R</b></span></li>
+<li class="chapter" data-level="1" data-path="uvod.html"><a href="uvod.html"><i class="fa fa-check"></i><b>1</b> Uvod</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="uvod.html"><a href="uvod.html#što-je-programski-jezik-r"><i class="fa fa-check"></i><b>1.1</b> Što je programski jezik R?</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="uvod.html"><a href="uvod.html#općenito-o-r-u"><i class="fa fa-check"></i><b>1.1.1</b> Općenito o R-u</a></li>
+<li class="chapter" data-level="1.1.2" data-path="uvod.html"><a href="uvod.html#alternative-jeziku-r"><i class="fa fa-check"></i><b>1.1.2</b> Alternative jeziku R</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="uvod.html"><a href="uvod.html#instalacija-programske-podrške"><i class="fa fa-check"></i><b>1.2</b> Instalacija programske podrške</a></li>
+<li class="chapter" data-level="1.3" data-path="uvod.html"><a href="uvod.html#pregled-razvojnog-sučelja-rstudio"><i class="fa fa-check"></i><b>1.3</b> Pregled razvojnog sučelja <em>RStudio</em></a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="uvod.html"><a href="uvod.html#interaktivna-konzola"><i class="fa fa-check"></i><b>1.3.1</b> Interaktivna konzola</a></li>
+<li class="chapter" data-level="1.3.2" data-path="uvod.html"><a href="uvod.html#pisanje-r-skripti"><i class="fa fa-check"></i><b>1.3.2</b> Pisanje R skripti</a></li>
+<li class="chapter" data-level="1.3.3" data-path="uvod.html"><a href="uvod.html#instalacija-dodatnih-paketa"><i class="fa fa-check"></i><b>1.3.3</b> Instalacija dodatnih paketa</a></li>
+<li class="chapter" data-level="1.3.4" data-path="uvod.html"><a href="uvod.html#r-markdown"><i class="fa fa-check"></i><b>1.3.4</b> <em>R Markdown</em></a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="uvod.html"><a href="uvod.html#organizacija-procesa-podatkovne-analize-uz-r-i-rstudio"><i class="fa fa-check"></i><b>1.4</b> Organizacija procesa podatkovne analize uz R i RStudio</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="uvod.html"><a href="uvod.html#poželjne-karakteristike-procesa-analize-podataka"><i class="fa fa-check"></i><b>1.4.1</b> Poželjne karakteristike procesa analize podataka</a></li>
+<li class="chapter" data-level="1.4.2" data-path="uvod.html"><a href="uvod.html#organizacija-mapa-za-potrebe-analize-podataka"><i class="fa fa-check"></i><b>1.4.2</b> Organizacija mapa za potrebe analize podataka</a></li>
+<li class="chapter" data-level="1.4.3" data-path="uvod.html"><a href="uvod.html#pojam-projekta"><i class="fa fa-check"></i><b>1.4.3</b> Pojam projekta</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="uvod.html"><a href="uvod.html#kako-koristiti-ovaj-udžbenik"><i class="fa fa-check"></i><b>1.5</b> Kako koristiti ovaj udžbenik?</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Programirajmo u R-u</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="uvod" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">1</span> Uvod<a href="uvod.html#uvod" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<hr />
+<div id="što-je-programski-jezik-r" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Što je programski jezik R?<a href="uvod.html#što-je-programski-jezik-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="općenito-o-r-u" class="section level3 hasAnchor" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> Općenito o R-u<a href="uvod.html#općenito-o-r-u" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Programski jezik R proizašao je iz <strong>programskog jezika S</strong>, razvijenog za potrebe <em>Bell Telephone</em> Laboratorija u vlasništvu <em>AT &amp; T</em> korporacije. Zamišljen je kao interni <strong>alat za statističku analizu</strong>. Osnovna filozofija jezika S (koju je naslijedio i programski jezik R) bila je <strong>domenska orijentiranost</strong> - tj. olakšavanje posla podatkovnim analitičarima bez potrebe za prilagođavanjem konvencijama tradicionalnih programskih jezika. Jezik S je kroz 80.-te i 90.-te dosegnuo značajnu popularnost u krugovima poslovnih analitičara i statističara, no dostupan samo kroz <strong>komercijalnu varijantu nazvanoj S-PLUS</strong>.</p>
+<p><strong>Programski jezik R</strong> nastao je na sveučilištu u Aucklandu (NZ) po uzoru na S, a 2000. objavljuje se pod <strong>GNU licencom otvorenog koda</strong>.</p>
+<p>Standardna distribucija R programskog jezika sastoji se od:</p>
+<ul>
+<li>“jezgre” R-a, sa temeljnim funkcijama i tzv. base paketom koji omogućuje osnovnu funkcionalnost</li>
+<li>kolekcijom dodatnih paketa (“osnovni” - <em>base</em> i “preporučeni” - <em>recommended</em>) za upravljanje podacima, vizualizacije i statističke analize</li>
+</ul>
+<p>Ovdje ne treba zanemariti izvrsnu integraciju R-a sa bogatim repozitorijem paketa zvanom <strong>CRAN</strong> (<em>Coprehensive R Archive Network</em>) koja omogućuje brzu i jednostavnu instalaciju bilo kojeg paketa iz navedenog repozitorija nakon čega on postaje dio lokalne R instalacije. Budući da je za jezik R specifičan iznimno jaki utjecaj R zajednice na razvoj novih paketa, često se nakon pojavljivanja novih eksperimentalnih metoda i pristupa podatkovne analize vrlo brzo na CRAN-u mogu pronaći paketi koji iste implementiraju, a također treba spomenuti i snažni i kontinuirani entuzijazam R zajednice za razvoj poboljšanja postojećih elemenata R-a koji ublažavaju ili uklanjaju veliki broj uočenih manjkavosti jezika. R se zbog toga često zna uspoređivati sa “uradi sam” projektom gdje korisnik, nakon upoznavanja sa isporučenim “tvorničkim” komponentama (u ovom slučaju temeljnim funkcijama i paketima), počinje prilagođavati svoju razvojnu okolinu odabirom paketa koji točno odgovaraju njegovim potrebama i preferencama. Kreativnost i fleksibilnost u korištenju R-a se smatra njegovom velikom prednošću, iako rezultira određenom neformalnošću i liberalnim pristupom programiranju koji nije omiljen korisnicima naviknutim na stroge i formalne programske okvire sa jasnim skupom smjernica i pravila koja se moraju slijediti.</p>
+<p>Usprkos iznimno velikoj prihvaćenosti jezika R za podatkovne analize te mnoštvu opcija koje nudi korisniku, potrebno je odmah u početku biti svjestan i njegovih određenih ograničenja:</p>
+<ul>
+<li><p><strong>R jako intenzivno koristi radnu memoriju</strong> što je dugo vremena smatrano ozbiljnim ograničenjem; porastom kapaciteta modernih hardverskih sustava ovo ograničenje je danas puno prihvatljivije, a također su se pojavili brojni paketi koji racionaliziraju korištenje memorije. Ipak ostaje činjenica da R brzo “pojede” RAM našeg računala, iako je to često i rezultat nepažnje ili neznanja programera koji nije dovoljno dobro usvojio “R-ovski” način programiranja.</p></li>
+<li><p><strong>R je prilično nekonvencionalan</strong> tako da je krivulja učenja inicijalno nešto strmija, pogotovo za programere naviknute na standardne konvencije drugih programskih jezika. S druge strane, ako se gleda dugoročno, programiranje u R-u je prilično jednostavno budući da je većina kompleksnih zadataka apstrahirana u visokorazinske funkcije koje transparentno obavljaju operativne poslove niske razine. Često se kaže da je R više orijentiran cilju kojeg želimo postići a manje detaljima oko puta kojim do njega stižemo.</p></li>
+<li><p><strong>R nije “brzi” jezik</strong>; iako se radi o jeziku koji očekivano radi nad velikim skupovima podataka, R nije optimiziran za brzinu izvođenja, pa čak ni za višedretvenost; iako je veliki trud uložen da se gotovo sve ključne rutine implementiraju u C-u i da se spriječe znatna usporavanja, a postoji i niz paketa koji omogućuju višedretveno izvođenje R programa, i dalje stoji činjenica da R nije dizajniran s ciljem da se izvršava što je brže moguće; ukoliko je brzina prioritet, često je potrebno tražiti alternativna rješenja - zbog čega se često zna reći da je R primarno istraživački jezik, ne produkcijski.</p></li>
+</ul>
+<p>R je prvenstveno namijenjen za <strong>interaktivni rad</strong>, tj. izvođenje niza strojnih instrukcija koje se dinamički upisuju i izvode uz pomoć programske konzole. Ovo je prilagođeno standardnom procesu analize podataka gdje analitičar može učitavati podatke, čistiti ih, transformirati, razvijati modele, testirati i sl. uz <strong>konstantnu povratnu informaciju</strong> od računala, <strong>mogućnost pregleda međurezultata</strong>, izmjene procesa prema trenutnim saznanjima i sl.</p>
+<p>Ovo ne znači da se u programskom jeziku ne može programirati na klasičan “proceduralni” način, razvojem algoritama enkapsuliranih u funkcije koje onda nakon pozivanja automatski obavljaju svoje zadatke, ali činjenica jest da se učinkovitost R-a upravo odražava u interaktivnom radu. Ovaj princip se prenosi i na učenje R-a; programski jezik R puno se lakše uči interaktivnim pristupom uz izvršavanje konkretnih zadataka, eksperimentiranjem s podatkovnim skupovima, dostupnim metodama i sl. nego “klasičnim” pristupom izrade programskih skripti koje implementiraju neke niskorazinske poslove.</p>
+</div>
+<div id="alternative-jeziku-r" class="section level3 hasAnchor" number="1.1.2">
+<h3><span class="header-section-number">1.1.2</span> Alternative jeziku R<a href="uvod.html#alternative-jeziku-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Programski jezik R je popularno, ali ne i jedino rješenje za interaktivnu analizu podataka i statističko programiranje. U nastavku ćemo dati kratki pregled nekih popularnijih tehnologija i rješenja koje se danas koriste u ovu svrhu, uz kratku usporedbu i osvrt na prednosti i nedostatke u usporedbi sa onim što nudi jezik R.</p>
+<p><strong>SAS</strong> i <strong>SPSS</strong> – SAS (<em>Statistical Analysis System</em>, razvijen od strane <em>SAS Institute</em>) i SPSS (<em>Software Package for Statistical Analysis</em>, razvijen od strane <em>IBM</em>-a) su dva različita softverska paketa koje stavljamo pod istu stavku prvenstveno zato što se radi o komercijalnim alatima, tj. alatima koji za svoju punu funkcionalnost zahtijevaju plaćanje licence. Isto tako, SAS i SPSS se relativno lako uče a svoju funkcionalnost u velikoj mjeri zasnivaju na pomno dizajniranim korisničkim sučeljima. Ovi alati naglasak stavljaju na učinkovitost i odlična su opcija za velike tvrtke koje traže konzistentno, robusno rješenje za svoju analitiku i kojima ne smeta komercijalna priroda takvih rješenja.</p>
+<p><strong>Weka</strong> i <strong>Orange</strong> – Weka (<em>Waikato Environment for Knowledge Analysis</em>, razvijen od strane sveučilišta Waikato na Novom Zelandu) i <em>Orange</em> (alat za dubinsku analizu podataka razvijen na sveučilištu u Ljubljani) su besplatan softver za eksploratornu analizu podataka i dubinsku analizu koji svoju funkcionalnost zasnivaju na relativno jednostavnim grafičkim sučeljima i vizualnom pristupu programiranju. Ova rješenja vrlo su dobra za korisnike koji nisu previše zahtjevni glede fleksibilnosti i kompleksnosti svojih analiza jer na vrlo pristupačan i jasan način omogućuju provedbu definiranih koraka procesa analize. To ne znači da se u ovim alatima ne mogu raditi i kompleksnije analize, samo da su oni ipak prilagođeniji analizama kroz predefinirane funkcionalnosti pruženog grafičkog sučelja.</p>
+<p><strong>Python (Numpy / Pandas / Scikit)</strong> – u zadnjih nekoliko godina upravo je Python najozbiljniji konkurent jeziku R, prvenstveno zbog činjenice da je Python sam po sebi vrlo popularan programski jezik koji za potrebe analize podataka koristi pakete s vrlo sličnim pristupom procesu analize onom kojeg koristi i jezik R. Rasprava o tome koji jezik odabrati je vrlo česta u polju znanosti o podacima, obično bez jasnog konačnog zaključka. Lako s uvjeriti da su razlike zapravo u nijansama - dok je R snažno domenski orijentiran i veći naglasak stavlja na lakoću i jednostavnost korištenja uz široku paletu dostupnih paketa sa preklapajućim funkcionalnostima kako bi korisnik mogao odabrati onaj koji mu najviše odgovara, Python naglašava rigidnu formalnu strukturu i princip “za jedan posao jedan način obavljanja”. Stoga bi se moglo reći da je R nešto pogodniji za “istraživanje podataka” dok je prednost Pythona lakši razvoj i integracija analitičkih modula u nekom produkcijskom okruženju, pogotovo ako je navedeno okruženje već izvedeno u Pythonu. No snažnim razvojem oba jezika i međusobnim praćenjem funkcionalnosti i ova navedena razlika postaje sve manje relevantna - danas više nije problem integrirati R skripte u postojeće sustave neovisno o platformi na kojoj su izvedeni, a u Python zajednica razvija svoje inačice popularnih paketa iz R-a koje vjerno preslikavaju njihovu funkcionalnost. U konačnici se može reći da inicijalni odabir između ove dvije alternative i nije toliko bitan - pristup kojeg koriste je toliko sličan a praćenje funkcionalnosti toliko izraženo da se učenjem jednog jezika svladava većina bitnih koncepata iz drugog tako da se podatkovni znanstvenici često na kraju odlučuju na svladavanje oba jezika, kako bi se lako prilagodili velikom broju okruženja u kojima moraju provoditi svoje analize.</p>
+<hr />
+</div>
+</div>
+<div id="instalacija-programske-podrške" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Instalacija programske podrške<a href="uvod.html#instalacija-programske-podrške" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Instalacija programske podrške za jezik R je prilično jednostavna, pogotovo ako se kao platforma koristi preporučeno razvojno sučelje <strong>RStudio</strong>. Ovo nije jedina opcija - jedna od popularnih alternativa jest i višejezična platforma <strong>Jupyter Notebook</strong> koja nudi vlastitu podršku za R. Čitateljima se dugoročno preporučuje istraživanje svih dostupnih opcija i konačni odabir onog sučelja koje osobno procijene najboljim za svoje potrebe, no ovaj udžbenik će se usredotočiti na <strong>RStudio</strong> ponajviše zbog jasnog, preglednog sučelja, lake instalacije i vrlo bogate podrške za različite funkcionalnosti - od instalacije novih paketa, lakog dohvaćanja dokumentacije, prikaza vizualizacija do stvaranja i objave izvještaja. Radne bilježnice o kojima će više riječi biti u nastavku uglavnom pretpostavljaju da ste odabrali sučelje <strong>RStudio</strong>.</p>
+<p>Za uspješno postavljanje razvojne platforme potrebno je instalirati dvije stvari</p>
+<ul>
+<li>distribuciju jezika <strong>R</strong></li>
+<li>razvojno sučelje <strong>RStudio Desktop</strong></li>
+</ul>
+<p>Preporučuje se koristiti najnovije dostupne inačice. U trenutku pisanja ovog dokumenta to su <strong>R 4.4.1</strong> i <strong>RStudio 2025.09.0</strong>. Ukoliko se ove inačice razlikuju od one koje se nalaze na vašem računalu, vjerojatno neće biti problema ukoliko su brojevi inačica viši od navedenih; u suprotnom preporučuje se njihova nadogradnja.</p>
+<p>U nastavku će se opisati postupak za instalaciju navedenog softvera na operacijski sustav <em>Microsoft Windows</em>. Ukoliko radite na nekom od drugih operacijskih sustava, kao što je neka od <em>Linux</em> distribucija ili <em>Mac OS</em> procedura je nešto drugačija, no i dalje ne previše složena - dovoljno je pratiti upute na web stranicama spomenutim u nastavku koje su orijentirane platformi koju koristite.</p>
+<hr />
+<p>Kako bi pronašli spomenuti softver u tražilicu upišite sljedeće pojmove:</p>
+<ul>
+<li><em>download R</em></li>
+<li><em>download RStudio</em></li>
+</ul>
+<p>U oba slučaja dobiti ćete stranice sa poveznicama na izvršne datoteke koje morate pokrenuti kako bi se softver instalirao na vaše računalo. U slučaju jezika R to može biti datoteka <em>R-4.4.1-win.exe</em> (točni brojevi se mogu razlikovati). Kod sučelja <em>RStudio</em> možete vidjeti više opcija - odaberite besplatnu “<em>desktop</em>” inačicu. Komercijalne inačice imaju neke dodatne funkcionalnosti koje su većinom orijentirane uporabi u profesionalnim, višekorisničkim okruženjima te nisu bitne za uobičajeni rad.</p>
+<p>Izvršne datoteke možete pokrenuti i pustiti čarobnjaka da instalira sve potrebne komponente na vaše računalo. Preporučuje se prihvatiti sve nazivne opcije osim mape instalacije - umjesto podmape “<em>Program Files</em>” bolje je instalirati R direktno u osnovnu mapu (npr. “<em>C:\R\R-4.5.1</em>”). Na ovaj način biti će lakše pronaći trenutno instaliranu inačicu i eventualno kasnije ažurirati. Iz istih razloga preporučuje se <em>RStudio</em> instalirati u mapu “<em>C:\R\RStudio</em>”. U slučaju da niste mogućnosti ili ne želite odabrati ove mape, možete definirati neke druge ili zadržati nazivne opcije - ovaj izbor ne bi u konačnici trebao bitno utjecati na daljnji rad.</p>
+<p>Nakon instalacije sučelja <em>RStudio</em> dovoljno je isto jednostavno pokrenuti uz pomoć stvorene kratice na radnoj mapi (ili alternativno, uz pomoć izvršne datoteke <em>RStudio.exe</em> u odabranoj mapi za instalaciju). Nakon pokretanja aplikacija bi trebala izgledati slično sljedećoj slici:</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-3"></span>
+<img src="figures/RStudio1.png" alt="Izgled sučelja RStudio" width="583" />
+<p class="caption">
+Slika 1.1: Izgled sučelja RStudio
+</p>
+</div>
+<p>Ukoliko je došlo do nekih problema, provjerite da li ste ispravno proveli sve navedene korake instalacije. U nastavku ćemo se pozabaviti detaljima prikazanog sučelja.</p>
+<hr />
+</div>
+<div id="pregled-razvojnog-sučelja-rstudio" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Pregled razvojnog sučelja <em>RStudio</em><a href="uvod.html#pregled-razvojnog-sučelja-rstudio" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Pogledajmo sučelje <em>RStudio</em>. Vidimo da je podijeljeno na tri prozora - lijevi dio je “radni” i u njega upisujemo programski kod. S desne strane se nalaze pomoćni prozori koji prikazuju različite stvari, ovisno o odabranoj kartici; u gornjem desnom dijelu između ostalog možemo vidjeti što se trenutno nalazi u našoj radnoj okolini (koja je na početku prazna) te povijest naredbi koje smo izvršavali. Donji dio služi za prikaz dokumentacije, datoteka u radnoj mapi, instaliranih paketa, vizualizacija i sl.</p>
+<hr />
+<div id="interaktivna-konzola" class="section level3 hasAnchor" number="1.3.1">
+<h3><span class="header-section-number">1.3.1</span> Interaktivna konzola<a href="uvod.html#interaktivna-konzola" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Vratimo se na lijevi dio sučelja. Ovdje se zapravo radi o tzv. “interaktivnoj konzoli”. Naime, po svojoj prirodi R je tzv. “interpreterski jezik” u smislu da se naredbe odmah interpretiraju i izvršavaju. Iako je moguće izrađivati i veće skripte koje se onda izvršavaju “u komadu”, rad sa jezikom R vrlo često se svodi na princip <em>naredba - odgovor</em>. Upravo zbog toga govorimo o “interaktivnoj programskoj analizi podataka” - analitičar “programira” upisivanjem naredbi te u svakom trenutku može proučiti dobivene međurezultate i odlučiti se na daljnje korake.</p>
+<hr />
+<p>Prikažimo kako radi interaktivna konzola. Uz pomoć tipkovnice možemo utipkati jednostavan matematički izraz - npr. <code>3 + 2</code> i stisnuti tipku <em>ENTER</em>. Vidimo da će nam R odmah pružiti rezultat - možemo ga koristiti i kao kalkulator!</p>
+<p>Za matematičke izraze koje nije jednostavno “utipkati” moramo koristiti funkcije. Tako npr. drugi korijen možemo izračunati uz pomoć funkcije <code>sqrt()</code>. Pokušajmo u konzolu utipkati <code>sqrt(10)</code> i stisnuti <em>ENTER</em>. R nam opet odmah prikazuje rezultat. U ovom trenutku zaslon bi nam trebao izgledati otprilike kao na sljedećoj slici.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-4"></span>
+<img src="figures/RStudio2.png" alt="R kao kalkulator" width="587" />
+<p class="caption">
+Slika 1.2: R kao kalkulator
+</p>
+</div>
+<p>Jedan od problema ovakvog načina korištenja R-a jest taj što nam se miješaju naredbe i rezultati, a povijest niza naredbi postaje sve teže vidljiva kako se korištenjem konzole spuštamo sve “niže i niže”. Isto tako, ako iz nekog razloga naredba koju izvršavamo rezultira greškom koju pokušavamo ispraviti, konzola vrlo brzo postaje “prljava” budući da se miješaju korektni pozivi sa izvještajima o greškama čime bilo kakva složenija procedura koju želimo provesti postaje “rastrgana” i nepregledna. Zbog toga analitičari vrlo često koriste tzv. “R skripte” koje omogućuju da vizualno izdvojimo naredbe koje želimo izvršiti od same konzole, ali i dalje uz mogućnost da ih lako upišemo u konzolu, slijedno izvršimo i pogledamo rezultat.</p>
+<hr />
+</div>
+<div id="pisanje-r-skripti" class="section level3 hasAnchor" number="1.3.2">
+<h3><span class="header-section-number">1.3.2</span> Pisanje R skripti<a href="uvod.html#pisanje-r-skripti" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Na alatnoj traci odaberimo <code>File -&gt; New File -&gt; R Script</code> (ili stisnemo kombinaciju tipaka CTRL + SHIFT + N).</p>
+<p>Vidimo da se “radni dio” na lijevoj strani razdvojio na dva dijela. Gornji dio predstavlja prostor za našu “skriptu” - zapravo niz naredbi koje želimo izvršiti - dok interaktivna konzola sada zauzima donji dio radne plohe. Ukoliko želimo, možemo pomicanjem granice promijeniti veličinu ovih (a i ostalih prozora), no za sada je bitno da imamo pregled i skripte i konzole.</p>
+<p>Upišimo dvije naredbe u prozor za pisanje skripte - prva neka bude <code>print("Pozdrav!")</code> a ispod nje opet jednostavan matematički izraz <code>3 + 4</code>. Vratimo kursor na prvi redak i stisnimo kombinaciju tipki CTRL + ENTER. Ukoliko smo ispravno pratili navedene korake, naredba na mjestu koje se nalazio kursor automatski će se preslikati u interaktivnu konzolu i izvršiti. Kursor će sada biti na mjestu sljedeće naredbe koju također možemo izvršiti sa CTRL + ENTER. Zaslon bi sada trebao izgledati slično sljedećoj slici.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-5"></span>
+<img src="figures/RStudio3.png" alt="R skripta" width="582" />
+<p class="caption">
+Slika 1.3: R skripta
+</p>
+</div>
+<p>Ovo je zapravo uobičajeni način rada u jeziku R - u prostor za skripte upisujemo naredbe koje potom izvršavamo njihovim automatskim preslikavanjem u konzolu. Ako nešto ne štima s naredbom, lako ju preinačimo i ponovo izvršimo. Ukoliko želimo izvesti blok naredbi, odaberemo ih povlačenjem miša i izvršimo kombinacijom tipaka CTRL + ENTER. Skripte možemo proširiti komentarima (koji počinju znakom <code>#</code> kojeg R interpretira kao “ovaj redak ignoriraj”), a na kraju rada spremiti pod odabranim imenom na čvrsti disk.</p>
+<p>No možemo otići i korak dalje. Iako su R skripte sasvim adekvatne za ugodan rad u jeziku R, postoji dodatna tehnologija koja nam omogućuje još veću fleksibilnost u radu sa programskim jezikom R - <em>R Markdown</em>.</p>
+<hr />
+</div>
+<div id="instalacija-dodatnih-paketa" class="section level3 hasAnchor" number="1.3.3">
+<h3><span class="header-section-number">1.3.3</span> Instalacija dodatnih paketa<a href="uvod.html#instalacija-dodatnih-paketa" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>standardna R distribucija dolazi sa dvije kolekcije paketa (nazvanih <code>r-base</code> i <code>r-recommended</code>) koje sadrže svojevrsnu “jezgru” jezika R - skup elemenata dostatnih za provođenje standardnih tipova podatkovnih analiza uz pomoć programskog jezika R. Uz to, <strong>CRAN</strong> (<em>Comprehensive R Archive Network</em>) predstavlja bogati repozitorij dodatnih paketa za najrazličitije primjene, od “popravljanja” osnovnih elemenata jezika R do strogo specijaliziranih paketa za posebne tipove analiza.</p>
+<p>Kao što je uobičajena praksa u drugim programskim jezicima, R koristi sustav “paketa” ili “biblioteka” (engl. <em>package</em> ili <em>library</em>) kako bi logički organizirao već “isprogramirane” kolekcije podataka, skupova i prevedenog programskog koda.</p>
+<div class="fold o">
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="uvod.html#cb1-1" tabindex="-1"></a><span class="co"># učitavanje paketa &#39;dplyr&#39;</span></span>
+<span id="cb1-2"><a href="uvod.html#cb1-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+</div>
+<p>Ukoliko ovaj paket već postoji na lokalnom računalu - u mapi predodređenoj za dodatne pakete koju možete lako pronaći u instalacijskoj mapi R distribucije - on će u ovom trenutku biti učitan u radnu okolinu. Uspješno učitavanje paketa može biti popraćeno određenim statusnim porukama koje u ovom trenutku možemo ignorirati, budući da je to tema jednog od nastupajućih poglavlja.</p>
+<p>Ukoliko na lokalnom računalu nemamo navedeni paket dobivamo poruku o grešci da taj paket ne postoji. U tom slučaju potrebno je prvo dohvatiti paket iz CRAN repozitorija uz pomoć funkcije <code>install.packages</code> kojoj dajemo naziv jednog ili više paketa (s navodnicima!) kao parametre. Navedena funkcija pretpostavlja da R okolina ima definiran CRAN <em>mirror</em> tj. konkretnu adresu CRAN repozitorija odakle će se paket dohvatiti. Veliki broj država ima svoju “kopiju” CRAN repozitorija, no nažalost Republika Hrvatska iz nejasnih razloga više nema svoj CRAN repozitorij te u trenutku pisanja ove bilježnice nema pokazatelja da će se isti uspostaviti. Ako radimo u sučelju <em>RStudio</em>, CRAN repozitorij smo vrlo vjerojatno postavili kod prvog pokretanja, (tj. odabrali smo opciju <em>Global</em> koja naše zahtjeve za instaliranjem paketa automatski prosljeđuje najbližem CRAN repozitoriju) no ako to nismo obavili ili radimo u nekom drugom razvojnom sučelju onda uz pomoć dokumentacije moramo potražiti način postavljanja CRAN repozitorija ako želimo učitavati dodatne pakete.</p>
+<div class="fold o">
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="uvod.html#cb2-1" tabindex="-1"></a><span class="co"># spuštanje paketa &#39;dplyr&#39; na lokalno računalo</span></span>
+<span id="cb2-2"><a href="uvod.html#cb2-2" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)</span></code></pre></div>
+</div>
+<p>Uočite izvjesnu nedosljednost korištenja navodnih znakova - kod spuštanja paketa se moraju koristiti (budući da je parametar ove funkcije znakovni niz), ali kod učitavanja u radnu memoriju nisu nužni. Također uočite da u programskom jeziku R nazivi funkcija mogu imati točku, što često nije slučaj u drugim programskim jezicima.</p>
+<p>Ukoliko paket kojeg spuštamo ima dodatne pakete čije funkcije koristi, oni će se također spustiti na lokalno računalo.</p>
+<p>NAPOMENA: naredbe spuštanja paketa na lokalno računalo uvijek <strong>radimo na interaktivno konzoli</strong>, nikada unutar skripti ili radnih bilježnica. Razlog tome jest što spuštanje (nove) inačice u pravilu radimo jednom, dok skriptu/radnu bilježnicu obrađujemo veći broj puta, tako da bi konstantno spuštanje paketa koji su već pohranjeni na lokalno računalo nepotrebno usporavalo proces.</p>
+<p>Prije nastavka, uputno je na lokalno računalo spustiti kolekciju paketa koji će se koristiti u narednim poglavljima, a koji između ostalog uključuju i pakete nužne za ispravno korištenje radnih bilježnica.</p>
+<p><strong>Zadatak 1.1 - Instalacija nužnih paketa</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="uvod.html#cb3-1" tabindex="-1"></a><span class="co"># sljedeće naredbe izvršiti u konzoli</span></span>
+<span id="cb3-2"><a href="uvod.html#cb3-2" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;rmarkdown&quot;</span>)</span>
+<span id="cb3-3"><a href="uvod.html#cb3-3" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)  <span class="co"># ovo može potrajati!</span></span></code></pre></div>
+<p>Novije inačice sučelja RStudija će automatski uočiti da skripta koristi paketa koji nisu u lokalnoj distribuciji te će ponuditi opciju njihovog spuštanja - odabir opcije “install” u iskočnom izborniku imati će ekvivalentni učinak instalacije paketa preko konzole.</p>
+<hr />
+</div>
+<div id="r-markdown" class="section level3 hasAnchor" number="1.3.4">
+<h3><span class="header-section-number">1.3.4</span> <em>R Markdown</em><a href="uvod.html#r-markdown" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Pisanje R skripti vrlo je slično klasičnom poimanju “programiranja” - pišemo programske naredbe koje se u pravilu izvršavaju slijedno te kojima opcionalno dodajemo komentare u svrhu dokumentacije. No budući da je rad u R-u vrlo često interaktivne prirode te da se kao završni korak neke analize podataka obično očekuje oblikovanje izvještaja koji će na adekvatan način prikazati dobivene rezultate, sučelje RStudio podržava tehnologiju koja omogućuje učinkovitu kombinacije programiranja i strukturiranog dokumentiranja na principu “interaktivne bilježnice”“; analitičar može pisati”čisti” tekst, opcionalno sa formulama, slikama te izmjenama veličine i prirode tekstualnog fonta, da bi potom u takav tekst “ugradio” izvršivi programski kod zajedno sa njegovim rezultatima. Tehnologija koja ovo omogućuje je tzv. <strong>R Markdown</strong>, koji je relativno nedavno proširen novim konceptom nazvanim <strong>R Notebook</strong>.</p>
+<p>Rad ove tehnologije najlakše je prikazati preko primjera - u alatnoj traci odaberimo <code>File -&gt; New File -&gt; R Markdown...</code> te u idućem prozoru odaberimo proizvoljni naslov (npr. <code>Proba</code>), opcionalno ime autora te jednu od opcija za konačni oblik izvještaja (preporučeno HTML zbog najmanje ovisnosti o dodatnim paketima).</p>
+<hr />
+<p>Za razliku od R skripte, R će kod novog <em>R Markdown</em> dokumenta stvoriti “popunjeni” dokument. Ovo je izvedeno na ovaj način iz jednostavnog razloga da korisnik dobije predložak koji istovremeno služi i kao podsjetnik te kojeg onda lako izmjeni prema svojem nahođenju. Mi ćemo za naše potrebe obrisati veći dio ovog predloška - sve poslije inicijalnog zaglavlja, tj. ispod druge pojave znakova <code>---</code>.</p>
+<p>Potom možemo ispod napisati bilo kakav tekst. Znakovima <code>#</code>, <code>##</code>, <code>###</code> itd. možemo postaviti naslov određene kategorije (to sada nisu komentari, jer ovo zapravo nije R kod!), dok znakovima <code>*</code> i <code>**</code> ispred i iza odabranih riječi odabiremo nakošeni ili masni otisak u konačnom izvještaju. Ovo je tzv. čisti “<em>markdown</em>”, tj. običan tekst koji se uz pomoć dodatnih alata može pretvoriti u oblikovani tekst, ukoliko želimo.</p>
+<p>Kada želimo u ovaj naš “izvještaj” ugraditi programski kod, moramo stvoriti tzv. “isječak” (engl. <em>chunk</em>). To možemo učiniti odabirom <code>Insert -&gt; R</code> na alatnoj traci ili kombinacijom tipaka CTRL + ALT + I.</p>
+<p>Uočite da isječak počinje i završava posebno odabranim nizom znakova - tri “apostrofa nalijevo” (engl. <em>backticks</em>). Isto tako, početak isječka u vitičastim zagradama opisuje parametre isječka, od čega je najvažniji programski jezik kojeg ćemo koristiti. U ovom udžbeniku ćemo gotovo isključivo koristiti jezik R, iako je moguće koristiti i druge jezike ukoliko su oni instalirani na platformi na kojoj je pokrenut <em>RStudio</em>.</p>
+<p>Isječak koda ponaša se isto kao i standardna R skripta - možemo upisivati naredbe i izvršavati ih. Razlika je samo u tome što - ukoliko želimo - rezultate možemo vidjeti i odmah u samom <em>R Markdown</em> dokumentu. Ako nam ova opcija smeta možemo ju isključiti (klik na zupčanik u alatnoj traci i odabir <code>Chunk output in console</code>) no u pravilu nam odgovara da se rezultat ugradi u dokument kako bi naknadno mogli ponovo pregledavati rezultate prethodnih isječaka.</p>
+<p>Ako smo pratili upute, zaslon bi mogao izgledati slično sljedećoj slici:</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-9"></span>
+<img src="figures/RStudio4.png" alt="R Markdown dokument" width="584" />
+<p class="caption">
+Slika 1.4: R Markdown dokument
+</p>
+</div>
+<p>Ukoliko želimo, možemo pokušati stvoriti “izvještaj” od trenutnog dokumenta. Prvo ga moramo spremiti pod određenim imenom (npr. <code>Proba.rmd</code>), a potom možemo kliknuti na gumb <code>Knit</code> koji će dokument iz čistog teksta pretvoriti u HTML datoteku.</p>
+<p><em>R Markdown</em> dokumenti su puno moćniji nego što se možda daje naslutiti do sada prikazanim elementima. Isječcima možemo dodavati niz parametara kako bismo utjecali na njihovo ponašanje. Izlazni oblik može biti PDF, DOCX ali i drugi oblici kao što slajdovi raznih tehnologija, knjige namijenjene mobilnim uređajima, interaktivna Web aplikacija i sl. Udžbenik kojeg čitate zapravo nije ništa drugo do niz RMD datoteka pretvoren u adekvatni oblik kojeg trenutno koristite. Kao što ćemo objasniti u sljedećem poglavlju, RMD datoteke su također i glavni način na kojeg ćete moći na interaktivan način pratiti ovaj udžbenik i isprobavati primjere i zadatke koje slijede. Univerzalnost i fleksibilnost tehnologije <em>R Markdown</em> je iznimno velika, čemu u prilog govori i njezina velika popularnost u R zajednici.</p>
+<hr />
+</div>
+</div>
+<div id="organizacija-procesa-podatkovne-analize-uz-r-i-rstudio" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Organizacija procesa podatkovne analize uz R i RStudio<a href="uvod.html#organizacija-procesa-podatkovne-analize-uz-r-i-rstudio" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="poželjne-karakteristike-procesa-analize-podataka" class="section level3 hasAnchor" number="1.4.1">
+<h3><span class="header-section-number">1.4.1</span> Poželjne karakteristike procesa analize podataka<a href="uvod.html#poželjne-karakteristike-procesa-analize-podataka" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Analiza podataka kroz programske skripte specifičan je proces koji se razlikuje od uobičajenog pristupa programiranju. Ovo je pogotovo slučaj kada se radi o inicijalnom, istraživačkom segmentu analize gdje smo usredotočeni na otkrivanje karakteristika podatkovnog skupa, definiranje određenih pretpostavki, postavljanje hipoteza i donošenje zaključaka. Ovakva analiza podatake je često, složen, iterativan i naglašeno interaktivan proces, koji zahtjeva strogo kontrolorani i organizirani pristup njegovoj provedbi.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-10"></span>
+<img src="figures/proces0.png" alt="R Markdown dokument" width="366" />
+<p class="caption">
+Slika 1.5: R Markdown dokument
+</p>
+</div>
+<p>Postoje određene poželjne karakteristike analitičkog procesa koje bismo trebali osigurati kako kroz usredotočenost na discipliniranu provedbu, ali i odabir adekvatne razvojne okoline koja će te karakteristike učinkovito potpomagati. Portal <em>RevolutionAnalytics</em> (<a href="https://blog.revolutionanalytics.com/" class="uri">https://blog.revolutionanalytics.com/</a>) definira sljedeće poželjne karakteristike organizacije analitičkoga procesa:</p>
+<ul>
+<li><strong>transparentnost</strong> – logička i jasna organizacija projekta koju će lako razumjeti i promatrač sa strane</li>
+<li><strong>održivost</strong> – laka modifikacija i prilagodba projekta, dobra dokumentacija, korištenje konzistentnog imenovanja skripti i mapa</li>
+<li><strong>modularnost</strong> – dobro rastavljanje pojedinih diskretnih zadataka u zasebne segmente kako bi se lakše provodile izmjene i povećala mogućnost ponovne iskoristivosti</li>
+<li><strong>prenosivost</strong> – dobra organizacija trebala bi omogućiti lako prenošenje procesa na drugu platformu, operacijski sustav ili bilo kakvo drugo novo okruženje (višekorisničko, distribuirano itd.)</li>
+<li><strong>reproducibilnost</strong> – svi rezultati (i međurezultati!) projekta trebali bi se moći lako reproducirati ponavljanjem istovjetnoga procesa nad istim podacima</li>
+<li><strong>učinkovitost</strong> – ovdje se misli na učinkovitost s gledišta ljudskoga korisnika, ne računala; proces bi trebao koristiti sve mogućnosti ubrzavanja, automatiziranja ili bilo kakvoga drugog olakšavanja provedbe procesa koliko god je to moguće dok god se ne kompromitira kvaliteta analize ili neka od drugih bitnih karakteristika procesa.</li>
+</ul>
+<p>Prvi korak u organiziranom procesu analize podataka jest priprema adekvatne podatkovne strukture.</p>
+<hr />
+</div>
+<div id="organizacija-mapa-za-potrebe-analize-podataka" class="section level3 hasAnchor" number="1.4.2">
+<h3><span class="header-section-number">1.4.2</span> Organizacija mapa za potrebe analize podataka<a href="uvod.html#organizacija-mapa-za-potrebe-analize-podataka" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Ne postoji jedinstvena organizacija mapa koja će biti univerzalno podobna za sve procese analize i za sve analitičare. U praksi svaki analitičar (ili tim analitičara) treba odabrati onaj način koji mu najviše odgovara kako bi se zadržale sve pozitivne strane organizacije, a koji neće sam po sebi predstavljati dodatno opterećenje u pogledu administracije i održavanja.</p>
+<p>Za početak nije nužno koristiti dodatni softver ili pakete kako bi se provela organizacija procesa analize – dovoljno je osigurati konzistentnu strukturu mapa u koju će se postavljati određene datoteke, po mogućnosti po odabranim smjernicama. Jedan od jednostavnijih primjera organizacije mapa može biti sljedeći:</p>
+<ol style="list-style-type: decimal">
+<li><p>U podatkovnoj strukturi platforme na kojoj radimo stvorimo zasebnu mapu u koju ćemo smjestiti sve datoteke potrebne za analizu; poželjno je mapu postaviti na logično mjesto te odabrati intuitivan naziv, npr. <code>R/projekti/OSP</code></p></li>
+<li><p>U osnovnoj mapi projekta treba stvoriti mape sljedećih naziva:</p></li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li><p><code>Rscripts</code> – u ovu mapu stavljamo vlastite R-skripte koje će se koristiti u projektu; najčešće se radi o različitim funkcijama (npr. za čišćenje i obradu podataka); datoteke u ovoj mapi nazivamo <code>ime_datoteke.R</code>, a u izvještajima ih učitavamo uz pomoć funkcije <code>source</code></p></li>
+<li><p><code>data</code> – u ovoj mapi nalaze se podaci – ulazni podaci te podaci koji su prošli određene korake čišćenja i prilagodbe, tj. međurezultati. Ove međurezultate možemo spremati u obliku CSV datoteke (ekstenzija <code>CSV</code>) ili u R-ovu <em>native</em> obliku (ekstenzija <code>RData</code>). Ako imamo više međurezultata nastalih sekvencijalnim procesom obrade, poželjno ih je nazvati intuitivnim imenima koja odražavaju tijek obrade (npr. <code>podaci_01.csv</code>, <code>podaci_02.csv</code> i sl.).</p></li>
+<li><p><code>figures</code> – u ovu mapu stavljamo sve interesantne vizualizacije koje smo stvorili tijekom analize (najčešće u obliku PDF ili PNG datoteke). Vizualizacija mora imati dovoljno podataka kako bi se kasnije mogla interpretirati (i rekonstruirati), a za vizualizacije koje ćemo kasnije ugrađivati u izvještaj preporuka je sačuvati i programski kod koji ih je stvorio. Ako želimo, u ovoj mapi možemo napraviti i podmape <code>expl</code> i <code>report</code> kako bismo razdvojili vizualizacije kojima samo istražujemo podatke od onih koje ćemo uključiti u izvještaj.</p></li>
+<li><p><code>reports</code> – u ovoj mapi radimo R Markdown izvještaje. Ako se radi o složenijem procesu analize podataka, preporučeno je slijedno numerirati izvještaje (<code>01-ucitavanje.Rmd</code>, <code>02-transformacija.Rmd</code> itd.); analiza bi trebala imati dovoljno informacija da lako osigurava ponovo izvođenje ispočetka uz identične rezultate.</p></li>
+</ol>
+<ol start="3" style="list-style-type: decimal">
+<li>Pored gore navedenih mapa i pripadnih datoteka, u osnovnu mapu projekta preporučuje se stvoriti i dvije tekstualne datoteke:</li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li><p><code>log.txt</code> – nakon svakog rada na podacima na vrh ove datoteke ukratko upišemo što se napravilo i koji su okvirni rezultati</p></li>
+<li><p><code>TODO.txt</code> – kratak opis planiranih zadataka za iduću sesiju.</p></li>
+</ol>
+<p>Sada, kada smo priredili ove mape i datoteke, moramo se potruditi konzistentno ih koristiti tijekom analize (prikupljene podatke stavimo u <code>data</code> mapu, prvi RMD dokument stvorimo u mapi <code>reports</code> i sl.). Ako smo dosljedni i disciplinirani, znatno ćemo podići razinu održivosti i konzistentnosti projekta te olakšati dugoročan rad na njemu.</p>
+<p>Kod <strong>manjih projekata</strong> moguće je pojednostaviti ovaj pristup korištenjem samo jedne krovne mape (uz “projektni” pristup objašnjen u nastavku), no već kod projekata srednje složenosti gdje uočavamo potrebu za korištenjem više podatkovnih skupova (što uključuje i pohranu međurezultata) te generiranjem većeg broja izvještajnih datoteka i/ili vizualizacija preporučljivo je prijeći na organizirani pristup sa adekvatnim korištenjem podmapa.</p>
+<hr />
+</div>
+<div id="pojam-projekta" class="section level3 hasAnchor" number="1.4.3">
+<h3><span class="header-section-number">1.4.3</span> Pojam projekta<a href="uvod.html#pojam-projekta" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Sučelje RStudija može nam dodatno olakšati organizaciju procesa analize, pogotovo u slučajevima kada radimo više paralelnih analiza, ili hoćemo raditi neke druge poslove u R-u koji nisu vezani s analizom u tijeku. Za te potrebe RStudio koristi pojam „R projekta“.</p>
+<p>R projekt možemo zamisliti kao spremljenu inačicu sučelja za potrebe jednoga scenarija korištenja, nešto slično spremanju pozicije u računalnim igrama. Kada radimo u okviru projekta te u jednom trenutku završimo s radom, R će „spremiti poziciju“ – izgled sučelja, učitane objekte, otvorene dokumente i sl. – čime nam omogućuje da naknadim otvaranjem ovoga projekta rekonstruiramo sučelje i objekte točno onakvima kakvima smo ih ostavili. Isto tako, ako paralelno radimo više različitih analiza, na ovaj način možemo imati zasebna sučelja za svaku analizu, bez nezgodnog miješanja objekata, datoteka i izvještaja.</p>
+<p>Novi projekt možemo napraviti uz pomoć opcije <code>File -&gt; New Project...</code>. Ako smo unaprijed pripremili mapu za projekt, preporuka je da prije stvaranja novoga projekta postavimo tu mapu kao radnu (uz pomoć naredbe <code>setwd</code> ili odabirom mape u donjem desnom dijelu sučelja te potom opcije <code>More</code> -&gt; <code>Set As Working Directory</code>).</p>
+<p>Kad odaberemo <code>New Project...</code> vidljive su sljedeće opcije:</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-11"></span>
+<img src="figures/projects_new.png" alt="\label{fig:figs}Novi projekt" width="300px" />
+<p class="caption">
+Slika 1.6: Novi projekt
+</p>
+</div>
+<p>Ako smo dobro odabrali mapu, najbolja je opcija <code>Existing Directory</code>. Potom – ako želimo zadržati postojeću sesiju – označimo opciju <code>Open in a New Session</code> te potom <code>Create Project</code>.</p>
+<p>Možemo vidjeti da smo dobili potpuno novu, čistu inačicu RStudio sučelja. Ako pogledamo mapu u kojoj smo stvorili projekt, vidjet ćemo novu datoteku s ekstenzijom <code>.RProj</code>. Sada možemo raditi unutar ovog projekta, a nakon završetka posla samo sve spremimo i zatvorimo sučelje. Dvoklikom na <code>.RProj</code> datoteku sučelje RStudija će se otvoriti i rekonstruirati okolinu točno onako kako je izgledala kada smo ju zatvorili.</p>
+<p>Usprkos tome što ova funkcionalnost sučelja RStudija može značajno pomoći kod rada na analizi u više sesija, preporučuje se da se ne oslanjamo previše na rekonstrukciju okoline, pogotovo kada se radi o objektima, učitanim podacima i sl. Puno je bolja praksa – koja se i često eksplicitno preporučuje u literaturi – u novoj sesiji krenuti od nule ili od pomno odabrane polazišne točke (npr. konkretnoga međurezultata). Ovo će nas natjerati da pažljivije organiziramo analizu, da budemo svjesni u kojem koraku se nalazimo te da detaljno znamo sve učitane objekte, njihovu ulogu i način na koji su nastali. Nadalje, na ovaj način značajno podižemo održivost, prenosivost i reproducibilnost projekta, što su bitne karakteristike organizacije procesa.</p>
+<p>Jedan od načina kako ovo provesti jest natjerati se da na kraju svake sesije uvijek izvedemo naredbu <code>rm(list = ls())</code> koja briše sve varijable globalne okoline. Iako ovo djeluje destruktivno i rizično jer potencijalno trajno brišemo korisne rezultate, saznanje da će svi objekti u jednom trenutku nestati natjerat će nas da pažljivo organiziramo analizu i naglasak stavimo upravo na sljedivost procesa i reproducibilnost, a manje na vjeru da su objekti koje trebamo već učitani i spremni za daljnje korake.</p>
+<p>Konačno, ako uistinu želimo podići organizaciju procesa analize na višu razinu te smo spremni detaljno upravljati i održavati ovaj proces na konzistentan, uniforman i održiv način gdje što manje stvari radimo ručno, možemo odabrati softversku podršku za upravljanje ovakvim projektima.</p>
+<p>Postoji više popularnih rješenja kako ovo izvesti, a ovdje ćemo na informativnoj razini prikazati samo jedno od njih. Radi se o paketu <code>ProjectTemplate</code>. Prema riječima autora ovoga paketa, on osigurava automatsko:</p>
+<ul>
+<li>upravljanje datotekama projekta</li>
+<li>učitavanje potrebnih R paketa</li>
+<li>učitavanje podatkovnih skupova u memoriju</li>
+<li>pripremu i pretprocesiranje podataka</li>
+</ul>
+<p>Ovaj paket također pruža predloške programskoga koda za dijagnostiku i transformaciju podataka te profiliranje i testiranje razvijenih programskih skripti.</p>
+<p>Na sljedećoj slici možemo vidjeti strukturu mapa koju koristi ovaj paket:</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-12"></span>
+<img src="figures/directories.png" alt="\label{fig:figs}Mape koje stvara ProjectTemplate" width="150px" />
+<p class="caption">
+Slika 1.7: Mape koje stvara ProjectTemplate
+</p>
+</div>
+<p>Detaljno objašnjenje svih funkcionalnosti ovoga paketa izlazi iz okvira ovoga udžbenika, a čitatelji koje zanima više detalja o ovom paketu mogu ih pronaći na poveznici <a href="http://projecttemplate.net/getting_started.html" class="uri">http://projecttemplate.net/getting_started.html</a>.</p>
+</div>
+</div>
+<div id="kako-koristiti-ovaj-udžbenik" class="section level2 hasAnchor" number="1.5">
+<h2><span class="header-section-number">1.5</span> Kako koristiti ovaj udžbenik?<a href="uvod.html#kako-koristiti-ovaj-udžbenik" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Osnovna ideja ovog udžbenika jest “učenje kroz primjenu”. Zbog toga se u lekcijama u nastavku neće koristiti previše primjera, već se čitatelja potiče da svaki novi koncept usvoji kroz rješavanje niza lakših i težih zadataka.</p>
+<p>Svako poglavlje koje slijedi ima prateću “radnu bilježnicu”. Jednostavno rečeno, radi se o RMD datoteci koja sadrži sve primjere iz zadatke iz ovog udžbenika, popraćene sažetim tekstom radi lakšeg snalaženja i referenciranja na koncepte koji se obrađuju. Osnovna ideja je da čitatelj paralelno čita udžbenik i rješava radnu bilježnicu, gledajući rješenje zadatka tek nakon što ga samostalno riješi unutar programskog alata.</p>
+<p>Poneki zadaci zahtijevati će jednostavno uklanjanje znaka <code>#</code> (koji označava “komentar”) sa početka naredbe te njezino izvršavanje. Usprkos trivijalnom pristupu, na ovaj način se ipak jasnije potiče čitatelja za samostalno isprobavanje naredbe, umjesto da samo pogleda njezin rezultat. Drugi zadaci zahtijevati će nešto veći angažman. Konačno, nakon svake lekcije nalazi se niz “Zadataka za vježbu” uz koje se neće nalaziti rješenje te koji će predstavljati svojevrsnu provjeru svih danih koncepata lekcije. Čitateljima se snažno preporučuje rješavanje svih primjera i zadataka prije prelaska na iduću lekciju, budući da lekcije koje slijede pretpostavljaju dobro usvojeno znanje svih do tada obrađenih tema.</p>
+<p>Naravno, udžbenik je moguće čitati i bez navedenog “interaktivnog” pristupa. Rješenja uz zadatke otkrivaju ispravnu metodu pristupa problemu, a većina naredbi popraćena je ispisom kojeg bi korisnik dobio na zaslonu njihovim izvršavanjem. Usprkos tome, stav autora udžbenika jest da se programski jezici ne mogu učiti čitanjem te da se dodatni trud isprobavanja svih, pa čak i najjednostavnijih koncepata, u konačnici višestruko isplati.</p>
+<hr />
+<p>Upoznajmo se pobliže sa konceptom radnih bilježnica. Prvo je potrebno pronaći i otvoriti radnu bilježnicu koja odgovara lekciji koju čitate. Nju je lako prepoznati prema odgovarajućem broju lekcije - radna bilježnica za ovu lekciju nosi naziv <code>01_Uvod_RB.Rmd</code>. Preporučuje se da sve radne bilježnice na kojima namjeravati raditi kopirate negdje na lokalno računalo zajedno sa svim pratećim datotekama koje se nalaze u istoj mapi ako ih ima.</p>
+<p>Kao što je rečeno, radna bilježnica će u pravilu sadržavati sav programski kod lekcije na koje se odnosi, ali samo dio teksta koliko je dovoljno za lakše snalaženje. Ukoliko ovaj tekst čitate direktno iz radne bilježnice, a ne kao dio udžbenika, možete vidjeti da nedostaje cijeli prethodni dio lekcije; to je zato što se uvodni koraci opisani u njemu tiču koncepata koje je potrebno usvojiti prije korištenja radne bilježnice. Ako ih niste prošli, preporuka je da se vratite i prođete ih te potom nastavite sa primjerima i zadacima koji slijede.</p>
+<p>Radne bilježnice razlikuju <strong>Primjere</strong> i <strong>Zadatke</strong>. Primjere je u pravilu potrebno samo izvršiti. Zadaci s druge strane očekuju izvjesne preinake ili unos novog programskog koda. Kao što je rečeno, udžbenik će postaviti daleko veći naglasak na zadatke.</p>
+<p>Primjer može izgledati ovako:</p>
+<hr />
+<strong>Primjer - nekoliko jednostavnih naredbi R programskog jezika</strong>
+<div class="fold o">
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="uvod.html#cb4-1" tabindex="-1"></a><span class="dv">3</span><span class="sc">+</span><span class="dv">2</span>         <span class="co">#zbrajanje</span></span>
+<span id="cb4-2"><a href="uvod.html#cb4-2" tabindex="-1"></a><span class="fu">log</span>(<span class="dv">10</span>)    <span class="co"># prirodni logaritam!</span></span>
+<span id="cb4-3"><a href="uvod.html#cb4-3" tabindex="-1"></a><span class="fu">log10</span>(<span class="dv">10</span>)   <span class="co"># ovo je logaritam baze 10! Usput, komentare pišemo znakom &quot;#&quot;</span></span>
+<span id="cb4-4"><a href="uvod.html#cb4-4" tabindex="-1"></a><span class="fu">sin</span>(<span class="fl">0.5</span> <span class="sc">*</span> pi)      <span class="co"># pi je jedna od ugrađenih konstanti</span></span></code></pre></div>
+<pre><code>## [1] 5
+## [1] 2.302585
+## [1] 1
+## [1] 1</code></pre>
+</div>
+<p>Naredbe iz primjera možete izvršiti pojedinačno, ili cijeli isječak odjednom kombinacijom tipaka CTRL + SHIFT + ENTER. Nikakve preinake koda nisu nužne (iako često nije loše eksperimentirati sa danim naredbama!).</p>
+<p>Zadaci s druge strane uvijek traže određenu - makar minimalnu - intervenciju.</p>
+<hr />
+<p><strong>Zadatak 1.2 - naredbe za provjeru i izmjenu radne mape</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="uvod.html#cb6-1" tabindex="-1"></a><span class="co"># izvršite sljedeće naredbe uklanjanjem znaka komentara</span></span>
+<span id="cb6-2"><a href="uvod.html#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="uvod.html#cb6-3" tabindex="-1"></a><span class="co">#getwd()     # mapa u kojoj trenutno radimo</span></span>
+<span id="cb6-4"><a href="uvod.html#cb6-4" tabindex="-1"></a><span class="co">#setwd(&quot;.&quot;)  # ovdje možemo navesti novu radnu mapu ukoliko želimo</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="uvod.html#cb7-1" tabindex="-1"></a><span class="fu">getwd</span>()     <span class="co"># mapa u kojoj trenutno radimo</span></span>
+<span id="cb7-2"><a href="uvod.html#cb7-2" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;.&quot;</span>)  <span class="co"># ovdje možemo navesti novu radnu mapu ukoliko želimo</span></span></code></pre></div>
+</div>
+<hr />
+<p>Zadatak će se često odnositi na upravo uvedeni koncept. Npr. zgodno je za napomenuti da, iako jezik R podržava operator <code>=</code> za pridruživanje vrijednosti nekoj varijabli, preporučuje se korištenje operatora <code>&lt;-</code> u tu svrhu koji je nešto više “R-ovski”. Također, uočimo da R podržava tzv. <em>autoprint</em>, tj. uvijek će ispisati rezultat zadnje naredbe na zaslon. To znači da ako u isječku stvaramo novu varijablu <code>x</code> te ju želimo ispisati na zaslon, ne moramo kao zadnju naredbu staviti <code>print(x)</code> već je dovoljno staviti samo <code>x</code>. Isprobajmo ovo u zadatku.</p>
+<hr />
+<p><strong>Zadatak 1.3 - R-ovski operator pridruživanja</strong></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="uvod.html#cb8-1" tabindex="-1"></a><span class="co"># upišite `5` u varijablu `x`</span></span>
+<span id="cb8-2"><a href="uvod.html#cb8-2" tabindex="-1"></a><span class="co"># potom ispišite varijablu `x` na zaslon</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="uvod.html#cb9-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb9-2"><a href="uvod.html#cb9-2" tabindex="-1"></a>x</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+</div>
+<p>Konačno, na kraju većine poglavlja nalaziti će se <strong>Zadaci za vježbu</strong>, koji kroz interaktivno praćenje predmeta ujedno predstavljaju i domaće zadaće. Bitno je napomenuti da u ovisnosti o kontekstu u kojem čitatelji udžbenika usvajaju gradivo, zadaci na kraju radnih bilježnica se mogu u određenim elementima razlikovati od onoga vidljivom u samom udžbeniku.</p>
+<hr />
+<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Programirajmo u R-u</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.fer.unizg.hr/en/damir.pintar" property="cc:attributionName" rel="cc:attributionURL">Damir Pintar</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://ratnip.github.io/FER_OPJR/" rel="dct:source">https://ratnip.github.io/FER_OPJR/</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "google", "twitter", "weibo", "instapaper"],
+    "google": false,
+    "instapper": false
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": true
+  },
+  "toolbar": {
+    "position": "fixed",
+    "edit": null,
+    "download": null,
+    "search": true
+  }
+});
+});
+</script>
+
+</body>
+
+</html>
