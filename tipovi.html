@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Osnovni elementi, vektori i matrice | Programirajmo u R-u</title>
+  <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Osnovni elementi, vektori i matrice | Programirajmo u R-u" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Osnovni elementi, vektori i matrice | Programirajmo u R-u" />
+  
+  <meta name="twitter:description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  
+
+<meta name="author" content="Damir Pintar" />
+
+
+<meta name="date" content="2025-10-20" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="uvod.html"/>
+<link rel="next" href="okviri.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+.showopt {
+  background-color: #004c93;
+  color: #FFFFFF; 
+  width: 140px;
+  height: 4	0px;
+  text-align: center;
+  vertical-align: middle !important;
+  float: right;
+  font-family: sans-serif;
+  font-size:10 pt;
+  border-radius: 8px;
+}
+
+.showopt:hover {
+    background-color: #dfe4f2;
+    color: #004c93;
+}
+
+pre.plot {
+  background-color: white !important;
+}
+</style>
+
+<script>
+ $(document).ready(function() {
+
+  $chunks = $('.fold');
+
+  $chunks.each(function () {
+
+    // add button to source code chunks
+    if ( $(this).hasClass('s') ) {
+      $('pre.r', this).prepend("<div class=\"showopt\">Prikaži rješenje</div><br style=\"line-height:22px;\"/>");
+      $('pre.r', this).children('code').attr('class', 'folded');
+    }
+
+    // add button to output chunks
+    if ( $(this).hasClass('o') ) {
+      $('pre:not(.r)', this).has('code').prepend("<div class=\"showopt\">Prikaži ispis</div><br style=\"line-height:22px;\"/>");
+      $('pre:not(.r)', this).children('code:not(r)').addClass('folded');
+
+      // add button to plots
+      $(this).find('img').wrap('<pre class=\"plot\"></pre>');
+      $('pre.plot', this).prepend("<div class=\"showopt\">Prikaži sliku</div><br style=\"line-height:22px;\"/>");
+      $('pre.plot', this).children('img').addClass('folded');
+
+    }
+  });
+
+  // hide all chunks when document is loaded
+  $('.folded').css('display', 'none')
+
+  // function to toggle the visibility
+  $('.showopt').click(function() {
+    var label = $(this).html();
+    if (label.indexOf("Prikaži") >= 0) {
+      $(this).html(label.replace("Prikaži", "Sakrij"));
+    } else {
+      $(this).html(label.replace("Sakrij", "Prikaži"));
+    }
+    $(this).siblings('code, img').slideToggle('fast', 'swing');
+  });
+});
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>(Udžbenik za predmet “Osnove statističkog programiranja”)</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#predgovor"><i class="fa fa-check"></i>Predgovor</a></li>
+</ul></li>
+<li class="part"><span><b>I Osnovni elementi jezika R</b></span></li>
+<li class="chapter" data-level="1" data-path="uvod.html"><a href="uvod.html"><i class="fa fa-check"></i><b>1</b> Uvod</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="uvod.html"><a href="uvod.html#što-je-programski-jezik-r"><i class="fa fa-check"></i><b>1.1</b> Što je programski jezik R?</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="uvod.html"><a href="uvod.html#općenito-o-r-u"><i class="fa fa-check"></i><b>1.1.1</b> Općenito o R-u</a></li>
+<li class="chapter" data-level="1.1.2" data-path="uvod.html"><a href="uvod.html#alternative-jeziku-r"><i class="fa fa-check"></i><b>1.1.2</b> Alternative jeziku R</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="uvod.html"><a href="uvod.html#instalacija-programske-podrške"><i class="fa fa-check"></i><b>1.2</b> Instalacija programske podrške</a></li>
+<li class="chapter" data-level="1.3" data-path="uvod.html"><a href="uvod.html#pregled-razvojnog-sučelja-rstudio"><i class="fa fa-check"></i><b>1.3</b> Pregled razvojnog sučelja <em>RStudio</em></a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="uvod.html"><a href="uvod.html#interaktivna-konzola"><i class="fa fa-check"></i><b>1.3.1</b> Interaktivna konzola</a></li>
+<li class="chapter" data-level="1.3.2" data-path="uvod.html"><a href="uvod.html#pisanje-r-skripti"><i class="fa fa-check"></i><b>1.3.2</b> Pisanje R skripti</a></li>
+<li class="chapter" data-level="1.3.3" data-path="uvod.html"><a href="uvod.html#instalacija-dodatnih-paketa"><i class="fa fa-check"></i><b>1.3.3</b> Instalacija dodatnih paketa</a></li>
+<li class="chapter" data-level="1.3.4" data-path="uvod.html"><a href="uvod.html#r-markdown"><i class="fa fa-check"></i><b>1.3.4</b> <em>R Markdown</em></a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="uvod.html"><a href="uvod.html#organizacija-procesa-podatkovne-analize-uz-r-i-rstudio"><i class="fa fa-check"></i><b>1.4</b> Organizacija procesa podatkovne analize uz R i RStudio</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="uvod.html"><a href="uvod.html#poželjne-karakteristike-procesa-analize-podataka"><i class="fa fa-check"></i><b>1.4.1</b> Poželjne karakteristike procesa analize podataka</a></li>
+<li class="chapter" data-level="1.4.2" data-path="uvod.html"><a href="uvod.html#organizacija-mapa-za-potrebe-analize-podataka"><i class="fa fa-check"></i><b>1.4.2</b> Organizacija mapa za potrebe analize podataka</a></li>
+<li class="chapter" data-level="1.4.3" data-path="uvod.html"><a href="uvod.html#pojam-projekta"><i class="fa fa-check"></i><b>1.4.3</b> Pojam projekta</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="uvod.html"><a href="uvod.html#kako-koristiti-ovaj-udžbenik"><i class="fa fa-check"></i><b>1.5</b> Kako koristiti ovaj udžbenik?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="tipovi.html"><a href="tipovi.html"><i class="fa fa-check"></i><b>2</b> Osnovni elementi, vektori i matrice</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tipovi.html"><a href="tipovi.html#osnovni-tipovi-podataka"><i class="fa fa-check"></i><b>2.1</b> Osnovni tipovi podataka</a></li>
+<li class="chapter" data-level="2.2" data-path="tipovi.html"><a href="tipovi.html#operatori"><i class="fa fa-check"></i><b>2.2</b> Operatori</a></li>
+<li class="chapter" data-level="2.3" data-path="tipovi.html"><a href="tipovi.html#nedostajuće-nepoznate-i-nemoguće-vrijednosti"><i class="fa fa-check"></i><b>2.3</b> Nedostajuće, nepoznate i nemoguće vrijednosti</a></li>
+<li class="chapter" data-level="2.4" data-path="tipovi.html"><a href="tipovi.html#vektori"><i class="fa fa-check"></i><b>2.4</b> Vektori</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="tipovi.html"><a href="tipovi.html#stvaranje-vektora"><i class="fa fa-check"></i><b>2.4.1</b> Stvaranje vektora</a></li>
+<li class="chapter" data-level="2.4.2" data-path="tipovi.html"><a href="tipovi.html#operator"><i class="fa fa-check"></i><b>2.4.2</b> Operator <code>[</code></a></li>
+<li class="chapter" data-level="2.4.3" data-path="tipovi.html"><a href="tipovi.html#principi-vektorizacije-i-recikliranja"><i class="fa fa-check"></i><b>2.4.3</b> Principi vektorizacije i recikliranja</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="tipovi.html"><a href="tipovi.html#indeksni-vektori"><i class="fa fa-check"></i><b>2.5</b> Indeksni vektori</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="tipovi.html"><a href="tipovi.html#lokacijsko-referenciranje"><i class="fa fa-check"></i><b>2.5.1</b> Lokacijsko referenciranje</a></li>
+<li class="chapter" data-level="2.5.2" data-path="tipovi.html"><a href="tipovi.html#uvjetno-referenciranje"><i class="fa fa-check"></i><b>2.5.2</b> Uvjetno referenciranje</a></li>
+<li class="chapter" data-level="2.5.3" data-path="tipovi.html"><a href="tipovi.html#imensko-referenciranje"><i class="fa fa-check"></i><b>2.5.3</b> Imensko referenciranje</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="tipovi.html"><a href="tipovi.html#matrice-i-polja"><i class="fa fa-check"></i><b>2.6</b> Matrice i polja</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="tipovi.html"><a href="tipovi.html#rezanje-matrica"><i class="fa fa-check"></i><b>2.6.1</b> Rezanje matrica</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="tipovi.html"><a href="tipovi.html#osnovne-operacije-matrične-algebre"><i class="fa fa-check"></i><b>2.7</b> Osnovne operacije matrične algebre</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="tipovi.html"><a href="tipovi.html#skalarni-produkt"><i class="fa fa-check"></i><b>2.7.1</b> Skalarni produkt</a></li>
+<li class="chapter" data-level="2.7.2" data-path="tipovi.html"><a href="tipovi.html#matrično-množenje"><i class="fa fa-check"></i><b>2.7.2</b> Matrično množenje</a></li>
+<li class="chapter" data-level="2.7.3" data-path="tipovi.html"><a href="tipovi.html#množenje-po-elementima"><i class="fa fa-check"></i><b>2.7.3</b> Množenje po elementima</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="tipovi.html"><a href="tipovi.html#funkcije-diag-upper.tri-lower.tri-i-solve"><i class="fa fa-check"></i><b>2.8</b> Funkcije <code>diag</code>, <code>upper.tri</code>, <code>lower.tri</code> i <code>solve</code></a></li>
+<li class="chapter" data-level="" data-path="tipovi.html"><a href="tipovi.html#zadaci-za-vježbu"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="okviri.html"><a href="okviri.html"><i class="fa fa-check"></i><b>3</b> Liste, podatkovni okviri i faktori</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="okviri.html"><a href="okviri.html#liste"><i class="fa fa-check"></i><b>3.1</b> Liste</a></li>
+<li class="chapter" data-level="3.2" data-path="okviri.html"><a href="okviri.html#podatkovni-okviri"><i class="fa fa-check"></i><b>3.2</b> Podatkovni okviri</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="okviri.html"><a href="okviri.html#odabir-redaka-i-stupaca-podatkovnih-okvira"><i class="fa fa-check"></i><b>3.2.1</b> Odabir redaka i stupaca podatkovnih okvira</a></li>
+<li class="chapter" data-level="3.2.2" data-path="okviri.html"><a href="okviri.html#dodavanje-i-brisanje-redaka-i-stupaca"><i class="fa fa-check"></i><b>3.2.2</b> Dodavanje i brisanje redaka i stupaca</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="okviri.html"><a href="okviri.html#faktori"><i class="fa fa-check"></i><b>3.3</b> Faktori</a></li>
+<li class="chapter" data-level="" data-path="okviri.html"><a href="okviri.html#zadaci-za-vježbu-1"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Programirajmo u R-u</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="tipovi" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">2</span> Osnovni elementi, vektori i matrice<a href="tipovi.html#tipovi" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<hr />
+<!-- SLIDE_REMOVE -->
+<p>“Osnovni” ili “primitivni” tipovi podataka su temeljni izgradbeni blokovi programskih jezika. Ovdje se najčešće misli na ugrađene mehanizme koji omogućuju pohrane elementarne informacije - najčešće logičkog, numeričkog ili znakovnog tipa. Većina programskih jezika koristi iste ili vrlo slične načine pohrane takvih informacija, što znači da implementira slične osnovne tipove podataka - razlika je često u detaljima kao što su odabrani nazivu tipa, nazivni broj bajtova i sl. U svakom slučaju najčešći prvi korak kod učenja novog programskog jezika jest upoznavanje osnovnih tipova podataka koje isti podržava.</p>
+<p>Sljedeća stvar koja nas potom može zanimati jest sintaksa jezika, tj. način na kojeg pišemo naredbe koje interpreter jezika može razumjeti i izvršiti. Jezik R u svojoj sintaksi slijedi slične konvencije viđene u jezicima kao što su <em>Python</em>, <em>Ruby</em> ili <em>Java</em>, naravno uz određene specifičnosti (kao i svaki pojedini programski jezik). Neka osnovna sintaksna pravila su: svaka naredba u pravilu mora ići u svoj redak, ali uvlačenje naredbi nije bitno kao ni stavljanje točke-zareza na kraj naredbe; blokove definiramo vitičastim zagradama; tipove varijabli ne moramo definirati unaprijed već se oni samo prilagođavaju pridruženoj vrijednosti; komentari započinju znakom <code>#</code>; i sl. Sintaksu ćemo najbolje naučiti kroz primjere - učenjem elemenata jezika sintaksna pravila često postaju intuitivno jasna. Najbolje je krenuti sa jednostavnim funkcijama i operatorima, što ćemo i učiniti u ovoj lekciji.</p>
+<p>Lekciju ćemo završiti raspravom o tzv. “nedostajućim” ili “nepostojećim” vrijednostima. Budući da R ima svoj vlastiti način definiranja takve vrste vrijednosti, odmah ćemo pojasniti način na koji su one u R-u implementirane kako bi u lekcijama koje slijede bili pripremljeni za lako upravljanje takvim vrijednostima (koje se vrlo često susreću u radu sa stvarnim podatkovnim skupovima).</p>
+<!-- SLIDE_REMOVE -->
+<hr />
+<div id="osnovni-tipovi-podataka" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Osnovni tipovi podataka<a href="tipovi.html#osnovni-tipovi-podataka" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>R poznaje šest osnovnih tipova podataka:</p>
+<table>
+<colgroup>
+<col width="13%" />
+<col width="16%" />
+<col width="70%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>tip</th>
+<th>izvorni naziv tipa</th>
+<th>primjeri</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>logički</td>
+<td><em>logical</em></td>
+<td><code>TRUE</code>, <code>FALSE</code> ili <code>T</code>, <code>F</code></td>
+</tr>
+<tr class="even">
+<td>cjelobrojni</td>
+<td><em>integer</em></td>
+<td><code>2L</code>, <code>5L</code>, <code>123456789L</code></td>
+</tr>
+<tr class="odd">
+<td>realni</td>
+<td><em>double</em></td>
+<td><code>4</code>, <code>6</code>, <code>3.14</code>, <code>2e5</code></td>
+</tr>
+<tr class="even">
+<td>kompleksni</td>
+<td><em>complex</em></td>
+<td><code>5 + 2i</code>, <code>7 + 1i</code></td>
+</tr>
+<tr class="odd">
+<td>znakovni</td>
+<td><em>character</em></td>
+<td><code>"A"</code>, <code>"B"</code>, <code>"Pero"</code>, <code>"ABCDEFGHijklmnoPQRSTUVwyz"</code></td>
+</tr>
+<tr class="even">
+<td>bajtovi</td>
+<td><em>raw</em></td>
+<td><code>as.raw(2)</code>, <code>charToRaw("1")</code></td>
+</tr>
+</tbody>
+</table>
+<!-- SLIDE_REMOVE -->
+<p>Neke opaske:</p>
+<ul>
+<li>cjelobrojni i realni tipovi se često zajedno tretiraju kao tip <code>numeric</code> (iako ovo nije u potpunosti konzistentno!)</li>
+<li>kompleksni tip mora imati deklariranu imaginarnu konstantu čak i ako je ona 1 (<code>2 + i</code> nije dobar zapis!)</li>
+<li>tip “sirovih” bajtova se relativno rijetko koristi</li>
+</ul>
+<p>Provjeru da li je neka varijabla određenog tipa možemo raditi uz pomoć obitelji funkcija <code>is.&lt;naziv_tipa&gt;</code> (uočite točku u nazivu funkcije - ovo je normalna pojava za jezik R!). Isto tako, konverziju jednog tipa u drugi možemo provesti uz pomoć obitelji funkcija <code>as.&lt;naziv_tipa&gt;</code>.</p>
+<p>Isprobajmo ove funkcije u sljedećem zadatku. Prije nego što počnemo s rješavanjem uvedimo jedan novitet: u zadacima gdje ispisujemo više stvari na zaslon korisno je vizualno odvojiti različite segmente ispisa kako bismo lakše shvatili na koji dio koda se referenciraju. U tu svrhu ćemo koristiti naredbu <code>cat("-----------\n")</code> koja jednostavno na zaslon ispisuje niz crtica i prelazi u novi red. Mogli smo koristiti i funkciju <code>print()</code>, no ona uvijek započinje ispis sa indeksom elementa dok naredba <code>cat</code> predstavlja “sirovi” ispis, što nam u ovom slučaju više odgovara.
+<!-- SLIDE_REMOVE --></p>
+<hr />
+<p><strong>Zadatak 2.1 - provjera tipova podataka</strong></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="tipovi.html#cb11-1" tabindex="-1"></a><span class="co">#isprobajte sljedeće naredbe:</span></span>
+<span id="cb11-2"><a href="tipovi.html#cb11-2" tabindex="-1"></a><span class="co">#is.logical(FALSE)</span></span>
+<span id="cb11-3"><a href="tipovi.html#cb11-3" tabindex="-1"></a><span class="co">#is.integer(2L)</span></span>
+<span id="cb11-4"><a href="tipovi.html#cb11-4" tabindex="-1"></a><span class="co">#is.double(1.11)</span></span>
+<span id="cb11-5"><a href="tipovi.html#cb11-5" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="tipovi.html#cb11-6" tabindex="-1"></a><span class="co"># izvedite sljedeće provjere:</span></span>
+<span id="cb11-7"><a href="tipovi.html#cb11-7" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="tipovi.html#cb11-8" tabindex="-1"></a><span class="co"># da li je 5L numerički tip?</span></span>
+<span id="cb11-9"><a href="tipovi.html#cb11-9" tabindex="-1"></a><span class="co"># da li je 3.14 numerički tip?</span></span>
+<span id="cb11-10"><a href="tipovi.html#cb11-10" tabindex="-1"></a><span class="co"># da li je &quot;ABC&quot; znakovni tip?</span></span>
+<span id="cb11-11"><a href="tipovi.html#cb11-11" tabindex="-1"></a><span class="co"># da li je 4 + 2i kompleksni tip?</span></span>
+<span id="cb11-12"><a href="tipovi.html#cb11-12" tabindex="-1"></a><span class="co"># da li je 5 cjelobrojni tip?</span></span>
+<span id="cb11-13"><a href="tipovi.html#cb11-13" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="tipovi.html#cb11-14" tabindex="-1"></a><span class="co"># provedite sljedeće konverzije</span></span>
+<span id="cb11-15"><a href="tipovi.html#cb11-15" tabindex="-1"></a></span>
+<span id="cb11-16"><a href="tipovi.html#cb11-16" tabindex="-1"></a><span class="co">#  2.35 u integer</span></span>
+<span id="cb11-17"><a href="tipovi.html#cb11-17" tabindex="-1"></a><span class="co">#  TRUE u numeric</span></span>
+<span id="cb11-18"><a href="tipovi.html#cb11-18" tabindex="-1"></a><span class="co">#  100L u character</span></span>
+<span id="cb11-19"><a href="tipovi.html#cb11-19" tabindex="-1"></a><span class="co">#  2.35 u character</span></span>
+<span id="cb11-20"><a href="tipovi.html#cb11-20" tabindex="-1"></a><span class="co">#  2e2  u character</span></span>
+<span id="cb11-21"><a href="tipovi.html#cb11-21" tabindex="-1"></a><span class="co">#  0 u logical</span></span>
+<span id="cb11-22"><a href="tipovi.html#cb11-22" tabindex="-1"></a><span class="co">#  2.75  u logical</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="tipovi.html#cb12-1" tabindex="-1"></a><span class="fu">is.logical</span>(<span class="cn">FALSE</span>)</span>
+<span id="cb12-2"><a href="tipovi.html#cb12-2" tabindex="-1"></a><span class="fu">is.integer</span>(<span class="dv">2</span><span class="dt">L</span>)</span>
+<span id="cb12-3"><a href="tipovi.html#cb12-3" tabindex="-1"></a><span class="fu">is.double</span>(<span class="fl">1.11</span>)</span>
+<span id="cb12-4"><a href="tipovi.html#cb12-4" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="tipovi.html#cb12-5" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;-----------</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb12-6"><a href="tipovi.html#cb12-6" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="tipovi.html#cb12-7" tabindex="-1"></a><span class="fu">is.numeric</span>(<span class="dv">5</span><span class="dt">L</span>)</span>
+<span id="cb12-8"><a href="tipovi.html#cb12-8" tabindex="-1"></a><span class="fu">is.numeric</span>(<span class="fl">3.14</span>)</span>
+<span id="cb12-9"><a href="tipovi.html#cb12-9" tabindex="-1"></a><span class="fu">is.character</span>(<span class="st">&quot;ABC&quot;</span>)</span>
+<span id="cb12-10"><a href="tipovi.html#cb12-10" tabindex="-1"></a><span class="fu">is.complex</span>(<span class="dv">4</span> <span class="sc">+</span> <span class="dv">2</span><span class="dt">i</span>)</span>
+<span id="cb12-11"><a href="tipovi.html#cb12-11" tabindex="-1"></a><span class="fu">is.integer</span>(<span class="dv">5</span>)</span>
+<span id="cb12-12"><a href="tipovi.html#cb12-12" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="tipovi.html#cb12-13" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;-----------</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb12-14"><a href="tipovi.html#cb12-14" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="tipovi.html#cb12-15" tabindex="-1"></a><span class="fu">as.integer</span>(<span class="fl">2.35</span>)</span>
+<span id="cb12-16"><a href="tipovi.html#cb12-16" tabindex="-1"></a><span class="fu">as.numeric</span>(<span class="cn">TRUE</span>)</span>
+<span id="cb12-17"><a href="tipovi.html#cb12-17" tabindex="-1"></a><span class="fu">as.character</span>(<span class="dv">100</span><span class="dt">L</span>)</span>
+<span id="cb12-18"><a href="tipovi.html#cb12-18" tabindex="-1"></a><span class="fu">as.character</span>(<span class="fl">2.35</span>)</span>
+<span id="cb12-19"><a href="tipovi.html#cb12-19" tabindex="-1"></a><span class="fu">as.character</span>(<span class="fl">2e2</span>)</span>
+<span id="cb12-20"><a href="tipovi.html#cb12-20" tabindex="-1"></a><span class="fu">as.logical</span>(<span class="dv">0</span>)</span>
+<span id="cb12-21"><a href="tipovi.html#cb12-21" tabindex="-1"></a><span class="fu">as.logical</span>(<span class="fl">2.75</span>)</span></code></pre></div>
+<pre><code>## [1] TRUE
+## [1] TRUE
+## [1] TRUE
+## -----------
+## [1] TRUE
+## [1] TRUE
+## [1] TRUE
+## [1] TRUE
+## [1] FALSE
+## -----------
+## [1] 2
+## [1] 1
+## [1] &quot;100&quot;
+## [1] &quot;2.35&quot;
+## [1] &quot;200&quot;
+## [1] FALSE
+## [1] TRUE</code></pre>
+</div>
+<hr />
+<!-- SLIDE_REMOVE -->
+<p><em>R</em> će sam provoditi implicitnu pretvorbu ukoliko je moguća - npr. zbroj logičke i numeričke varijable će rezultirati pretvorbom logičke varijable u broj <code>0</code> ili <code>1</code>, a zbroj cijelog i realnog broja će prvo provesti pretvorbu cijelog broja u realni. Ukoliko pretvorba nije moguća (npr. zbroj broja i znakovnog niza) <em>R</em> će javiti grešku.
+<!-- SLIDE_REMOVE --></p>
+<!-- ## Provjera tipa podatka -->
+<p>Ukoliko želimo saznati tip neke varijable ili konstante možemo isti dohvatiti uz pomoć funkcija <code>typeof</code> ili <code>class</code>. Razlika između njih je sljedeća:</p>
+<ul>
+<li><code>typeof</code> - dohvaća “primitivni” ili “osnovni” tip podatka (<code>integer</code>, <code>double</code> )</li>
+<li><code>class</code> - “objektni tip”, zapravo vrijednost atributa <code>class</code></li>
+</ul>
+<p>Dok radimo sa jednostavnim tipovima podataka možemo koristiti bilo koju od ove dvije opcije, no kod složenijih tipova (objekata!) funkcija <code>class</code> će nam često dati precizniji odgovor. O objektima će biti više riječi u jednom od narednih poglavlja.</p>
+<hr />
+</div>
+<div id="operatori" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Operatori<a href="tipovi.html#operatori" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Kao i u drugim programskim jezicima, R dozvoljava korištenje operatora u izrazima. Neki od češće korištenih operatora su:</p>
+<ul>
+<li><em>aritmetički</em> <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>**</code> (potencija), <code>%%</code> (modulo), <code>%/%</code> (cjelobrojno dijeljenje)</li>
+<li><em>usporedni</em> <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>==</code>, <code>!=</code></li>
+<li><em>logički</em> <code>!</code> (negacija), <code>&amp;&amp;</code> (skalarni “i”), <code>||</code> (skalarni “ili”), <code>&amp;</code> (vektorski “i”), <code>|</code> (vektorski “ili”)</li>
+<li><em>pridruživanje</em> <code>&lt;-</code> ili <code>=</code></li>
+</ul>
+<p><strong>Zadatak 2.2 - operatori</strong></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="tipovi.html#cb14-1" tabindex="-1"></a><span class="co"># provjerite koliko iznosi &quot;17 na kvadrat&quot; i &quot;ostatak dijeljenja 101 sa 12&quot;</span></span>
+<span id="cb14-2"><a href="tipovi.html#cb14-2" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="tipovi.html#cb14-3" tabindex="-1"></a><span class="co"># provjerite što je rezultat sljedećih izraza: `17 &gt; 13`, `!TRUE`,  `5 &amp;&amp; 0`, `0. || 2`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="tipovi.html#cb15-1" tabindex="-1"></a><span class="co"># provjerite koliko iznosi &quot;17 na kvadrat&quot; i &quot;ostatak dijeljenja 101 sa 12&quot;</span></span>
+<span id="cb15-2"><a href="tipovi.html#cb15-2" tabindex="-1"></a><span class="dv">17</span> <span class="sc">**</span> <span class="dv">2</span>  <span class="co"># radi i 17 ^ 2</span></span>
+<span id="cb15-3"><a href="tipovi.html#cb15-3" tabindex="-1"></a><span class="dv">101</span> <span class="sc">%%</span> <span class="dv">12</span></span>
+<span id="cb15-4"><a href="tipovi.html#cb15-4" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="tipovi.html#cb15-5" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;-----------</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb15-6"><a href="tipovi.html#cb15-6" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="tipovi.html#cb15-7" tabindex="-1"></a><span class="co"># provjerite što je rezultat sljedećih izraza: `17 &gt; 13`, `!TRUE`,  `5 &amp;&amp; 0`, `0. || 2`, </span></span>
+<span id="cb15-8"><a href="tipovi.html#cb15-8" tabindex="-1"></a><span class="dv">17</span> <span class="sc">&gt;</span> <span class="dv">13</span></span>
+<span id="cb15-9"><a href="tipovi.html#cb15-9" tabindex="-1"></a><span class="sc">!</span><span class="cn">TRUE</span></span>
+<span id="cb15-10"><a href="tipovi.html#cb15-10" tabindex="-1"></a><span class="dv">5</span> <span class="sc">&amp;&amp;</span> <span class="dv">0</span></span>
+<span id="cb15-11"><a href="tipovi.html#cb15-11" tabindex="-1"></a><span class="fl">0.</span> <span class="sc">||</span> <span class="dv">2</span></span></code></pre></div>
+<pre><code>## [1] 289
+## [1] 5
+## -----------
+## [1] TRUE
+## [1] FALSE
+## [1] FALSE
+## [1] TRUE</code></pre>
+</div>
+<hr />
+<!-- ## Uvjetno izvođenje naredbi -->
+<p>Logičke vrijednosti i usporedne operatore najčešće ćemo koristiti kod tzv. “uvjetnog izvođenja naredbi”, poznatog iz drugih programskih jezika kao “<em>IF ELSE</em>” naredba. U R-u njezina sintaksa izgleda ovako:</p>
+<p><code>if (izraz) {blok} else {blok}</code></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="tipovi.html#cb17-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb17-2"><a href="tipovi.html#cb17-2" tabindex="-1"></a><span class="cf">if</span> (x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">print</span>(<span class="st">&quot;x je paran broj!&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;x je paran broj!&quot;</code></pre>
+<hr />
+<!-- SLIDE_REMOVE -->
+<p>Uočili smo gore da imamo dvije vrste logičkih operatora za “i” i “ili”. Razliku ćemo objasniti kasnije, za sada je dovoljno reći da se kod uvjetnog izvođenja naredbi ili programskih petlji gotovo isključivo koristimo operatorima <code>&amp;&amp;</code> i <code>||</code> (“C++ - ovski” operatori!).
+<!-- SLIDE_REMOVE --></p>
+<!-- ## Operator pridruživanja -->
+<p>Isto tako, već smo spomenuli da R nudi dva operatora pridruživanja, <code>&lt;-</code> i <code>=</code>. Između njih postoje neke sitne razlike, no one nemaju gotovo nikakav utjecaj na uobičajeno korištenje ovog operatora u praksi. U literaturi se za pridruživanje vrijednosti novim varijablama može vidjeti i jedna i druga inačica, no mi ćemo u nastavku primarno i konzistentno koristiti <code>&lt;-</code>, ponajviše zato kako bi programski kod bio vizualno distinktivniji od drugih programskih jezika.</p>
+<p><em>NAPOMENA: za jednostavniji upis operatora <code>&lt;-</code> možemo se koristiti kombinacijom tipaka <code>ALT</code> i <code>-</code></em></p>
+<p>Kod pridruživanja pazimo da je s lijeve strane tzv. “lijeva vrijednost” (engl. <em>lvalue</em>). Ovo u programerskom smislu interpretiramo kao “nešto u što se može pohraniti izračunata vrijednost”.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="tipovi.html#cb19-1" tabindex="-1"></a>x <span class="sc">+</span> <span class="dv">1</span> <span class="ot">&lt;-</span> <span class="dv">2</span>          <span class="co"># greška!!!</span></span></code></pre></div>
+<p>U pravilu se u R-u kao <em>lvalue</em> koristi varijabla, iako se tu ponekad može pojaviti i poziv funkcije. Ovu možda inicijalno zbunjujuću pojavu razjasniti ćemo kasnije.</p>
+<hr />
+<!-- ## Imenovanje varijabli -->
+<p>Imenovanje varijabli uglavnom slijedi pravila iz drugih programskih jezika - dozvoljena su slova, brojke, podcrta ali i točka . Prvi simbol mora biti slovo ili točka.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="tipovi.html#cb20-1" tabindex="-1"></a>.mojaVarijabla <span class="ot">&lt;-</span> <span class="dv">5</span>   <span class="co">#OK</span></span>
+<span id="cb20-2"><a href="tipovi.html#cb20-2" tabindex="-1"></a>moja.Varijabla <span class="ot">&lt;-</span> <span class="dv">5</span>  <span class="co">#OK</span></span>
+<span id="cb20-3"><a href="tipovi.html#cb20-3" tabindex="-1"></a>_mojaVarijabla <span class="ot">&lt;-</span> <span class="dv">5</span>  <span class="co"># nije OK</span></span>
+<span id="cb20-4"><a href="tipovi.html#cb20-4" tabindex="-1"></a><span class="dv">123</span>Varijabla <span class="ot">&lt;-</span> <span class="dv">5</span>  <span class="co"># nije OK</span></span></code></pre></div>
+<p>U praksi za varijable složenih imena trebamo odabrati jednu od sljedećih konvencija:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="tipovi.html#cb21-1" tabindex="-1"></a>mojaVarijabla <span class="ot">&lt;-</span> <span class="dv">1</span>    <span class="co"># tzv. camelcase</span></span>
+<span id="cb21-2"><a href="tipovi.html#cb21-2" tabindex="-1"></a>moja_varijabla <span class="ot">&lt;-</span> <span class="dv">2</span>   <span class="co">#  podcrta ili</span></span>
+<span id="cb21-3"><a href="tipovi.html#cb21-3" tabindex="-1"></a>moja.varijabla <span class="ot">&lt;-</span> <span class="dv">3</span>   <span class="co"># točka</span></span></code></pre></div>
+<!-- SLIDE_REMOVE -->
+<p>Bitno je da u programskom kodu ne miješamo konvencije tj. da nakon odabira budemo konzistentni.</p>
+<p>Ukoliko baš inzistiramo na čudnim imenima koja koriste specijalne znakove, onda ih moramo staviti pod tzv. “lijeve jednostruke apostrofe” (engl. <em>backticks</em>):
+<!-- SLIDE_REMOVE --></p>
+<hr />
+<p><strong>Zadatak 2.3 - ime varijable sa specijalnim znakovima</strong></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="tipovi.html#cb22-1" tabindex="-1"></a><span class="co"># upišite proizvoljno ime sa specijalnim znakovima unutar lijevih apostrofa </span></span>
+<span id="cb22-2"><a href="tipovi.html#cb22-2" tabindex="-1"></a><span class="co"># i ispišite vrijednost varijable</span></span>
+<span id="cb22-3"><a href="tipovi.html#cb22-3" tabindex="-1"></a><span class="co">#`` &lt;- 2               </span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="tipovi.html#cb23-1" tabindex="-1"></a><span class="st">`</span><span class="at">!%^$*@__=</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="dv">2</span> </span>
+<span id="cb23-2"><a href="tipovi.html#cb23-2" tabindex="-1"></a><span class="st">`</span><span class="at">!%^$*@__=</span><span class="st">`</span></span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+</div>
+<!-- SLIDE_REMOVE -->
+<p>Ovakav način imenovanja varijabli nije previše koristan u praksi, ali ima i svoju svrhu - budući da su operatori u R-u zapravo funkcije (čija su imena doslovno <code>+</code>, <code>**</code> i sl.) upotrebom lijevih apostrofa možemo ih direktno referencirati u njihovom originalnom obliku, što se može pokazati vrlo praktičnim kod tzv. funkcijskog programiranja (o čemu ćemo govoriti u jednoj od budućih lekcija).
+<!-- SLIDE_REMOVE --></p>
+<hr />
+<!-- ## Globalna okolina -->
+<p>Pridjeljivanje vrijednosti novim nazivima varijabli mi zapravo stvaramo nove varijable u radnoj okolini (koja se u R-u naziva “globalna okolina”). Sve varijable koje smo do sada stvorili možemo vidjeti uz pomoć funkcije <code>ls()</code>. Ukoliko želimo obrisati neke varijable, samo navedemo njihova imena u pozivu funkcije <code>rm()</code> (npr. <code>rm(x, y, z)</code>). Za brisanje <em>svih</em> varijabli iz radne okoline koristimo poziv <code>rm(list=ls())</code>, s time što tu moramo biti oprezni (nema “<em>undo</em>”!).</p>
+<hr />
+<p><strong>Zadatak 2.4 - ispis i brisanje varijabli globalne okoline</strong></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="tipovi.html#cb25-1" tabindex="-1"></a><span class="co"># ispišite sve do sada stvorene varijable globalne okoline</span></span>
+<span id="cb25-2"><a href="tipovi.html#cb25-2" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="tipovi.html#cb25-3" tabindex="-1"></a><span class="co"># obrišite neke od gore ispisanih varijabli - npr. rm(x, y, z)</span></span>
+<span id="cb25-4"><a href="tipovi.html#cb25-4" tabindex="-1"></a><span class="co"># ponovo ispišite dostupne varijable</span></span>
+<span id="cb25-5"><a href="tipovi.html#cb25-5" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="tipovi.html#cb25-6" tabindex="-1"></a><span class="co"># obrišite SVE varijable globalne okoline</span></span>
+<span id="cb25-7"><a href="tipovi.html#cb25-7" tabindex="-1"></a><span class="co"># (oprezno s ovim pozivom u praksi!)</span></span>
+<span id="cb25-8"><a href="tipovi.html#cb25-8" tabindex="-1"></a><span class="co"># uvjerite se da je globalna okolina prazna</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="tipovi.html#cb26-1" tabindex="-1"></a><span class="co"># ispišite sve do sada stvorene varijable globalne okoline</span></span>
+<span id="cb26-2"><a href="tipovi.html#cb26-2" tabindex="-1"></a><span class="fu">ls</span>()</span>
+<span id="cb26-3"><a href="tipovi.html#cb26-3" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="tipovi.html#cb26-4" tabindex="-1"></a><span class="co"># obrišite neke od upravo ispisanih varijabli - npr. rm(x, y, z)</span></span>
+<span id="cb26-5"><a href="tipovi.html#cb26-5" tabindex="-1"></a><span class="co"># ponovo ispišite dostupne varijable</span></span>
+<span id="cb26-6"><a href="tipovi.html#cb26-6" tabindex="-1"></a><span class="fu">rm</span>(x, y)</span>
+<span id="cb26-7"><a href="tipovi.html#cb26-7" tabindex="-1"></a><span class="fu">ls</span>()</span>
+<span id="cb26-8"><a href="tipovi.html#cb26-8" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="tipovi.html#cb26-9" tabindex="-1"></a><span class="co"># obrišite SVE varijable globalne okoline</span></span>
+<span id="cb26-10"><a href="tipovi.html#cb26-10" tabindex="-1"></a><span class="co"># (oprezno s ovim pozivom u praksi!)</span></span>
+<span id="cb26-11"><a href="tipovi.html#cb26-11" tabindex="-1"></a><span class="co"># uvjerite se da je globalna okolina prazna</span></span>
+<span id="cb26-12"><a href="tipovi.html#cb26-12" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list=</span><span class="fu">ls</span>())</span>
+<span id="cb26-13"><a href="tipovi.html#cb26-13" tabindex="-1"></a><span class="fu">ls</span>()</span></code></pre></div>
+</div>
+<hr />
+</div>
+<div id="nedostajuće-nepoznate-i-nemoguće-vrijednosti" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Nedostajuće, nepoznate i nemoguće vrijednosti<a href="tipovi.html#nedostajuće-nepoznate-i-nemoguće-vrijednosti" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>U R-u postoji tri načina modeliranja “nepostojećih” vrijednosti:</p>
+<ul>
+<li><code>NA</code> - (<em>not available</em>) nedostajuća ili nepoznata vrijednost određenog tipa</li>
+<li><code>NaN</code> - (<em>not a number</em>) “nemogući” broj, npr. <code>0/0</code></li>
+<li><code>NULL</code> - nepostojeća vrijednost, doslovno “ništa”</li>
+</ul>
+<!-- SLIDE_REMOVE -->
+<p>Razjasnimo razliku između <code>NA</code> i <code>NULL</code>. <code>NA</code> reprezentira vrijednost koja potencijalno postoji, ali je trenutno iz određenih razloga nepoznata. <code>NA</code> vrijednost ima svoj tip, i to je tip varijable unutar koje ju pohranjujemo (točnije rečeno - svaki tip ima svoju “NA” vrijednost koja se označava identično, <code>NA</code>). S druge strane <code>NULL</code> je zasebni tip podatka koji reprezentira nešto što ne postoji, a najčešće ga koristimo kao indikator da je rezultat neke operacije nemoguć. <code>NULL</code> se također često koristi kao kratica za brisanje elemenata nekih tipova podataka, što ćemo vidjeti u kasnijim primjerima.</p>
+<p>NAPOMENA: uočite da je <em>R</em>-ova <code>NA</code> vrijednost ono što zovemo <code>NULL</code> vrijednosti u relacijskim bazama podataka!</p>
+<p>Što se <code>NaN</code> vrijednosti tiče, ona je jednostavno “podvrsta” <code>NA</code> vrijednosti koja preciznije komunicira činjenicu da je rezultat matematičke operacije vrijednost koja nije definirana kao broj.</p>
+<!-- SLIDE_REMOVE -->
+<p>Provjeru da li je neka vrijednost nedostajuća ili nepostojeća radimo jednako kao i provjeru “običnih” tipova podataka - uz pomoć funkcija:</p>
+<ul>
+<li><code>is.na()</code></li>
+<li><code>is.nan()</code></li>
+<li><code>is.null()</code></li>
+</ul>
+<hr />
+<p><strong>Zadatak 2.5 - rad sa NA, NaN i NULL</strong></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="tipovi.html#cb27-1" tabindex="-1"></a><span class="co"># provjerite vrijednosti sljedećih izraza</span></span>
+<span id="cb27-2"><a href="tipovi.html#cb27-2" tabindex="-1"></a><span class="co"># 5 + NaN</span></span>
+<span id="cb27-3"><a href="tipovi.html#cb27-3" tabindex="-1"></a><span class="co"># 5 + NA</span></span>
+<span id="cb27-4"><a href="tipovi.html#cb27-4" tabindex="-1"></a><span class="co"># 5 + NULL</span></span>
+<span id="cb27-5"><a href="tipovi.html#cb27-5" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="tipovi.html#cb27-6" tabindex="-1"></a><span class="co"># provjerite klase sljedećih konstanti i izraza:</span></span>
+<span id="cb27-7"><a href="tipovi.html#cb27-7" tabindex="-1"></a>   <span class="co">#  NA</span></span>
+<span id="cb27-8"><a href="tipovi.html#cb27-8" tabindex="-1"></a>   <span class="co">#  aritmetička operacija između numeric i NA</span></span>
+<span id="cb27-9"><a href="tipovi.html#cb27-9" tabindex="-1"></a>   <span class="co">#  NaN</span></span>
+<span id="cb27-10"><a href="tipovi.html#cb27-10" tabindex="-1"></a>   <span class="co">#  NULL</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="tipovi.html#cb28-1" tabindex="-1"></a><span class="co"># Koliko je &quot;5 + nepoznati broj&quot;?</span></span>
+<span id="cb28-2"><a href="tipovi.html#cb28-2" tabindex="-1"></a><span class="dv">5</span> <span class="sc">+</span> <span class="cn">NaN</span></span>
+<span id="cb28-3"><a href="tipovi.html#cb28-3" tabindex="-1"></a><span class="dv">5</span> <span class="sc">+</span> <span class="cn">NA</span></span>
+<span id="cb28-4"><a href="tipovi.html#cb28-4" tabindex="-1"></a><span class="dv">5</span> <span class="sc">+</span> <span class="cn">NULL</span></span>
+<span id="cb28-5"><a href="tipovi.html#cb28-5" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="tipovi.html#cb28-6" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="tipovi.html#cb28-7" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;-----------</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb28-8"><a href="tipovi.html#cb28-8" tabindex="-1"></a></span>
+<span id="cb28-9"><a href="tipovi.html#cb28-9" tabindex="-1"></a><span class="co"># provjerite klase sljedećih konstanti i izraza i objasnite rezultat:</span></span>
+<span id="cb28-10"><a href="tipovi.html#cb28-10" tabindex="-1"></a>   <span class="co">#  NA</span></span>
+<span id="cb28-11"><a href="tipovi.html#cb28-11" tabindex="-1"></a>   <span class="co">#  aritmetička operacija između numeric i NA</span></span>
+<span id="cb28-12"><a href="tipovi.html#cb28-12" tabindex="-1"></a>   <span class="co">#  NaN</span></span>
+<span id="cb28-13"><a href="tipovi.html#cb28-13" tabindex="-1"></a>   <span class="co">#  NULL</span></span>
+<span id="cb28-14"><a href="tipovi.html#cb28-14" tabindex="-1"></a><span class="fu">class</span>(<span class="cn">NA</span>)        <span class="co"># logički tip je &quot;najslabiji&quot;!</span></span>
+<span id="cb28-15"><a href="tipovi.html#cb28-15" tabindex="-1"></a><span class="fu">class</span>(<span class="dv">5</span> <span class="sc">+</span> <span class="cn">NA</span>)</span>
+<span id="cb28-16"><a href="tipovi.html#cb28-16" tabindex="-1"></a><span class="fu">class</span>(<span class="cn">NaN</span>)</span>
+<span id="cb28-17"><a href="tipovi.html#cb28-17" tabindex="-1"></a><span class="fu">class</span>(<span class="cn">NULL</span>)</span></code></pre></div>
+<pre><code>## [1] NaN
+## [1] NA
+## numeric(0)
+## -----------
+## [1] &quot;logical&quot;
+## [1] &quot;numeric&quot;
+## [1] &quot;numeric&quot;
+## [1] &quot;NULL&quot;</code></pre>
+</div>
+<hr />
+<!-- SLIDE_REMOVE -->
+<p>Objasnimo što znači izraz <code>numeric(0)</code> - ovo je R-ov način izjave da je rezultat “prazan numerički vektor”, a nastaje kada u izrazu koristimo element koji formalno ne postoji.</p>
+<!-- SLIDE_REMOVE -->
+<!-- SLIDE_REMOVE -->
+<p>Za kraj, napomenimo da moramo biti posebno oprezni da ne ugrađujemo nepostojeće ili nepoznate elemente u<code>if</code> izjave, budući da će rezultat biti ili prazan logički element ili nedostajuća logička vrijednost, nijedna od kojih nema istinonosnu vrijednost te će uzrokovati grešku.</p>
+<!-- SLIDE_REMOVE -->
+<!-- ## Oprez kod nedostajućih vrijednosti i uvjetnog izvođenja! -->
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="tipovi.html#cb30-1" tabindex="-1"></a><span class="cf">if</span> (<span class="cn">NA</span> <span class="sc">&lt;</span> <span class="dv">2</span>) <span class="fu">print</span>(<span class="st">&quot;Uspjeh!&quot;</span>)  <span class="co"># error: missing value where TRUE/FALSE needed</span></span>
+<span id="cb30-2"><a href="tipovi.html#cb30-2" tabindex="-1"></a><span class="cf">if</span> (<span class="cn">NULL</span> <span class="sc">+</span> <span class="dv">5</span>) <span class="fu">print</span>(<span class="st">&quot;Uspjeh!&quot;</span>)  <span class="co"># error: argument is of length zero</span></span></code></pre></div>
+</div>
+<div id="vektori" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Vektori<a href="tipovi.html#vektori" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Vektor je jedan od “složenih” tipova podataka u jeziku R, u smislu da sadržava više vrijednosti istog tipa. On je kao takav sličan pojmu “polja” u jeziku C. No ovdje postoji jedna bitna razlika, koju je nužno usvojiti budući da se radi o jednoj od najvažnijih karakteristika jezika R - u R-u je (gotovo) svaki tip varijable zapravo vektor. Čak i varijable i konstante koje smo koristili u prethodnoj lekciji su zapravo bili jednoelementni vektori. Ovo ima dalekosežne posljedice o kojima ćemo detaljno raspravljati u nastavku, a za početak se prvo upoznajmo sa sintaksom stvaranja i upravljanja vektorima.</p>
+<div id="stvaranje-vektora" class="section level3 hasAnchor" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Stvaranje vektora<a href="tipovi.html#stvaranje-vektora" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Novi vektor (koji ima više od jednog elementa) stvaramo uz pomoć funkcije <code>c</code> (od engl. <em>combine</em>).</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="tipovi.html#cb31-1" tabindex="-1"></a><span class="co"># numerički vektor</span></span>
+<span id="cb31-2"><a href="tipovi.html#cb31-2" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)  </span>
+<span id="cb31-3"><a href="tipovi.html#cb31-3" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="tipovi.html#cb31-4" tabindex="-1"></a><span class="co"># logički vektor</span></span>
+<span id="cb31-5"><a href="tipovi.html#cb31-5" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">c</span>(T, F, T)</span>
+<span id="cb31-6"><a href="tipovi.html#cb31-6" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="tipovi.html#cb31-7" tabindex="-1"></a><span class="co"># znakovni vektor</span></span>
+<span id="cb31-8"><a href="tipovi.html#cb31-8" tabindex="-1"></a>imena <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Ivo&quot;</span>, <span class="st">&quot;Pero&quot;</span>, <span class="st">&quot;Ana&quot;</span>)</span></code></pre></div>
+<p>Dakle, jednostavno rečeno, <strong>vektor je uređeni skup elemenata istog tipa</strong>. Ovo konkretno znači da svi elementi vektora <strong>moraju biti istog tipa</strong>. Ako stvaramo novi vektor sa elementima različitih tipova podataka, R će sve elemente automatski pretvoriti u “najjači” tip, što će na kraju postati i tip samog vektora (termin “jači” tip u ovom kontekstu označavaju mogućnost tipa da pohrani svu informaciju “pohranjenu u slabiji” tip, a u općenitom slučaju pretvorba ide u smjeru <em>logički -&gt; numerički -&gt; znakovni</em> tip).</p>
+<hr />
+<p><strong>Zadatak 2.6 - stvaranje vektora</strong></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="tipovi.html#cb32-1" tabindex="-1"></a><span class="co"># stvorite novi vektor `x` sa četiri proizvoljna elementa sljedećih tipova: </span></span>
+<span id="cb32-2"><a href="tipovi.html#cb32-2" tabindex="-1"></a><span class="co">#  logički, realni, znakovni i cjelobrojni</span></span>
+<span id="cb32-3"><a href="tipovi.html#cb32-3" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="tipovi.html#cb32-4" tabindex="-1"></a><span class="co"># ispišite na zaslon sadržaj vektora i njegovu klasu</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="tipovi.html#cb33-1" tabindex="-1"></a><span class="co"># stvorite novi vektor `x` sa četiri proizvoljna elementa sljedećih tipova: </span></span>
+<span id="cb33-2"><a href="tipovi.html#cb33-2" tabindex="-1"></a><span class="co">#  logički, realni, znakovni i cjelobrojni</span></span>
+<span id="cb33-3"><a href="tipovi.html#cb33-3" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(T, <span class="fl">1.25</span>, <span class="st">&quot;Ivo&quot;</span>, <span class="dv">10</span><span class="dt">L</span>)</span>
+<span id="cb33-4"><a href="tipovi.html#cb33-4" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="tipovi.html#cb33-5" tabindex="-1"></a><span class="co"># ispišite na zaslon sadržaj vektora i njegovu klasu</span></span>
+<span id="cb33-6"><a href="tipovi.html#cb33-6" tabindex="-1"></a>x</span>
+<span id="cb33-7"><a href="tipovi.html#cb33-7" tabindex="-1"></a><span class="fu">class</span>(x)</span></code></pre></div>
+<pre><code>## [1] &quot;TRUE&quot; &quot;1.25&quot; &quot;Ivo&quot;  &quot;10&quot;  
+## [1] &quot;character&quot;</code></pre>
+</div>
+<hr />
+<!-- ## Pretvorba tipa vektora i spajanje vektora -->
+<p>Vektor možemo eksplicitno pretvoriti u drugi tip uz pomoć već upoznatih funkcija <code>as.&lt;naziv_tipa&gt;</code>. Ukoliko je pretvorbu nemoguće provesti element će biti pretvoren u <code>NA</code> uz prikladno upozorenje.</p>
+<p>Funkcijom <code>c</code> možemo također i više vektora spojiti u jedan:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="tipovi.html#cb35-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb35-2"><a href="tipovi.html#cb35-2" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>)</span>
+<span id="cb35-3"><a href="tipovi.html#cb35-3" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>)   <span class="co"># varijablu smijemo nazvati &quot;c&quot; usprkos tome što postoji funkcija c()</span></span>
+<span id="cb35-4"><a href="tipovi.html#cb35-4" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="tipovi.html#cb35-5" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">c</span>(a, b, c)   <span class="co"># d je sada c(1, 2, 3, 4, 5, 6, 7, 8)</span></span></code></pre></div>
+<hr />
+<!-- ## Pomoćne funkcije -->
+<p>Pored funkcije <code>c</code>, R nudi i dodatne pogodne načine stvaranja novih vektora:</p>
+<ul>
+<li><code>:</code> - operator “raspona” (engl. <em>range</em>), pri čemu dajemo raspon od gornje do donje granice, obje uključive</li>
+<li><code>seq</code> - funkcija sekvence (engl. <em>sequence</em>), radi slično operatoru raspona, ali s dodatnim mogućnostima</li>
+<li><code>rep</code> - funkcija repliciranja (engl. <em>replicate</em>), ponavlja zadane elemente zadani broj puta</li>
+</ul>
+<hr />
+<p><strong>Zadatak 2.7 - pomoćne funkcije za stvaranje vektora</strong></p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="tipovi.html#cb36-1" tabindex="-1"></a><span class="co"># ispišite rezultate sljedećih naredbi</span></span>
+<span id="cb36-2"><a href="tipovi.html#cb36-2" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="tipovi.html#cb36-3" tabindex="-1"></a><span class="co"># 1:5</span></span>
+<span id="cb36-4"><a href="tipovi.html#cb36-4" tabindex="-1"></a><span class="co"># rep(c(1, 2, 3), times = 3)</span></span>
+<span id="cb36-5"><a href="tipovi.html#cb36-5" tabindex="-1"></a><span class="co"># rep(c(1, 2, 3), each = 3)</span></span>
+<span id="cb36-6"><a href="tipovi.html#cb36-6" tabindex="-1"></a><span class="co"># seq(1, 5, by = 0.5)</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="tipovi.html#cb37-1" tabindex="-1"></a><span class="co"># ispišite rezultate sljedećih naredbi</span></span>
+<span id="cb37-2"><a href="tipovi.html#cb37-2" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="tipovi.html#cb37-3" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
+<span id="cb37-4"><a href="tipovi.html#cb37-4" tabindex="-1"></a><span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">times =</span> <span class="dv">3</span>)</span>
+<span id="cb37-5"><a href="tipovi.html#cb37-5" tabindex="-1"></a><span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">each =</span> <span class="dv">3</span>)</span>
+<span id="cb37-6"><a href="tipovi.html#cb37-6" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="at">by =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<pre><code>## [1] 1 2 3 4 5
+## [1] 1 2 3 1 2 3 1 2 3
+## [1] 1 1 1 2 2 2 3 3 3
+## [1] 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5 5.0</code></pre>
+</div>
+<hr />
+<!-- ## Stvaranje "praznih" vektora -->
+<p>Vektore možemo stvoriti i uz pomoć funkcija koje odgovaraju imenima tipova vektora (<code>numeric</code>, <code>character</code> i sl.) pri čemu kao parametar navodimo željenu duljinu vektora. Ovo često radimo kao “pripremu” vektora za naknadno punjenje stvarnim vrijednostima, tj. svojevrsnu rezervaciju mjesta u radnoj memoriji. Ono što je interesantno jest činjenica da možemo stvoriti i “prazan” vektor određenog tipa koji je i dalje vektor, samo sa duljinom nula (a kojem npr. uz pomoć funkcije <code>c</code> možemo naknadno dodavati elemente).</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="tipovi.html#cb39-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">2</span>)         <span class="co"># vektor se puni &quot;nultim&quot; elementima, u ovom slučaju (0, 0)</span></span>
+<span id="cb39-2"><a href="tipovi.html#cb39-2" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">character</span>(<span class="dv">5</span>)</span>
+<span id="cb39-3"><a href="tipovi.html#cb39-3" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">integer</span>(<span class="dv">0</span>)         <span class="co"># &quot;prazan&quot; vektor!</span></span>
+<span id="cb39-4"><a href="tipovi.html#cb39-4" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(z, <span class="dv">1</span>)            <span class="co"># dodaj vektoru element 1 (zapravo &quot;spoji prazan vektor i element 1&quot;)</span></span></code></pre></div>
+<!-- ## Operator `%in%` -->
+<p>Konačno, provjeru da li neki vektor sadrži određeni element možemo napraviti uz pomoć operatora <code>%in%</code>:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="tipovi.html#cb40-1" tabindex="-1"></a><span class="dv">4</span> <span class="sc">%in%</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">2</span>)     <span class="co"># vraća FALSE</span></span>
+<span id="cb40-2"><a href="tipovi.html#cb40-2" tabindex="-1"></a><span class="st">&quot;d&quot;</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>)   <span class="co"># vraća TRUE</span></span></code></pre></div>
+<hr />
+</div>
+<div id="operator" class="section level3 hasAnchor" number="2.4.2">
+<h3><span class="header-section-number">2.4.2</span> Operator <code>[</code><a href="tipovi.html#operator" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Elementima vektora pristupamo preko indeksnog operatora <code>[</code>, uz pomoć kojeg možemo i mijenjati elemente vektora:</p>
+<div class="fold o">
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="tipovi.html#cb41-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>)</span>
+<span id="cb41-2"><a href="tipovi.html#cb41-2" tabindex="-1"></a>a[<span class="dv">1</span>]             <span class="co"># ispisuje vrijednost 2</span></span>
+<span id="cb41-3"><a href="tipovi.html#cb41-3" tabindex="-1"></a>a[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">5</span>        <span class="co"># element na 2. mjestu postaje 5</span></span>
+<span id="cb41-4"><a href="tipovi.html#cb41-4" tabindex="-1"></a>a[<span class="dv">5</span>] <span class="ot">&lt;-</span> <span class="dv">7</span>        <span class="co"># na 5. mjesto dodaje se 7, a &quot;rupa&quot; se popunjava sa NA</span></span>
+<span id="cb41-5"><a href="tipovi.html#cb41-5" tabindex="-1"></a>a</span></code></pre></div>
+<pre><code>## [1] 2
+## [1]  2  5  6 NA  7</code></pre>
+</div>
+<!-- SLIDE_REMOVE -->
+<p>Uočite jednu pomalo neuobičajenu činjenicu - <em>prvi element vektora u R-u ima indeks 1, a ne 0!</em> Ovo je bitna razlika u odnosu na referenciranje elemenata u drugim programskim jezicima. Razlog ove specifičnosti je jednostavan - R se primarno smatra jezikom za analizu podataka, poglavito u tabličnom obliku, a u praksi je puno lakše brojati retke ili stupce redoslijedom kako se pojavljuju u podatkovnom skupu nego raditi “posmak za 1”.</p>
+<p>Primjer gore zapravo prikazuje vrlo pojednostavljeni slučaj pristupanja elementima vektora i način njihove izmjene. Naime, jedna od specifičnosti jezika R je tzv. <em>vektoriziranost</em>, tj. princip da se u R-u vrlo često radi “više stvari odjednom” - ne toliko u smislu paralelnog izvršavanja, već u smislu zadavanja naredbi što želimo da se izvede. Konkretno, u slučaju referenciranja elemenata vektora vrlo rijetko dohvaćamo ili mijenjamo elemente jedan po jedan, već obuhvaćamo veći broj elemenata odjednom korištenjem principa <em>vektorizacije</em> i <em>recikliranja</em>. Razumijevanje ovih pojmova presudno je za svladavanje jezika R, tako da ćemo ih detaljno objasniti u nastavku.</p>
+<!-- SLIDE_REMOVE -->
+<hr />
+</div>
+<div id="principi-vektorizacije-i-recikliranja" class="section level3 hasAnchor" number="2.4.3">
+<h3><span class="header-section-number">2.4.3</span> Principi vektorizacije i recikliranja<a href="tipovi.html#principi-vektorizacije-i-recikliranja" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Pojam <em>vektorizacije</em> ili bolje rečeno <em>vektoriziranih operacija i funkcija</em> jednostavno znači da se operacije rade nad više elemenata odjednom. Ako zadamo R-u da radi neku operaciju ili funkciju nad nekim vektorom vrijednosti, R će funkciju ili operaciju izvesti nad svakim elementom posebno i vratiti rezultantni vektor kao rezultat. Isto tako, ako provodimo binarnu operaciju nad dva vektora, ona će se provesti nad “uparenim” ili “poravnatim” elementima obaju vektora (pretpostavimo za sada da su vektori jednake duljine).</p>
+<hr />
+<p><strong>Zadatak 2.8 - princip vektorizacije</strong></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="tipovi.html#cb43-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1</span>)</span>
+<span id="cb43-2"><a href="tipovi.html#cb43-2" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span></span>
+<span id="cb43-3"><a href="tipovi.html#cb43-3" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span></span>
+<span id="cb43-4"><a href="tipovi.html#cb43-4" tabindex="-1"></a></span>
+<span id="cb43-5"><a href="tipovi.html#cb43-5" tabindex="-1"></a></span>
+<span id="cb43-6"><a href="tipovi.html#cb43-6" tabindex="-1"></a><span class="co"># pozovite funkciju `abs` za računanje apsolutne vrijednosti</span></span>
+<span id="cb43-7"><a href="tipovi.html#cb43-7" tabindex="-1"></a><span class="co"># nad vektorom `x` i ispišite rezultat</span></span>
+<span id="cb43-8"><a href="tipovi.html#cb43-8" tabindex="-1"></a></span>
+<span id="cb43-9"><a href="tipovi.html#cb43-9" tabindex="-1"></a></span>
+<span id="cb43-10"><a href="tipovi.html#cb43-10" tabindex="-1"></a><span class="co"># zbrojite vektore `a` i `b` uz pomoć operatora `+`</span></span>
+<span id="cb43-11"><a href="tipovi.html#cb43-11" tabindex="-1"></a><span class="co"># i ispišite rezultat</span></span>
+<span id="cb43-12"><a href="tipovi.html#cb43-12" tabindex="-1"></a></span>
+<span id="cb43-13"><a href="tipovi.html#cb43-13" tabindex="-1"></a></span>
+<span id="cb43-14"><a href="tipovi.html#cb43-14" tabindex="-1"></a><span class="co"># pomnožite vektore `a` i `b` uz pomoć operatora `*`</span></span>
+<span id="cb43-15"><a href="tipovi.html#cb43-15" tabindex="-1"></a><span class="co"># i ispišite rezultat</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="tipovi.html#cb44-1" tabindex="-1"></a><span class="co"># pozovite funkciju `abs` za računanje apsolutne vrijednosti</span></span>
+<span id="cb44-2"><a href="tipovi.html#cb44-2" tabindex="-1"></a><span class="co"># nad vektorom `x` i ispišite rezultat</span></span>
+<span id="cb44-3"><a href="tipovi.html#cb44-3" tabindex="-1"></a><span class="fu">abs</span>(x)</span>
+<span id="cb44-4"><a href="tipovi.html#cb44-4" tabindex="-1"></a></span>
+<span id="cb44-5"><a href="tipovi.html#cb44-5" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;-----------</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb44-6"><a href="tipovi.html#cb44-6" tabindex="-1"></a></span>
+<span id="cb44-7"><a href="tipovi.html#cb44-7" tabindex="-1"></a><span class="co"># zbrojite vektore `a` i `b` uz pomoć operatora `+`</span></span>
+<span id="cb44-8"><a href="tipovi.html#cb44-8" tabindex="-1"></a><span class="co"># i ispišite rezultat</span></span>
+<span id="cb44-9"><a href="tipovi.html#cb44-9" tabindex="-1"></a>a <span class="sc">+</span> b</span>
+<span id="cb44-10"><a href="tipovi.html#cb44-10" tabindex="-1"></a></span>
+<span id="cb44-11"><a href="tipovi.html#cb44-11" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;-----------</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb44-12"><a href="tipovi.html#cb44-12" tabindex="-1"></a></span>
+<span id="cb44-13"><a href="tipovi.html#cb44-13" tabindex="-1"></a><span class="co"># pomnožite vektore `a` i `b` uz pomoć operatora `*`</span></span>
+<span id="cb44-14"><a href="tipovi.html#cb44-14" tabindex="-1"></a><span class="co"># i ispišite rezultat</span></span>
+<span id="cb44-15"><a href="tipovi.html#cb44-15" tabindex="-1"></a>a <span class="sc">*</span> b</span></code></pre></div>
+<pre><code>##  [1] 5 4 3 2 1 0 1 2 3 4 5
+## -----------
+## [1] 5 7 9
+## -----------
+## [1]  4 10 18</code></pre>
+</div>
+<hr />
+<!-- SLIDE_REMOVE -->
+<p>Pažljivo razmotrite rezultate prethodnog zadatka. Ukoliko je potrebno, skicirajte vektore <code>a</code> i <code>b</code> na papiru sa vertikalno poslaganim elementima i uočite kako radi paralelno “uparivanje” elemenata. Primijetite da ovdje ne pričamo o “vektorskim operacijama” u strogom matematičkom smislu, već o poravnavanju elemenata dvaju nizova i provođenja jednostavnih operacija nad svakim od tih parova. Ovo je pogotovo očito u zadnjem primjeru gdje nema nikakvog “množenja vektora” u nekoj od matematičkih interpretacija, već se provodi jednostavno množenje paralelnih elemenata dvaju vektora.
+<!-- SLIDE_REMOVE --></p>
+<p>Što ako vektori nisu jednake duljine? R u ovom slučaju koristi <em>princip recikliranja</em>.</p>
+<!-- ## Princip recikliranja -->
+<p><strong>Princip recikliranja</strong> navodi da se kod nejednake duljine vektora kraći vektor “reciklira” onoliko puta koliko je potrebno da se dostigne duljina duljeg vektora. Najčešći scenarij korištenja ovog principa su operacije u kojima je s jedne strane vektor s više elemenata a s druge strane jednoelementni vektor koji se onda reciklira za svaki element “velikog” vektora. Ono što bismo trebali izbjegavati jest scenarij recikliranja gdje duljina “velikog” vektora nije višekratnik duljine “malog” - R će i dalje reciklirati kraći vektor, samo će ga na kraju morati “odrezati” što će rezultirati odgovarajućim upozorenjem.</p>
+<hr />
+<p><strong>Zadatak 2.9 - princip recikliranja</strong></p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="tipovi.html#cb46-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span>
+<span id="cb46-2"><a href="tipovi.html#cb46-2" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb46-3"><a href="tipovi.html#cb46-3" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">5</span>, <span class="dv">3</span>)</span>
+<span id="cb46-4"><a href="tipovi.html#cb46-4" tabindex="-1"></a></span>
+<span id="cb46-5"><a href="tipovi.html#cb46-5" tabindex="-1"></a><span class="co"># udvostručite elemente vektora `a` i ispišite rezultat</span></span>
+<span id="cb46-6"><a href="tipovi.html#cb46-6" tabindex="-1"></a></span>
+<span id="cb46-7"><a href="tipovi.html#cb46-7" tabindex="-1"></a><span class="co"># podijelite vektor `a` vektorom `b` i ispišite rezultat</span></span>
+<span id="cb46-8"><a href="tipovi.html#cb46-8" tabindex="-1"></a></span>
+<span id="cb46-9"><a href="tipovi.html#cb46-9" tabindex="-1"></a><span class="co"># pomnožite vektore `a` i `c` i ispišite rezultat</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="tipovi.html#cb47-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span>
+<span id="cb47-2"><a href="tipovi.html#cb47-2" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb47-3"><a href="tipovi.html#cb47-3" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">5</span>, <span class="dv">3</span>)</span>
+<span id="cb47-4"><a href="tipovi.html#cb47-4" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="tipovi.html#cb47-5" tabindex="-1"></a><span class="co"># udvostručite elemente vektora `a` i ispišite rezultat</span></span>
+<span id="cb47-6"><a href="tipovi.html#cb47-6" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> a</span>
+<span id="cb47-7"><a href="tipovi.html#cb47-7" tabindex="-1"></a></span>
+<span id="cb47-8"><a href="tipovi.html#cb47-8" tabindex="-1"></a><span class="co"># podijelite vektor `a` vektorom `b` i ispišite rezultat</span></span>
+<span id="cb47-9"><a href="tipovi.html#cb47-9" tabindex="-1"></a>a <span class="sc">/</span> b</span>
+<span id="cb47-10"><a href="tipovi.html#cb47-10" tabindex="-1"></a></span>
+<span id="cb47-11"><a href="tipovi.html#cb47-11" tabindex="-1"></a><span class="co"># pomnožite vektore `a` i `c` i ispišite rezultat</span></span>
+<span id="cb47-12"><a href="tipovi.html#cb47-12" tabindex="-1"></a>a <span class="sc">*</span> c</span></code></pre></div>
+<pre><code>## Warning in a * c: longer object length is not a multiple of shorter object
+## length</code></pre>
+<pre><code>## [1] 2 4 6 8
+## [1] 1 1 3 2
+## [1]  5 10 15 20</code></pre>
+</div>
+<hr />
+<p>Sada konačno možemo demistificirati razliku između “skalarnih” i “vektorskih” logičkih operatora (podsjetimo se, skalarni su <code>||</code> i <code>&amp;&amp;</code>, dok su vektorski <code>|</code> i <code>&amp;</code>).</p>
+<!-- ## Skalarni i vektorski logički operatori -->
+<ul>
+<li><p><em>Skalarni</em> logički operatori namijenjeni su korištenju sa jednoelementnim vektorima, vraćaju jedinstvenu vrijednosti <code>TRUE</code> ili <code>FALSE</code> te su pogodni za korištenje raznim u uvjetnim izrazima.</p></li>
+<li><p><em>Vektorski</em> logički operatori koriste standardne R-ove principe vektorizacije i recikliranja, tj. namijenjeni su radu sa logičkim vektorima i kao rezultat daju logički vektor</p></li>
+</ul>
+<hr />
+<p><strong>Zadatak 2.10 - skalarni i vektorski logički operatori</strong></p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="tipovi.html#cb50-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">c</span>(T, F, F)</span>
+<span id="cb50-2"><a href="tipovi.html#cb50-2" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(T, T, F)</span>
+<span id="cb50-3"><a href="tipovi.html#cb50-3" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="tipovi.html#cb50-4" tabindex="-1"></a><span class="co"># primjenite skalarnu i vektorsku inačicu logičkog operatora &quot;ili&quot;</span></span>
+<span id="cb50-5"><a href="tipovi.html#cb50-5" tabindex="-1"></a><span class="co"># nad vektorima `a` i `b` i ispišite rezultat</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="tipovi.html#cb51-1" tabindex="-1"></a><span class="co"># pokušajte primjeniti skalarnu i vektorsku inačicu logičkog operatora &quot;ili&quot;</span></span>
+<span id="cb51-2"><a href="tipovi.html#cb51-2" tabindex="-1"></a><span class="co"># nad vektorima `a` i `b` i objasnite rezultat</span></span>
+<span id="cb51-3"><a href="tipovi.html#cb51-3" tabindex="-1"></a></span>
+<span id="cb51-4"><a href="tipovi.html#cb51-4" tabindex="-1"></a>a <span class="sc">||</span> b</span>
+<span id="cb51-5"><a href="tipovi.html#cb51-5" tabindex="-1"></a>a <span class="sc">|</span> b</span></code></pre></div>
+</div>
+<!-- SLIDE_REMOVE -->
+<p>Vidimo da skalarna inačica rezultira greškom jer pokušavamo tročlani vektor interpretirati kao jedistvenu logičku vrijednost.</p>
+<hr />
+<p>Sljedeći primjer sa usporednim operatorima će možda inicijalno izgledati trivijalan, no potrebno je obratiti posebnu pažnju na rezultate koje ćemo dobiti budući da će oni imati vrlo važnu primjenu u nastavku lekcije. Dakle, pogledajmo što se događa kod vektorizacije usporednih operatora.
+<!-- SLIDE_REMOVE --></p>
+<hr />
+<p><strong>Zadatak 2.11 - vektorizacija usporednih operatora</strong></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="tipovi.html#cb52-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
+<span id="cb52-2"><a href="tipovi.html#cb52-2" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">5</span>)</span>
+<span id="cb52-3"><a href="tipovi.html#cb52-3" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="tipovi.html#cb52-4" tabindex="-1"></a><span class="co">#ispišite x i y</span></span>
+<span id="cb52-5"><a href="tipovi.html#cb52-5" tabindex="-1"></a></span>
+<span id="cb52-6"><a href="tipovi.html#cb52-6" tabindex="-1"></a><span class="co">#ispišite rezultat naredbe x &gt; y i objasnite rezultat</span></span>
+<span id="cb52-7"><a href="tipovi.html#cb52-7" tabindex="-1"></a></span>
+<span id="cb52-8"><a href="tipovi.html#cb52-8" tabindex="-1"></a><span class="co">#ispišite rezultat naredbe x &lt; 3 i objasnite rezultat</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="tipovi.html#cb53-1" tabindex="-1"></a><span class="co">#ispišite x i y</span></span>
+<span id="cb53-2"><a href="tipovi.html#cb53-2" tabindex="-1"></a>x</span>
+<span id="cb53-3"><a href="tipovi.html#cb53-3" tabindex="-1"></a>y</span>
+<span id="cb53-4"><a href="tipovi.html#cb53-4" tabindex="-1"></a></span>
+<span id="cb53-5"><a href="tipovi.html#cb53-5" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;-----------</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb53-6"><a href="tipovi.html#cb53-6" tabindex="-1"></a></span>
+<span id="cb53-7"><a href="tipovi.html#cb53-7" tabindex="-1"></a></span>
+<span id="cb53-8"><a href="tipovi.html#cb53-8" tabindex="-1"></a><span class="co">#ispišite rezultat naredbe x &gt; y i objasnite rezultat</span></span>
+<span id="cb53-9"><a href="tipovi.html#cb53-9" tabindex="-1"></a>x <span class="sc">&gt;</span> y</span>
+<span id="cb53-10"><a href="tipovi.html#cb53-10" tabindex="-1"></a></span>
+<span id="cb53-11"><a href="tipovi.html#cb53-11" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;-----------</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb53-12"><a href="tipovi.html#cb53-12" tabindex="-1"></a></span>
+<span id="cb53-13"><a href="tipovi.html#cb53-13" tabindex="-1"></a><span class="co">#ispišite rezultat naredbe x &lt; 3 i objasnite rezultat</span></span>
+<span id="cb53-14"><a href="tipovi.html#cb53-14" tabindex="-1"></a>x <span class="sc">&lt;</span> <span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] 1 2 3 4 5
+## [1] -10  -5   0   5  10
+## -----------
+## [1]  TRUE  TRUE  TRUE FALSE FALSE
+## -----------
+## [1]  TRUE  TRUE FALSE FALSE FALSE</code></pre>
+</div>
+<hr />
+<!-- SLIDE_REMOVE -->
+<p>Dakle vektoriziranom primjenom usporednih operatora nad vektorima (ili kombinacijama vektora i “skalara”) kao rezultat dobivamo logičke vektore. Interpretacija ovih rezultata je ključna - ona zapravo odgovara na pitanje “na kojim indeksima je zadovoljen uvjet zadan ovim izrazom”? Drugim riječima, dobiveni rezultati zapravo predstavljaju predložak koji opisuje kako filtrirati elemente prema zadanom principu. Ovo je osnovni temelj tzv. <em>logičkog referenciranja</em>, što je jedna od metoda dohvaćanja elemenata vektora koje ćemo upoznati u nastavku.
+<!-- SLIDE_REMOVE --></p>
+<hr />
+</div>
+</div>
+<div id="indeksni-vektori" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Indeksni vektori<a href="tipovi.html#indeksni-vektori" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Već smo naučili da elementu polja možemo pristupiti preko numeričkog indeksa (a nismo zaboravili ni činjenicu da prvi element ima indeks 1). Ovaj koncept možemo proširiti tako da iz vektora uzimamo više elemenata odjednom. što se često naziva “rezanjem” vektora (engl. <em>slicing</em>).</p>
+<p>Osnovni princip odabira više elemenata odjednom je jednostavan - samo moramo na određeni način navesti indekse elemenata koje želimo. R nudi tri osnovna načina referenciranja:</p>
+<ul>
+<li>lokacijsko referenciranje (engl. <em>integer- or location-based referencing</em>)</li>
+<li>uvjetno referenciranje (engl. <em>conditional- or boolean-based referencing</em>)</li>
+<li>imensko referenciranje (engl. <em>label-based referencing</em>)</li>
+</ul>
+<p>Koje referenciranje ćemo odabrati ovisi o tome želimo li elementima pristupati ovisno o njihovoj lokaciji, imenu ili prema zadanom uvjetu, a svaki tip referenciranja u suštini se svodi na korištenje vektora određenog tipa kao parametra za operator referenciranja. Ovakav vektor se zbog svoje uloge naziva “indeksnim vektorom”.</p>
+<!-- SLIDE_REMOVE -->
+<p>Upoznajmo detaljno svaki od tipova referenciranja.</p>
+<hr />
+<!-- SLIDE_REMOVE -->
+<div id="lokacijsko-referenciranje" class="section level3 hasAnchor" number="2.5.1">
+<h3><span class="header-section-number">2.5.1</span> Lokacijsko referenciranje<a href="tipovi.html#lokacijsko-referenciranje" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><em>Lokacijsko referenciranje</em> je poopćenje već upoznatog principa referenciranja gdje navodimo redni broj elementa koji nas zanima. Ako želimo više elemenata, jednostavno navedemo njihove indekse “zapakirane” u numerički vektor.</p>
+<p>Pokušajte riješiti sljedeći zadatak korištenjem odgovarajućih numeričkih vektora kao parametara indeksnog operatora.</p>
+<hr />
+<p><strong>Zadatak 2.12 - lokacijsko referenciranje</strong></p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="tipovi.html#cb55-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb55-2"><a href="tipovi.html#cb55-2" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="tipovi.html#cb55-3" tabindex="-1"></a><span class="co"># ispišite prvi element vektora x</span></span>
+<span id="cb55-4"><a href="tipovi.html#cb55-4" tabindex="-1"></a></span>
+<span id="cb55-5"><a href="tipovi.html#cb55-5" tabindex="-1"></a><span class="co"># ispišite prva tri elementa vektora x</span></span>
+<span id="cb55-6"><a href="tipovi.html#cb55-6" tabindex="-1"></a></span>
+<span id="cb55-7"><a href="tipovi.html#cb55-7" tabindex="-1"></a><span class="co"># ispišite prvi, peti i sedmi element vektora x</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="tipovi.html#cb56-1" tabindex="-1"></a><span class="co"># ispišite prvi element vektora x</span></span>
+<span id="cb56-2"><a href="tipovi.html#cb56-2" tabindex="-1"></a>x[<span class="dv">1</span>]</span>
+<span id="cb56-3"><a href="tipovi.html#cb56-3" tabindex="-1"></a></span>
+<span id="cb56-4"><a href="tipovi.html#cb56-4" tabindex="-1"></a><span class="co"># ispišite prva tri elementa vektora x</span></span>
+<span id="cb56-5"><a href="tipovi.html#cb56-5" tabindex="-1"></a>x[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb56-6"><a href="tipovi.html#cb56-6" tabindex="-1"></a></span>
+<span id="cb56-7"><a href="tipovi.html#cb56-7" tabindex="-1"></a><span class="co"># ispišite prvi, peti i sedmi element vektora x</span></span>
+<span id="cb56-8"><a href="tipovi.html#cb56-8" tabindex="-1"></a>x[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">7</span>)]</span></code></pre></div>
+<pre><code>## [1] 1
+## [1] 1 2 3
+## [1] 1 5 7</code></pre>
+</div>
+<hr />
+<!-- SLIDE_REMOVE -->
+<p>Dakle, lokacijski indeksni vektor nije ništa drugo nego običan numerički vektor kojeg koristimo zajedno sa indeksnim operatorom da bi odredili koje elemente nekog drugog vektora želimo “zadržati”.</p>
+<p>Pogledajmo još neke značajke lokacijskih indeksnih vektora:
+<!-- SLIDE_REMOVE -->
+***</p>
+<p><strong>Zadatak 2.13 - lokacijsko referenciranje (2)</strong></p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="tipovi.html#cb58-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb58-2"><a href="tipovi.html#cb58-2" tabindex="-1"></a></span>
+<span id="cb58-3"><a href="tipovi.html#cb58-3" tabindex="-1"></a><span class="co"># odgovorite na sljedeća pitanja uz pomoć prikladnog primjera</span></span>
+<span id="cb58-4"><a href="tipovi.html#cb58-4" tabindex="-1"></a></span>
+<span id="cb58-5"><a href="tipovi.html#cb58-5" tabindex="-1"></a><span class="co"># što vraća indeks 0? </span></span>
+<span id="cb58-6"><a href="tipovi.html#cb58-6" tabindex="-1"></a></span>
+<span id="cb58-7"><a href="tipovi.html#cb58-7" tabindex="-1"></a><span class="co"># što vraća negativni indeks? </span></span>
+<span id="cb58-8"><a href="tipovi.html#cb58-8" tabindex="-1"></a></span>
+<span id="cb58-9"><a href="tipovi.html#cb58-9" tabindex="-1"></a><span class="co"># što vraća indeks izvan granica duljine vektora</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="tipovi.html#cb59-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb59-2"><a href="tipovi.html#cb59-2" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="tipovi.html#cb59-3" tabindex="-1"></a><span class="co"># odgovorite na sljedeća pitanja uz pomoć prikladnog primjera</span></span>
+<span id="cb59-4"><a href="tipovi.html#cb59-4" tabindex="-1"></a></span>
+<span id="cb59-5"><a href="tipovi.html#cb59-5" tabindex="-1"></a><span class="co"># što vraća indeks 0? </span></span>
+<span id="cb59-6"><a href="tipovi.html#cb59-6" tabindex="-1"></a>x[<span class="dv">0</span>]</span>
+<span id="cb59-7"><a href="tipovi.html#cb59-7" tabindex="-1"></a></span>
+<span id="cb59-8"><a href="tipovi.html#cb59-8" tabindex="-1"></a><span class="co"># što vraća negativni indeks? </span></span>
+<span id="cb59-9"><a href="tipovi.html#cb59-9" tabindex="-1"></a>x[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb59-10"><a href="tipovi.html#cb59-10" tabindex="-1"></a></span>
+<span id="cb59-11"><a href="tipovi.html#cb59-11" tabindex="-1"></a><span class="co"># što vraća indeks izvan granica duljine vektora</span></span>
+<span id="cb59-12"><a href="tipovi.html#cb59-12" tabindex="-1"></a>x[<span class="dv">20</span>]</span></code></pre></div>
+<pre><code>## integer(0)
+## [1]  2  3  4  5  6  7  8  9 10
+## [1] NA</code></pre>
+</div>
+<hr />
+<!-- SLIDE_REMOVE -->
+<p>Indeksni operator se ne koristi samo za dohvaćanje elemenata. Kombinacijom indeksnog operatora i operatora pridruživanja možemo mijenjati elemente vektora (i to također po principu “više elemenata odjednom”:
+<!-- SLIDE_REMOVE --></p>
+<hr />
+<p><strong>Zadatak 2.14 - lokacijsko referenciranje i pridruživanje</strong></p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="tipovi.html#cb61-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb61-2"><a href="tipovi.html#cb61-2" tabindex="-1"></a></span>
+<span id="cb61-3"><a href="tipovi.html#cb61-3" tabindex="-1"></a><span class="co"># postavite sve elemente vektora `a` od drugog do osmog mjesta na nulu </span></span>
+<span id="cb61-4"><a href="tipovi.html#cb61-4" tabindex="-1"></a><span class="co"># ispišite vektor `a`</span></span>
+<span id="cb61-5"><a href="tipovi.html#cb61-5" tabindex="-1"></a></span>
+<span id="cb61-6"><a href="tipovi.html#cb61-6" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span></span>
+<span id="cb61-7"><a href="tipovi.html#cb61-7" tabindex="-1"></a>b[<span class="dv">2</span> <span class="sc">*</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb61-8"><a href="tipovi.html#cb61-8" tabindex="-1"></a></span>
+<span id="cb61-9"><a href="tipovi.html#cb61-9" tabindex="-1"></a><span class="co"># razmislite kako izgleda vektor `b` nakon gornje naredbe</span></span>
+<span id="cb61-10"><a href="tipovi.html#cb61-10" tabindex="-1"></a><span class="co"># ispišite vektor `b` i objasnite rezultat</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="tipovi.html#cb62-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb62-2"><a href="tipovi.html#cb62-2" tabindex="-1"></a></span>
+<span id="cb62-3"><a href="tipovi.html#cb62-3" tabindex="-1"></a><span class="co"># postavite sve elemente vektora `a` od drugog do osmog mjesta na nulu </span></span>
+<span id="cb62-4"><a href="tipovi.html#cb62-4" tabindex="-1"></a><span class="co"># ispišite vektor `a`</span></span>
+<span id="cb62-5"><a href="tipovi.html#cb62-5" tabindex="-1"></a>a[<span class="dv">2</span><span class="sc">:</span><span class="dv">8</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb62-6"><a href="tipovi.html#cb62-6" tabindex="-1"></a>a</span>
+<span id="cb62-7"><a href="tipovi.html#cb62-7" tabindex="-1"></a></span>
+<span id="cb62-8"><a href="tipovi.html#cb62-8" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span></span>
+<span id="cb62-9"><a href="tipovi.html#cb62-9" tabindex="-1"></a>b[<span class="dv">2</span> <span class="sc">*</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb62-10"><a href="tipovi.html#cb62-10" tabindex="-1"></a></span>
+<span id="cb62-11"><a href="tipovi.html#cb62-11" tabindex="-1"></a><span class="co"># razmislite kako izgleda vektor `b` nakon gornje naredbe</span></span>
+<span id="cb62-12"><a href="tipovi.html#cb62-12" tabindex="-1"></a><span class="co"># ispišite vektor `b` i objasnite rezultat</span></span>
+<span id="cb62-13"><a href="tipovi.html#cb62-13" tabindex="-1"></a>b</span></code></pre></div>
+<pre><code>##  [1]  1  0  0  0  0  0  0  0  9 10
+##  [1]  1 NA  3 NA  5 NA  7 NA  9 NA 11 12 13 14 15 16 17 18 19 20</code></pre>
+</div>
+<hr />
+</div>
+<div id="uvjetno-referenciranje" class="section level3 hasAnchor" number="2.5.2">
+<h3><span class="header-section-number">2.5.2</span> Uvjetno referenciranje<a href="tipovi.html#uvjetno-referenciranje" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Ako smo pažljivo razmotrili rezultate dobivene kod primjera sa vektoriziranim usporednim operatorima onda smo mogli vrlo dobro naslutiti kako radi <em>uvjetno referenciranje</em>. Princip je jednostavan - za indeksni vektor postavljamo logički vektor iste duljine kao i vektor čije elemente želimo dohvatiti. Elementi logičkog vektora određuju koje elemente zadržavamo (pozicije gdje se nalazi vrijednost <code>TRUE</code>) a koje odbacujemo (pozicije gdje se nalazi vrijednost <code>FALSE</code>).</p>
+<hr />
+<p><strong>Zadatak 2.15 - uvjetno referenciranje</strong></p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="tipovi.html#cb64-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb64-2"><a href="tipovi.html#cb64-2" tabindex="-1"></a></span>
+<span id="cb64-3"><a href="tipovi.html#cb64-3" tabindex="-1"></a><span class="co"># napravite logički vektor `y` duljine 10 sa proizvoljnom kombinacijom</span></span>
+<span id="cb64-4"><a href="tipovi.html#cb64-4" tabindex="-1"></a><span class="co"># vrijednosti TRUE i FALSE</span></span>
+<span id="cb64-5"><a href="tipovi.html#cb64-5" tabindex="-1"></a></span>
+<span id="cb64-6"><a href="tipovi.html#cb64-6" tabindex="-1"></a><span class="co"># indeksirajte vektor `x` vektorom `y`, ispišite i objasnite rezultat</span></span>
+<span id="cb64-7"><a href="tipovi.html#cb64-7" tabindex="-1"></a></span>
+<span id="cb64-8"><a href="tipovi.html#cb64-8" tabindex="-1"></a></span>
+<span id="cb64-9"><a href="tipovi.html#cb64-9" tabindex="-1"></a><span class="co"># ispišite sve elemente vektora `x` manje ili jednake 5</span></span>
+<span id="cb64-10"><a href="tipovi.html#cb64-10" tabindex="-1"></a><span class="co"># kao logički indeksni vektor upotrijebite odgovarajući izraz</span></span>
+<span id="cb64-11"><a href="tipovi.html#cb64-11" tabindex="-1"></a><span class="co"># koji koristi usporedni operator</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="tipovi.html#cb65-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb65-2"><a href="tipovi.html#cb65-2" tabindex="-1"></a></span>
+<span id="cb65-3"><a href="tipovi.html#cb65-3" tabindex="-1"></a><span class="co"># napravite logički vektor `y` duljine 10 sa proizvoljnom kombinacijom</span></span>
+<span id="cb65-4"><a href="tipovi.html#cb65-4" tabindex="-1"></a><span class="co"># vrijednosti TRUE i FALSE</span></span>
+<span id="cb65-5"><a href="tipovi.html#cb65-5" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(T, T, F, T, F, F, F, T, F, T)</span>
+<span id="cb65-6"><a href="tipovi.html#cb65-6" tabindex="-1"></a></span>
+<span id="cb65-7"><a href="tipovi.html#cb65-7" tabindex="-1"></a><span class="co"># indeksirajte vektor `x` vektorom `y`, ispišite i objasnite rezultat</span></span>
+<span id="cb65-8"><a href="tipovi.html#cb65-8" tabindex="-1"></a>x[y]</span>
+<span id="cb65-9"><a href="tipovi.html#cb65-9" tabindex="-1"></a></span>
+<span id="cb65-10"><a href="tipovi.html#cb65-10" tabindex="-1"></a><span class="co"># ispišite sve elemente vektora `x` manje ili jednake 5</span></span>
+<span id="cb65-11"><a href="tipovi.html#cb65-11" tabindex="-1"></a><span class="co"># kao logički indeksni vektor upotrijebite odgovarajući izraz</span></span>
+<span id="cb65-12"><a href="tipovi.html#cb65-12" tabindex="-1"></a><span class="co"># koji koristi usporedni operator</span></span>
+<span id="cb65-13"><a href="tipovi.html#cb65-13" tabindex="-1"></a>x[x <span class="sc">&lt;=</span> <span class="dv">5</span>]</span></code></pre></div>
+<pre><code>## [1]  1  2  4  8 10
+## [1] 1 2 3 4 5</code></pre>
+</div>
+<hr />
+<!-- SLIDE_REMOVE -->
+<p>Zadnja naredba, naoko jednostavna, predstavlja jedan od ključnih principa odabira elemenata u jeziku R. Kombinacija indeksnog operatora i uvjetnog izraza predstavlja sažet ali vrlo moćan mehanizam rezanja vektora prema odabranom kriteriju.</p>
+<p>Isprobajmo ovaj princip na još nekoliko primjera.</p>
+<!-- SLIDE_REMOVE -->
+<hr />
+<p><strong>Zadatak 2.16 - uvjetno referenciranje</strong></p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="tipovi.html#cb67-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">20</span>) <span class="co"># nasumicni odabir 20 elemenata izmedju 1 i 100</span></span>
+<span id="cb67-2"><a href="tipovi.html#cb67-2" tabindex="-1"></a>studenti <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Ivo&quot;</span>, <span class="st">&quot;Petra&quot;</span>, <span class="st">&quot;Marijana&quot;</span>, <span class="st">&quot;Ana&quot;</span>, <span class="st">&quot;Tomislav&quot;</span>, <span class="st">&quot;Tin&quot;</span>)</span>
+<span id="cb67-3"><a href="tipovi.html#cb67-3" tabindex="-1"></a></span>
+<span id="cb67-4"><a href="tipovi.html#cb67-4" tabindex="-1"></a><span class="co"># ispišite vektor koji sadrži sve parne, a potom sve neparne elemente vektora `y`</span></span>
+<span id="cb67-5"><a href="tipovi.html#cb67-5" tabindex="-1"></a></span>
+<span id="cb67-6"><a href="tipovi.html#cb67-6" tabindex="-1"></a><span class="co"># ispišite sve elemente vektora `studenti` koji predstavljaju imena od 3 slova</span></span>
+<span id="cb67-7"><a href="tipovi.html#cb67-7" tabindex="-1"></a><span class="co"># (napomena: za prebrojavanje slova znakovnog niza u R-u koristimo funkciju `nchar`)</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="tipovi.html#cb68-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">100</span>, <span class="dv">7</span>)</span>
+<span id="cb68-2"><a href="tipovi.html#cb68-2" tabindex="-1"></a>studenti <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Ivo&quot;</span>, <span class="st">&quot;Petra&quot;</span>, <span class="st">&quot;Marijana&quot;</span>, <span class="st">&quot;Ana&quot;</span>, <span class="st">&quot;Tomislav&quot;</span>, <span class="st">&quot;Tin&quot;</span>)</span>
+<span id="cb68-3"><a href="tipovi.html#cb68-3" tabindex="-1"></a></span>
+<span id="cb68-4"><a href="tipovi.html#cb68-4" tabindex="-1"></a><span class="co"># ispišite vektor koji sadrži sve parne, a potom sve neparne elemente vektora `y`</span></span>
+<span id="cb68-5"><a href="tipovi.html#cb68-5" tabindex="-1"></a><span class="fu">c</span>(y[y <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>], y[y <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">!=</span> <span class="dv">0</span>])</span>
+<span id="cb68-6"><a href="tipovi.html#cb68-6" tabindex="-1"></a></span>
+<span id="cb68-7"><a href="tipovi.html#cb68-7" tabindex="-1"></a><span class="co"># ispišite sve elemente vektora `studenti` koji predstavljaju imena od 3 slova</span></span>
+<span id="cb68-8"><a href="tipovi.html#cb68-8" tabindex="-1"></a><span class="co"># (napomena: za prebrojavanje slova znakovnog niza u R-u koristimo funkciju `nchar`)</span></span>
+<span id="cb68-9"><a href="tipovi.html#cb68-9" tabindex="-1"></a>studenti[<span class="fu">nchar</span>(studenti) <span class="sc">==</span> <span class="dv">3</span>]</span></code></pre></div>
+<pre><code>##  [1]  8 22 36 50 64 78 92  1 15 29 43 57 71 85 99
+## [1] &quot;Ivo&quot; &quot;Ana&quot; &quot;Tin&quot;</code></pre>
+</div>
+<hr />
+<!-- SLIDE_REMOVE -->
+<p>Ukoliko koncept uvjetnog referenciranja uz pomoć uvjetnih izraza i dalje nije jasan, jedna od stvari koje mogu pomoći jest skiciranje “međurezultata” - jednostavno na papir ispišite rezultat izraza unutar uglatih zagrada indeksnog operatora i potom razmislite kako taj rezultat utječe na konačno rješenje.</p>
+<p>Preostao nam je još samo zadnji tip referenciranja koji radi na principu dohvaćanja elemenata vektora ovisno o njihovom imenu.
+<!-- SLIDE_REMOVE --></p>
+<hr />
+</div>
+<div id="imensko-referenciranje" class="section level3 hasAnchor" number="2.5.3">
+<h3><span class="header-section-number">2.5.3</span> Imensko referenciranje<a href="tipovi.html#imensko-referenciranje" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><em>Imensko referenciranje</em> radi na principu eksplicitnog imenovanja elemenata koje želimo “zadržati”. Da bi mogli koristiti ovakav tip referenciranja moramo zadovoljiti nužan preduvjet - elementi vektora moraju imati definirana “imena”.</p>
+<p>Vektori koje smo do sada koristili nisu imali imenovane elemente. Svaki element imao je svoju predefiniranu <em>poziciju</em> unutar vektora te svoju vrijednost, ali nije imao nikakav poseban dodatni identifikator. Programski jezik R dopušta pridavanje imena elementima vektora na vrlo jednostavan način - korištenjem funkcije <code>names</code>, operatora pridruživanja te znakovnog vektora sa odabranim imenima. Moramo voditi računa da vektor imena bude jednake duljine kao originalni vektor!</p>
+<hr />
+<p><strong>Zadatak 2.17 - imensko referenciranje</strong></p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="tipovi.html#cb70-1" tabindex="-1"></a>visine <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">165</span>, <span class="dv">173</span>, <span class="dv">185</span>, <span class="dv">174</span>, <span class="dv">190</span>)</span>
+<span id="cb70-2"><a href="tipovi.html#cb70-2" tabindex="-1"></a><span class="fu">names</span>(visine) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Marica&quot;</span>, <span class="st">&quot;Pero&quot;</span>, <span class="st">&quot;Josip&quot;</span>, <span class="st">&quot;Ivana&quot;</span>, <span class="st">&quot;Stipe&quot;</span>)</span>
+<span id="cb70-3"><a href="tipovi.html#cb70-3" tabindex="-1"></a></span>
+<span id="cb70-4"><a href="tipovi.html#cb70-4" tabindex="-1"></a><span class="co"># ispišite vektor `visine`</span></span>
+<span id="cb70-5"><a href="tipovi.html#cb70-5" tabindex="-1"></a></span>
+<span id="cb70-6"><a href="tipovi.html#cb70-6" tabindex="-1"></a></span>
+<span id="cb70-7"><a href="tipovi.html#cb70-7" tabindex="-1"></a><span class="co"># ispišite koliko su visoki Pero i Ivana</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="tipovi.html#cb71-1" tabindex="-1"></a>visine <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">165</span>, <span class="dv">173</span>, <span class="dv">185</span>, <span class="dv">174</span>, <span class="dv">190</span>)</span>
+<span id="cb71-2"><a href="tipovi.html#cb71-2" tabindex="-1"></a><span class="fu">names</span>(visine) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Marica&quot;</span>, <span class="st">&quot;Pero&quot;</span>, <span class="st">&quot;Josip&quot;</span>, <span class="st">&quot;Ivana&quot;</span>, <span class="st">&quot;Stipe&quot;</span>)</span>
+<span id="cb71-3"><a href="tipovi.html#cb71-3" tabindex="-1"></a></span>
+<span id="cb71-4"><a href="tipovi.html#cb71-4" tabindex="-1"></a><span class="co"># ispišite vektor `visine`</span></span>
+<span id="cb71-5"><a href="tipovi.html#cb71-5" tabindex="-1"></a>visine</span>
+<span id="cb71-6"><a href="tipovi.html#cb71-6" tabindex="-1"></a></span>
+<span id="cb71-7"><a href="tipovi.html#cb71-7" tabindex="-1"></a><span class="co"># ispišite koliko su visoki Pero i Ivana</span></span>
+<span id="cb71-8"><a href="tipovi.html#cb71-8" tabindex="-1"></a>visine[<span class="fu">c</span>(<span class="st">&quot;Pero&quot;</span>, <span class="st">&quot;Ivana&quot;</span>)]</span></code></pre></div>
+<pre><code>## Marica   Pero  Josip  Ivana  Stipe 
+##    165    173    185    174    190 
+##  Pero Ivana 
+##   173   174</code></pre>
+</div>
+<hr />
+<!-- SLIDE_REMOVE -->
+<p>Vidimo da se imensko referenciranje očekivano svodi na prosljeđivanje odgovarajućeg znakovnog vektora kao parametra referenciranja.</p>
+<p>(NAPOMENA: Pažljiviji čitatelj uočiti će jednu neobičnu činjenicu u gornjem programskom kodu - poziv funkcije se koristi kao <code>lvalue</code>! Odgovor na pitanje zašto je ovo moguće zahtijeva malo više znanja o internom funkcioniranju jezika R, a za sada je dovoljno reći da se ovdje zapravo radi o pozivu funkcije pravog imena <code>names&lt;-</code> koji se “skriva” iza puno intuitivnije i lako razumljive sintakse)
+<!-- SLIDE_REMOVE --></p>
+<!-- ## Brisanje imena elemenata vektora -->
+<p>Ukoliko iz nekog razloga poželimo obrisati imena elemenata vektora, jednostavno pozivu funkcije <code>names</code> proslijedimo <code>NULL</code>.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="tipovi.html#cb73-1" tabindex="-1"></a><span class="fu">names</span>(visine) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div>
+<p>Ovime ćemo zaključiti priču o vektorima. Naučili smo različite načine stvaranja vektora te dohvaćanja i izmjene njegovih elemenata. Sada je vrijeme da pokušamo vektorima dodati dodatnu “dimenziju” - upoznajmo matrice i polja.</p>
+<hr />
+</div>
+</div>
+<div id="matrice-i-polja" class="section level2 hasAnchor" number="2.6">
+<h2><span class="header-section-number">2.6</span> Matrice i polja<a href="tipovi.html#matrice-i-polja" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Matrice i polja su, jednostavno rečeno, višedimenzionalni vektori. <em>Matrica</em> (engl. <em>matrix</em>) je tako vektor sa dvije dimenzije, tj. vektor koji elemente smiješta u “retke” i “stupce”. <em>Polje</em> (engl. <em>array</em>) je vektor sa tri ili više dimenzija. Dok se matrice relativno često koriste u praksi, polja su ipak nešto više ograničena na posebne scenarije. Zbog ove činjenice u ovom poglavlju uglavnom ćemo se baviti matricama, iako se prikazani koncepti vrlo lako poopćuju na polja.</p>
+<!-- SLIDE_REMOVE -->
+<p>Ono što je zajedničko matricama i poljima, a što je poznata činjenica čitateljima sa programerskim iskustvom, jest da je njihova višedimenzionalnost zapravo prividna. I matrice i polja su zapravo jednodimenzionalni vektori kojima je dodan atribut dimenzionalnosti, a uz pomoć tog atributa jezik R mapira naše višedimenzionalno referenciranje u “stvarni” indeks elementa jednodimenzionalnog vektora. Ova činjenica nas ne ograničava - mi i dalje možemo u većini slučajeva tretirati matricu kao da je zaista dvodimenzionalna, a znanje o jednodimenzionalnoj prirodi nam može samo dati dodatnu fleksibilnost u radu s matricama.
+<!-- SLIDE_REMOVE --></p>
+<!-- ## Stvaranje matrice -->
+<p>Postoji nekoliko načina stvaranja nove matrice:</p>
+<ul>
+<li>uz pomoć funkcije <code>matrix</code> kojoj prosljeđujemo jednodimenzionalni vektor i željeni broj redaka i stupaca kroz parametre <code>nrow</code> i <code>ncol</code></li>
+<li>“ručnim” postavljanjem dimenzija jednodimenzionalnog vektora uz pomoć funkcije <code>dim</code> i pridruživanja dvoelementnog numeričkog vektora sa dimenzijama matrice</li>
+<li>“ljepljenjem” jednodimenzionalnih vektora koji predstavljaju retke ili stupce nove matrice uz pomoć funkcija <code>rbind</code> (engl. <em>row bind</em>) i <code>cbind</code> (engl. <em>column bind</em>)</li>
+</ul>
+<!-- SLIDE_REMOVE -->
+<p>Demonstrirajmo ove načine u primjerima koji slijede.
+<!-- SLIDE_REMOVE --></p>
+<hr />
+<p><strong>Zadatak 2.18 - funkcija <code>matrix</code></strong></p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="tipovi.html#cb74-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span></span>
+<span id="cb74-2"><a href="tipovi.html#cb74-2" tabindex="-1"></a></span>
+<span id="cb74-3"><a href="tipovi.html#cb74-3" tabindex="-1"></a><span class="co"># uz pomoć funkcije `matrix` i stvorite matricu sa 3 retka i 4 stupca</span></span>
+<span id="cb74-4"><a href="tipovi.html#cb74-4" tabindex="-1"></a><span class="co"># koja sadrži elemente vektora `x`</span></span>
+<span id="cb74-5"><a href="tipovi.html#cb74-5" tabindex="-1"></a><span class="co"># ispišite rezultat na zaslon</span></span>
+<span id="cb74-6"><a href="tipovi.html#cb74-6" tabindex="-1"></a></span>
+<span id="cb74-7"><a href="tipovi.html#cb74-7" tabindex="-1"></a><span class="co"># ponovite postupak ali pozivu funkcije dodajte parametar `byrow = T`</span></span>
+<span id="cb74-8"><a href="tipovi.html#cb74-8" tabindex="-1"></a><span class="co"># ispišite rezultat na zaslon i usporedite s prethodnim rezultatom</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="tipovi.html#cb75-1" tabindex="-1"></a><span class="co"># uz pomoć funkcije `matrix` stvorite matricu sa 3 retka i 4 stupca</span></span>
+<span id="cb75-2"><a href="tipovi.html#cb75-2" tabindex="-1"></a><span class="co"># koja sadrži elemente vektora `x`</span></span>
+<span id="cb75-3"><a href="tipovi.html#cb75-3" tabindex="-1"></a><span class="co"># ispišite rezultat na zaslon</span></span>
+<span id="cb75-4"><a href="tipovi.html#cb75-4" tabindex="-1"></a><span class="fu">matrix</span>(x, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
+<span id="cb75-5"><a href="tipovi.html#cb75-5" tabindex="-1"></a></span>
+<span id="cb75-6"><a href="tipovi.html#cb75-6" tabindex="-1"></a><span class="co"># ponovite postupak ali pozivu funkcije dodajte parametar `byrow = T`</span></span>
+<span id="cb75-7"><a href="tipovi.html#cb75-7" tabindex="-1"></a><span class="co"># ispišite rezultat na zaslon i usporedite s prethodnim rezultatom</span></span>
+<span id="cb75-8"><a href="tipovi.html#cb75-8" tabindex="-1"></a><span class="fu">matrix</span>(x, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">byrow =</span> T)</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]    1    4    7   10
+## [2,]    2    5    8   11
+## [3,]    3    6    9   12
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    2    3    4
+## [2,]    5    6    7    8
+## [3,]    9   10   11   12</code></pre>
+</div>
+<hr />
+<!-- SLIDE_REMOVE -->
+<p>Uočite da ga ukoliko eksplicitno ne zamolimo drugačije, R matricu popunjava po stupcima. Ovo je napravljeno zbog sličnosti matrice sa tabličnim prikazom podataka koje najčešće analiziramo gledajući pojedine stupce. No budući da nam je često punjenje po retcima “prirodnije”, ne smijemo zaboraviti na vrlo korisni parametar <code>byrow</code>.
+<!-- SLIDE_REMOVE --></p>
+<hr />
+<p><strong>Zadatak 2.19 - funkcija <code>dim</code></strong></p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="tipovi.html#cb77-1" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb77-2"><a href="tipovi.html#cb77-2" tabindex="-1"></a></span>
+<span id="cb77-3"><a href="tipovi.html#cb77-3" tabindex="-1"></a><span class="co"># ispišite rezultat poziva funkcije `dim` nad vektorom `m`</span></span>
+<span id="cb77-4"><a href="tipovi.html#cb77-4" tabindex="-1"></a></span>
+<span id="cb77-5"><a href="tipovi.html#cb77-5" tabindex="-1"></a><span class="co"># pozivu funkcije `dim` nad vektorom `m` pridružite vektor c(2, 5)</span></span>
+<span id="cb77-6"><a href="tipovi.html#cb77-6" tabindex="-1"></a></span>
+<span id="cb77-7"><a href="tipovi.html#cb77-7" tabindex="-1"></a><span class="co"># ispišite `m` i komentirajte rezultat</span></span>
+<span id="cb77-8"><a href="tipovi.html#cb77-8" tabindex="-1"></a></span>
+<span id="cb77-9"><a href="tipovi.html#cb77-9" tabindex="-1"></a><span class="co"># ispišite rezultate poziva funkcija `nrow` i `ncol` nad matricom `m`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="tipovi.html#cb78-1" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb78-2"><a href="tipovi.html#cb78-2" tabindex="-1"></a></span>
+<span id="cb78-3"><a href="tipovi.html#cb78-3" tabindex="-1"></a><span class="co"># ispišite rezultat poziva funkcije `dim` nad vektorom `m`</span></span>
+<span id="cb78-4"><a href="tipovi.html#cb78-4" tabindex="-1"></a><span class="fu">dim</span>(m)</span>
+<span id="cb78-5"><a href="tipovi.html#cb78-5" tabindex="-1"></a></span>
+<span id="cb78-6"><a href="tipovi.html#cb78-6" tabindex="-1"></a><span class="co"># pozivu funkcije `dim` nad vektorom `m` pridružite vektor c(2, 5)</span></span>
+<span id="cb78-7"><a href="tipovi.html#cb78-7" tabindex="-1"></a><span class="fu">dim</span>(m) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>)</span>
+<span id="cb78-8"><a href="tipovi.html#cb78-8" tabindex="-1"></a></span>
+<span id="cb78-9"><a href="tipovi.html#cb78-9" tabindex="-1"></a><span class="co"># ispišite `m` i komentirajte rezultat</span></span>
+<span id="cb78-10"><a href="tipovi.html#cb78-10" tabindex="-1"></a>m</span>
+<span id="cb78-11"><a href="tipovi.html#cb78-11" tabindex="-1"></a></span>
+<span id="cb78-12"><a href="tipovi.html#cb78-12" tabindex="-1"></a><span class="co"># ispišite rezultate poziva funkcija `nrow` i `ncol` nad matricom `m`</span></span>
+<span id="cb78-13"><a href="tipovi.html#cb78-13" tabindex="-1"></a><span class="fu">nrow</span>(m)</span>
+<span id="cb78-14"><a href="tipovi.html#cb78-14" tabindex="-1"></a><span class="fu">ncol</span>(m)</span></code></pre></div>
+<pre><code>## NULL
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    3    5    7    9
+## [2,]    2    4    6    8   10
+## [1] 2
+## [1] 5</code></pre>
+</div>
+<hr />
+<!-- SLIDE_REMOVE -->
+<p>Vidimo da “običan” vektor zapravo nema dimenziju, što se očituje preko <code>NULL</code> vrijednosti koju smo dobili kao rezultat. Pozivom funkcije <code>dim</code> mi vektoru zapravo dodajemo atribut naziva <code>dim</code> čime on formalno postaje matrica (tj. polje u općenitom slučaju). Upravo dimenzije su te koje definiraju kako su elementi složeni po retcima i stupcima a postavljanjem dimenzija moramo biti oprezni da one odgovaraju trenutnom broju elemenata. Jednom kad matrica ima dodane dimenzije, možemo ih dohvatiti “zajedno” uz pomoć funkcije <code>dim</code>, ili samo broj redaka ili stupaca uz pomoć funkcija <code>nrow</code> i <code>ncol</code>.</p>
+<p>Rezultantna matrica je poput one iz prethodnog primjera popunjena po stupcima. Budući da ovdje nemamo priliku koristiti parametar <code>byrow</code>, jedan od načina da dobijemo matricu popunjenu po retcima jest da transponiramo dobiveni rezultat uz pomoć funkcije <code>t</code>.
+<!-- SLIDE_REMOVE --></p>
+<!-- ## Transponiranje matrice -->
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="tipovi.html#cb80-1" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">t</span>(m)  <span class="co"># transponiramo matricu i pohranjujemo natrag u varijablu `m`</span></span></code></pre></div>
+<!-- ## Funkcije `rbind` i `cbind` -->
+<p>Konačno, matricu možemo stvoriti “ljepljenjem” redaka i stupaca uz pomoć funkcija <code>rbind</code> i <code>cbind</code>. Ovo je također zgodan način dodavanja novih redaka i stupaca postojećoj matrici.</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="tipovi.html#cb81-1" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>), <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>))  </span>
+<span id="cb81-2"><a href="tipovi.html#cb81-2" tabindex="-1"></a></span>
+<span id="cb81-3"><a href="tipovi.html#cb81-3" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">6</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb81-4"><a href="tipovi.html#cb81-4" tabindex="-1"></a></span>
+<span id="cb81-5"><a href="tipovi.html#cb81-5" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)   <span class="co"># nejednaki vektori (recikliranje + upozorenje!)</span></span></code></pre></div>
+<hr />
+<p><strong>Zadatak 2.20 - funkcije <code>rbind</code> i <code>cbind</code></strong></p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="tipovi.html#cb82-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span>
+<span id="cb82-2"><a href="tipovi.html#cb82-2" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">8</span></span>
+<span id="cb82-3"><a href="tipovi.html#cb82-3" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)</span>
+<span id="cb82-4"><a href="tipovi.html#cb82-4" tabindex="-1"></a></span>
+<span id="cb82-5"><a href="tipovi.html#cb82-5" tabindex="-1"></a><span class="co"># stvorite matricu `m` u kojoj će vektori `a` i `b` biti stupci</span></span>
+<span id="cb82-6"><a href="tipovi.html#cb82-6" tabindex="-1"></a></span>
+<span id="cb82-7"><a href="tipovi.html#cb82-7" tabindex="-1"></a><span class="co"># dodajte novi redak na vrh matrice `m` sa elementima vektora `c`</span></span>
+<span id="cb82-8"><a href="tipovi.html#cb82-8" tabindex="-1"></a><span class="co"># ispišite matricu `m`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="tipovi.html#cb83-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span>
+<span id="cb83-2"><a href="tipovi.html#cb83-2" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">8</span></span>
+<span id="cb83-3"><a href="tipovi.html#cb83-3" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)</span>
+<span id="cb83-4"><a href="tipovi.html#cb83-4" tabindex="-1"></a></span>
+<span id="cb83-5"><a href="tipovi.html#cb83-5" tabindex="-1"></a><span class="co"># stvorite matricu `m` u kojoj će vektori `a` i `b` biti stupci</span></span>
+<span id="cb83-6"><a href="tipovi.html#cb83-6" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">cbind</span>(a,b)</span>
+<span id="cb83-7"><a href="tipovi.html#cb83-7" tabindex="-1"></a></span>
+<span id="cb83-8"><a href="tipovi.html#cb83-8" tabindex="-1"></a></span>
+<span id="cb83-9"><a href="tipovi.html#cb83-9" tabindex="-1"></a><span class="co"># dodajte novi redak na vrh matrice `m` sa elementima vektora `c`</span></span>
+<span id="cb83-10"><a href="tipovi.html#cb83-10" tabindex="-1"></a><span class="co"># ispišite matricu `m`</span></span>
+<span id="cb83-11"><a href="tipovi.html#cb83-11" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">rbind</span>(c, m)</span>
+<span id="cb83-12"><a href="tipovi.html#cb83-12" tabindex="-1"></a>m</span></code></pre></div>
+<pre><code>##   a b
+## c 0 0
+##   1 5
+##   2 6
+##   3 7
+##   4 8</code></pre>
+</div>
+<hr />
+<div id="rezanje-matrica" class="section level3 hasAnchor" number="2.6.1">
+<h3><span class="header-section-number">2.6.1</span> Rezanje matrica<a href="tipovi.html#rezanje-matrica" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Sve naučene principe za “rezanje” vektora uz pomoć indeksnih vektora možemo direktno primijeniti nad matricama. Razlike su sljedeće:</p>
+<ul>
+<li>referenciramo svaku dimenziju zasebno</li>
+<li>prvo referenciramo retke, a potom stupce, a indeksne vektore odvajamo zarezom</li>
+<li>ako želimo “sve retke” ili “sve stupce” taj indeksni vektor jednostavno izostavimo (ali i dalje koristimo zarez)</li>
+</ul>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="tipovi.html#cb85-1" tabindex="-1"></a><span class="co"># pretpostavimo da je `m` matrica dimenzija 3 x 5, sa imenima stupaca od `a` do `e`</span></span>
+<span id="cb85-2"><a href="tipovi.html#cb85-2" tabindex="-1"></a></span>
+<span id="cb85-3"><a href="tipovi.html#cb85-3" tabindex="-1"></a>m[<span class="dv">1</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>]                       <span class="co"># prvi redak, svi stupci od drugog do petog</span></span>
+<span id="cb85-4"><a href="tipovi.html#cb85-4" tabindex="-1"></a>m[<span class="fu">c</span>(F, T, T), <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>)]      <span class="co"># drugi i treći redak, stupci `a` i `b`</span></span>
+<span id="cb85-5"><a href="tipovi.html#cb85-5" tabindex="-1"></a>m[<span class="sc">-</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,]                        <span class="co"># svi retci OSIM prvog i drugog</span></span>
+<span id="cb85-6"><a href="tipovi.html#cb85-6" tabindex="-1"></a>m[,]                            <span class="co"># svi retci i svi stupci (može i samo `m`)</span></span></code></pre></div>
+<!-- SLIDE_REMOVE -->
+<p>U praksi kod matrica najčešće koristimo lokacijsko i imensko referenciranje; uvjetno referenciranje nije previše praktično zbog dvodimenzionalne prirode matrice (iako je izvedivo, samo moramo voditi računa da logički indeksni vektori duljinom odgovaraju pripadajućoj dimenziji).</p>
+<p>Jedna od stvari na koju moramo voditi računa jest tendencija jezika R da nam “pomaže” pojednostavljujući rezultat. Tako će rezultat operacije rezanja matrice koja ostavlja samo jedan redak ili stupac automatski postati vektor, tj. izgubiti će atribut dimenzije. Ovo nam nekad ne odgovara, pogotovo ako radimo programske skripte koje u daljnjoj proceduri očekuju matricu, pa makar ona imala dimenziju redaka ili stupaca 1. U tom slučaju kod referenciranja moramo postaviti i dodatni parametar <code>drop = F</code>. Ovo često izgleda dosta nezgrapno, zbog čega danas postoje mnogi paketi proširenja jezika R koji ovo “popravljaju”, tj. koji se trude rezultat ostavljati u konzistentnom obliku. No parametar <code>drop</code> postavljen na <code>FALSE</code> treba imati u vidu, budući da će se pojavljivati i na drugim mjestima u sličnoj funkciji.
+<!-- SLIDE_REMOVE --></p>
+<hr />
+<p><strong>Zadatak 2.21 - rezanje matrica</strong></p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="tipovi.html#cb86-1" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="dv">6</span>, <span class="dv">5</span>, T)</span>
+<span id="cb86-2"><a href="tipovi.html#cb86-2" tabindex="-1"></a><span class="fu">colnames</span>(m) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>, <span class="st">&quot;e&quot;</span>)</span>
+<span id="cb86-3"><a href="tipovi.html#cb86-3" tabindex="-1"></a></span>
+<span id="cb86-4"><a href="tipovi.html#cb86-4" tabindex="-1"></a><span class="co"># ispišite sve elemente matrice m od drugog do četvrtog retka</span></span>
+<span id="cb86-5"><a href="tipovi.html#cb86-5" tabindex="-1"></a><span class="co"># te od trećeg do petog stupca</span></span>
+<span id="cb86-6"><a href="tipovi.html#cb86-6" tabindex="-1"></a></span>
+<span id="cb86-7"><a href="tipovi.html#cb86-7" tabindex="-1"></a><span class="co"># sve elemente u stupcu naziva &quot;c&quot; postavite na nulu</span></span>
+<span id="cb86-8"><a href="tipovi.html#cb86-8" tabindex="-1"></a><span class="co"># a potom ispišite prva dva retka matrice `m`</span></span>
+<span id="cb86-9"><a href="tipovi.html#cb86-9" tabindex="-1"></a></span>
+<span id="cb86-10"><a href="tipovi.html#cb86-10" tabindex="-1"></a><span class="co"># ispišite samo stupac &quot;d&quot;</span></span>
+<span id="cb86-11"><a href="tipovi.html#cb86-11" tabindex="-1"></a></span>
+<span id="cb86-12"><a href="tipovi.html#cb86-12" tabindex="-1"></a><span class="co"># ispišite opet stupac &quot;d&quot;, ali kod referenciranja dodajte parametar `drop = FALSE`</span></span>
+<span id="cb86-13"><a href="tipovi.html#cb86-13" tabindex="-1"></a><span class="co"># parametar odvojite zarezom (kao da se radi o &quot;trećoj&quot; dimenziji referenciranja)</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="tipovi.html#cb87-1" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="dv">6</span>, <span class="dv">5</span>, T)</span>
+<span id="cb87-2"><a href="tipovi.html#cb87-2" tabindex="-1"></a><span class="fu">colnames</span>(m) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>, <span class="st">&quot;e&quot;</span>)</span>
+<span id="cb87-3"><a href="tipovi.html#cb87-3" tabindex="-1"></a></span>
+<span id="cb87-4"><a href="tipovi.html#cb87-4" tabindex="-1"></a><span class="co"># ispišite sve elemente matrice `m` od drugog do četvrtog retka</span></span>
+<span id="cb87-5"><a href="tipovi.html#cb87-5" tabindex="-1"></a><span class="co"># te od trećeg do petog stupca</span></span>
+<span id="cb87-6"><a href="tipovi.html#cb87-6" tabindex="-1"></a>m[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb87-7"><a href="tipovi.html#cb87-7" tabindex="-1"></a></span>
+<span id="cb87-8"><a href="tipovi.html#cb87-8" tabindex="-1"></a><span class="co"># sve elemente u stupcu naziva &quot;c&quot; postavite na nulu</span></span>
+<span id="cb87-9"><a href="tipovi.html#cb87-9" tabindex="-1"></a><span class="co"># a potom ispišite prva dva retka matrice `m`</span></span>
+<span id="cb87-10"><a href="tipovi.html#cb87-10" tabindex="-1"></a>m[, <span class="st">&quot;c&quot;</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb87-11"><a href="tipovi.html#cb87-11" tabindex="-1"></a>m[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,]</span>
+<span id="cb87-12"><a href="tipovi.html#cb87-12" tabindex="-1"></a></span>
+<span id="cb87-13"><a href="tipovi.html#cb87-13" tabindex="-1"></a><span class="co"># ispišite samo stupac &quot;d&quot;</span></span>
+<span id="cb87-14"><a href="tipovi.html#cb87-14" tabindex="-1"></a>m[, <span class="st">&quot;d&quot;</span>]</span>
+<span id="cb87-15"><a href="tipovi.html#cb87-15" tabindex="-1"></a></span>
+<span id="cb87-16"><a href="tipovi.html#cb87-16" tabindex="-1"></a><span class="co"># ispišite opet stupac &quot;d&quot;, ali kod referenciranja dodajte parametar `drop = FALSE`</span></span>
+<span id="cb87-17"><a href="tipovi.html#cb87-17" tabindex="-1"></a><span class="co"># parametar odvojite zarezom (kao da se radi o &quot;trećoj&quot; dimenziji referenciranja)</span></span>
+<span id="cb87-18"><a href="tipovi.html#cb87-18" tabindex="-1"></a>m[, <span class="st">&quot;d&quot;</span>, drop <span class="ot">=</span> F]</span>
+<span id="cb87-19"><a href="tipovi.html#cb87-19" tabindex="-1"></a></span>
+<span id="cb87-20"><a href="tipovi.html#cb87-20" tabindex="-1"></a></span>
+<span id="cb87-21"><a href="tipovi.html#cb87-21" tabindex="-1"></a><span class="co">#</span></span></code></pre></div>
+<pre><code>##       c  d  e
+## [1,]  8  9 10
+## [2,] 13 14 15
+## [3,] 18 19 20
+##      a b c d  e
+## [1,] 1 2 0 4  5
+## [2,] 6 7 0 9 10
+## [1]  4  9 14 19 24 29
+##       d
+## [1,]  4
+## [2,]  9
+## [3,] 14
+## [4,] 19
+## [5,] 24
+## [6,] 29</code></pre>
+</div>
+<p>Umjesto indeksnih vektora možemo koristiti i “indeksne matrice”. Numeričke indeksne matrice moraju imati dva stupca a predstavljaju niz parova retka i stupca koje izvlačimo iz matrice. Logičke indeksne matrice rade ekvivalentno logičkim indeksnim vektorima - radi se o matricama jednakih dimenzija kao matrica koju referenciraju, pri čemu se sa <code>TRUE</code> označavaju elementi koje želimo zadržati, a sa <code>FALSE</code> one koje odbacujemo.</p>
+<p><strong>Zadatak 2.22 - indeksne matrice</strong></p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="tipovi.html#cb89-1" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="dv">6</span>, <span class="dv">5</span>, T)</span>
+<span id="cb89-2"><a href="tipovi.html#cb89-2" tabindex="-1"></a></span>
+<span id="cb89-3"><a href="tipovi.html#cb89-3" tabindex="-1"></a><span class="co"># uz pomoć numeričke indeksne matrice ispišite vektor koji se sastoji od elemenata</span></span>
+<span id="cb89-4"><a href="tipovi.html#cb89-4" tabindex="-1"></a><span class="co"># sa sljedećim koordinatama: (1, 3), (2, 4), (3, 5)</span></span>
+<span id="cb89-5"><a href="tipovi.html#cb89-5" tabindex="-1"></a></span>
+<span id="cb89-6"><a href="tipovi.html#cb89-6" tabindex="-1"></a></span>
+<span id="cb89-7"><a href="tipovi.html#cb89-7" tabindex="-1"></a><span class="co"># uz pomoć logičke indeksne matrice sve elemente s parnim vrijednostima zamijenite nulom</span></span>
+<span id="cb89-8"><a href="tipovi.html#cb89-8" tabindex="-1"></a><span class="co"># ispišite matricu m</span></span>
+<span id="cb89-9"><a href="tipovi.html#cb89-9" tabindex="-1"></a></span>
+<span id="cb89-10"><a href="tipovi.html#cb89-10" tabindex="-1"></a><span class="co"># ispišite sve elemente matrice m koji nisu 0</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="tipovi.html#cb90-1" tabindex="-1"></a>m_ind <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">5</span>)</span>
+<span id="cb90-2"><a href="tipovi.html#cb90-2" tabindex="-1"></a>m[m_ind]</span>
+<span id="cb90-3"><a href="tipovi.html#cb90-3" tabindex="-1"></a></span>
+<span id="cb90-4"><a href="tipovi.html#cb90-4" tabindex="-1"></a>m[m <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb90-5"><a href="tipovi.html#cb90-5" tabindex="-1"></a>m</span>
+<span id="cb90-6"><a href="tipovi.html#cb90-6" tabindex="-1"></a></span>
+<span id="cb90-7"><a href="tipovi.html#cb90-7" tabindex="-1"></a>m[m <span class="sc">!=</span> <span class="dv">0</span>]</span></code></pre></div>
+<pre><code>## [1]  3  9 15
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    0    3    0    5
+## [2,]    0    7    0    9    0
+## [3,]   11    0   13    0   15
+## [4,]    0   17    0   19    0
+## [5,]   21    0   23    0   25
+## [6,]    0   27    0   29    0
+##  [1]  1 11 21  7 17 27  3 13 23  9 19 29  5 15 25</code></pre>
+</div>
+<p>Uočimo da ako kod korištenja logičke indeksne matrice umjesto postavljanja elemenata iste izvlačimo, rezultat se ispisuje u obliku vektora - što je logično budući da nasumičnom odabirom elemenata iz matrice nećemo nužno dobiti pravilnu dvodimenzionalnu strukturu.</p>
+</div>
+</div>
+<div id="osnovne-operacije-matrične-algebre" class="section level2 hasAnchor" number="2.7">
+<h2><span class="header-section-number">2.7</span> Osnovne operacije matrične algebre<a href="tipovi.html#osnovne-operacije-matrične-algebre" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Stvorimo nekoliko oglednih vektora i matrica.</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="tipovi.html#cb92-1" tabindex="-1"></a><span class="co"># matrice A i B dimenzija 3 x 3</span></span>
+<span id="cb92-2"><a href="tipovi.html#cb92-2" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb92-3"><a href="tipovi.html#cb92-3" tabindex="-1"></a>B <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">18</span>, <span class="dv">2</span>), <span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb92-4"><a href="tipovi.html#cb92-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;A</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb92-5"><a href="tipovi.html#cb92-5" tabindex="-1"></a>A</span>
+<span id="cb92-6"><a href="tipovi.html#cb92-6" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;B</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb92-7"><a href="tipovi.html#cb92-7" tabindex="-1"></a>B</span>
+<span id="cb92-8"><a href="tipovi.html#cb92-8" tabindex="-1"></a></span>
+<span id="cb92-9"><a href="tipovi.html#cb92-9" tabindex="-1"></a><span class="co"># matrice C i D dimenzija 2 x 4 i 4 x 2</span></span>
+<span id="cb92-10"><a href="tipovi.html#cb92-10" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>, <span class="dv">2</span>, <span class="dv">4</span>)</span>
+<span id="cb92-11"><a href="tipovi.html#cb92-11" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">16</span>, <span class="dv">2</span>), <span class="dv">4</span>, <span class="dv">2</span>)</span>
+<span id="cb92-12"><a href="tipovi.html#cb92-12" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;C</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb92-13"><a href="tipovi.html#cb92-13" tabindex="-1"></a>C</span>
+<span id="cb92-14"><a href="tipovi.html#cb92-14" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;D</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb92-15"><a href="tipovi.html#cb92-15" tabindex="-1"></a>D</span>
+<span id="cb92-16"><a href="tipovi.html#cb92-16" tabindex="-1"></a></span>
+<span id="cb92-17"><a href="tipovi.html#cb92-17" tabindex="-1"></a><span class="co"># vektori v i w dimenzija 1 x 3</span></span>
+<span id="cb92-18"><a href="tipovi.html#cb92-18" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span></span>
+<span id="cb92-19"><a href="tipovi.html#cb92-19" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span></span>
+<span id="cb92-20"><a href="tipovi.html#cb92-20" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;v</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb92-21"><a href="tipovi.html#cb92-21" tabindex="-1"></a>v</span>
+<span id="cb92-22"><a href="tipovi.html#cb92-22" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;w</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb92-23"><a href="tipovi.html#cb92-23" tabindex="-1"></a>w</span></code></pre></div>
+<pre><code>## A
+##      [,1] [,2] [,3]
+## [1,]    1    4    7
+## [2,]    2    5    8
+## [3,]    3    6    9
+## B
+##      [,1] [,2] [,3]
+## [1,]    2    8   14
+## [2,]    4   10   16
+## [3,]    6   12   18
+## C
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    3    5    7
+## [2,]    2    4    6    8
+## D
+##      [,1] [,2]
+## [1,]    2   10
+## [2,]    4   12
+## [3,]    6   14
+## [4,]    8   16
+## v
+## [1] 1 2 3
+## w
+## [1] 2 3 4</code></pre>
+<p>Uočimo da <code>v</code> i <code>w</code> formalno “nemaju dimenziju” - jednodimenzionalni vektori imaju duljinu ali pozivanje funkcije <code>dim</code> će nam vratiti <code>NULL</code>. Ukoliko želimo, vektore možemo definirati kao jednoretčanu ili jednostupčanu matricu, no kao što ćemo vidjeti u nastavku R će to često napraviti samostalno interpretacijom konteksta unutar kojeg se koristi.</p>
+<p>Kod množenja vektora i matrica moramo biti oprezni o kakvom načinu “množenja” razgovaramo. Konkretno, možemo pričati o:</p>
+<ul>
+<li>skalarnom produktu vektora (“dot-product”)</li>
+<li>matričnom množenju (“cross-product”)</li>
+<li>matričnom množenju “po elementima” (Hadamardov produkt)</li>
+</ul>
+<div id="skalarni-produkt" class="section level3 hasAnchor" number="2.7.1">
+<h3><span class="header-section-number">2.7.1</span> Skalarni produkt<a href="tipovi.html#skalarni-produkt" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>U programskom jeziku R skalarni produkt provodimo uz pomoć operatora <code>%*%</code>.</p>
+<p><strong>Zadatak 2.23 - Skalarni produkt</strong></p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="tipovi.html#cb94-1" tabindex="-1"></a><span class="co"># ispišite rezultat skalarnog produkta vektora v i w</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="tipovi.html#cb95-1" tabindex="-1"></a>v <span class="sc">%*%</span> w </span></code></pre></div>
+<pre><code>##      [,1]
+## [1,]   20</code></pre>
+</div>
+<p>Uočimo nekoliko stvari: prvo, u linearnoj algebri obične vektore često interpretiramo kao jednostupčane matrice, tako da skalarni produkt vektora nominalno zahtijeva da prvi član produkta transponiramo. U programskom jeziku R ovo nije potrebno, budući da kao što je ranije rečeno R automatski “promovira” vektora u pripadne matrice, tako da su zapravo ova dva poziva ekvivalentna:</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="tipovi.html#cb97-1" tabindex="-1"></a>v <span class="sc">%*%</span> w</span>
+<span id="cb97-2"><a href="tipovi.html#cb97-2" tabindex="-1"></a></span>
+<span id="cb97-3"><a href="tipovi.html#cb97-3" tabindex="-1"></a><span class="co"># je ekvivalentno</span></span>
+<span id="cb97-4"><a href="tipovi.html#cb97-4" tabindex="-1"></a></span>
+<span id="cb97-5"><a href="tipovi.html#cb97-5" tabindex="-1"></a><span class="fu">t</span>(v) <span class="sc">%*%</span> w</span>
+<span id="cb97-6"><a href="tipovi.html#cb97-6" tabindex="-1"></a></span>
+<span id="cb97-7"><a href="tipovi.html#cb97-7" tabindex="-1"></a><span class="co"># što je ekvivalentno</span></span>
+<span id="cb97-8"><a href="tipovi.html#cb97-8" tabindex="-1"></a></span>
+<span id="cb97-9"><a href="tipovi.html#cb97-9" tabindex="-1"></a><span class="fu">t</span>(<span class="fu">as.matrix</span>(v)) <span class="sc">%*%</span> <span class="fu">as.matrix</span>(w)</span></code></pre></div>
+<p>Drugo, rezultat skalarnog produkta nije broj, već matrica dimenzija 1 x 1 - ovo je zato što se skalarni produkt zapravo implementira kao specijalni slučaj matričnog množenja.</p>
+</div>
+<div id="matrično-množenje" class="section level3 hasAnchor" number="2.7.2">
+<h3><span class="header-section-number">2.7.2</span> Matrično množenje<a href="tipovi.html#matrično-množenje" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Iz linearne algebre nam je poznato da je matrično množenje operacija koja dvije “kompatibilne” matrice (matrice kod kojih je broj stupaca lijevog operanda jednak broju redaka desnog) pretvara u jednu matricu kod koje je svaki element nastao skalarnim produktom odgovarajućih redaka i stupaca. Shodno tome, operator za matrično množenje jednak je operatoru za skalarni produkt - <code>%*%</code>.</p>
+<p><strong>Zadatak 2.24 - Matrično množenje</strong></p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="tipovi.html#cb98-1" tabindex="-1"></a><span class="co"># pomnožite matrice A i B</span></span>
+<span id="cb98-2"><a href="tipovi.html#cb98-2" tabindex="-1"></a></span>
+<span id="cb98-3"><a href="tipovi.html#cb98-3" tabindex="-1"></a><span class="co"># pomnožite matrice C i D</span></span>
+<span id="cb98-4"><a href="tipovi.html#cb98-4" tabindex="-1"></a></span>
+<span id="cb98-5"><a href="tipovi.html#cb98-5" tabindex="-1"></a><span class="co"># pomnožite v sa transponiranim vektorom w</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="tipovi.html#cb99-1" tabindex="-1"></a><span class="co"># 3 x 3 %*% 3 x 3</span></span>
+<span id="cb99-2"><a href="tipovi.html#cb99-2" tabindex="-1"></a>A <span class="sc">%*%</span> B</span>
+<span id="cb99-3"><a href="tipovi.html#cb99-3" tabindex="-1"></a></span>
+<span id="cb99-4"><a href="tipovi.html#cb99-4" tabindex="-1"></a><span class="co"># 2 x 4 %*% 4 x 2</span></span>
+<span id="cb99-5"><a href="tipovi.html#cb99-5" tabindex="-1"></a>C <span class="sc">%*%</span> D</span>
+<span id="cb99-6"><a href="tipovi.html#cb99-6" tabindex="-1"></a></span>
+<span id="cb99-7"><a href="tipovi.html#cb99-7" tabindex="-1"></a><span class="co"># 3 x 1 %*% 1 x 3</span></span>
+<span id="cb99-8"><a href="tipovi.html#cb99-8" tabindex="-1"></a>v <span class="sc">%*%</span> <span class="fu">t</span>(w)</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]   60  132  204
+## [2,]   72  162  252
+## [3,]   84  192  300
+##      [,1] [,2]
+## [1,]  100  228
+## [2,]  120  280
+##      [,1] [,2] [,3]
+## [1,]    2    3    4
+## [2,]    4    6    8
+## [3,]    6    9   12</code></pre>
+</div>
+<p>Ukoliko probamo pomnožiti nekompatibilne matrice R će nam javiti grešku.</p>
+</div>
+<div id="množenje-po-elementima" class="section level3 hasAnchor" number="2.7.3">
+<h3><span class="header-section-number">2.7.3</span> Množenje po elementima<a href="tipovi.html#množenje-po-elementima" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Konačno ako umjesto operatora <code>%*%</code> koristimo operator <code>*</code>, programski jezik R će primjeniti standardne “vektorizirane” principe i kao rezultat dati strukturu gdje se traženi operator primjenjuje nad korespondentnim elementima. U linearnoj algebri ovakav tip produkta zove se “Hadamardov produkt” (ili “Schurov produkt”) i označava se simbolom kružića ili zaokružene točke.</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="tipovi.html#cb101-1" tabindex="-1"></a>A <span class="sc">*</span> B</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    2   32   98
+## [2,]    8   50  128
+## [3,]   18   72  162</code></pre>
+<p>Prije kraja priče o matricama, upoznajmo još neke korisne funkcije za rad s matricama.</p>
+</div>
+</div>
+<div id="funkcije-diag-upper.tri-lower.tri-i-solve" class="section level2 hasAnchor" number="2.8">
+<h2><span class="header-section-number">2.8</span> Funkcije <code>diag</code>, <code>upper.tri</code>, <code>lower.tri</code> i <code>solve</code><a href="tipovi.html#funkcije-diag-upper.tri-lower.tri-i-solve" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Funkcija <code>diag(x)</code> je interesantna budući da ima više načina uporabe od kojih ćemo spomenuti tri najkorisnija:</p>
+<ul>
+<li>ako je <code>x</code> matrica, funkcija izvlači/referencira dijagonalu matrice</li>
+<li>ako je <code>x</code> vektor, funkcija stvara matricu sa vektorom <code>x</code> na dijagonali</li>
+<li>ako umjesto <code>x</code> navedemo argument <code>nrow = &lt;n&gt;</code>, dobijamo jediničnu matricu dimenzija <code>n x n</code></li>
+</ul>
+<p>Isprobajmo ovu funkciju u sljedećem primjeru, u kojem ćemo između ostalog možemo upoznati i funkciju <code>sample</code> koju ćemo intenzivnije koristiti u jednom od idućih poglavlja. Za sada je dovoljno znati da funkciji kao ulazne argumente dajemo vektor elemenata te broj elemenata koje želimo nasumično odabrati iz istog (elementi se neće ponavljati osim ako stavimo i parametar <code>replace = TRUE</code>).</p>
+<p><strong>Zadatak 2.25 - Funkcija <code>diag</code></strong></p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="tipovi.html#cb103-1" tabindex="-1"></a><span class="co"># matricu `m` punimo sa 25 nasumičnih elemenata iz intervala 100-999</span></span>
+<span id="cb103-2"><a href="tipovi.html#cb103-2" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">sample</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">999</span>, <span class="dv">25</span>), <span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb103-3"><a href="tipovi.html#cb103-3" tabindex="-1"></a>m</span>
+<span id="cb103-4"><a href="tipovi.html#cb103-4" tabindex="-1"></a></span>
+<span id="cb103-5"><a href="tipovi.html#cb103-5" tabindex="-1"></a><span class="co"># dijagonalu matrice `m` zamijeni brojevima od 1 do 5</span></span>
+<span id="cb103-6"><a href="tipovi.html#cb103-6" tabindex="-1"></a><span class="co"># pomnoži matricu `m` jediničnom matricom dimenzija 5 x 5 i ispiši rezultat</span></span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5]
+## [1,]  367  829  562  627  260
+## [2,]  574  744  959  812  569
+## [3,]  485  803  791  954  253
+## [4,]  308  715  576  406  879
+## [5,]  727  713  728  859  784</code></pre>
+<div class="fold s o">
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="tipovi.html#cb105-1" tabindex="-1"></a><span class="fu">diag</span>(m) <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
+<span id="cb105-2"><a href="tipovi.html#cb105-2" tabindex="-1"></a>m <span class="sc">%*%</span> <span class="fu">diag</span>(<span class="at">nrow =</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1  829  562  627  260
+## [2,]  574    2  959  812  569
+## [3,]  485  803    3  954  253
+## [4,]  308  715  576    4  879
+## [5,]  727  713  728  859    5</code></pre>
+</div>
+<p>Funkcije <code>upper.tri</code> i <code>lower.tri</code> referenciraju elemente ispod tj. iznad dijagonale matrice, pri čemu dijagonala nije uključena u rezultat osim ako ne postavimo parametar <code>diag = TRUE</code>. Poziv funkcije nad matricom zapravo stvara logičku indeksnu matricu odgovarajućih dimenzija, što možemo vidjeti u sljedećem zadatku.</p>
+<p><strong>Zadatak 2.26 - Funkcija <code>upper.tri</code> i <code>lower.tri</code></strong></p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="tipovi.html#cb107-1" tabindex="-1"></a><span class="co"># matricu `m` punimo sa 36 nasumičnih elemenata iz intervala 100-999</span></span>
+<span id="cb107-2"><a href="tipovi.html#cb107-2" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">sample</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">99</span>, <span class="dv">36</span>), <span class="dv">6</span>, <span class="dv">6</span>)</span>
+<span id="cb107-3"><a href="tipovi.html#cb107-3" tabindex="-1"></a>m</span>
+<span id="cb107-4"><a href="tipovi.html#cb107-4" tabindex="-1"></a></span>
+<span id="cb107-5"><a href="tipovi.html#cb107-5" tabindex="-1"></a><span class="co"># ispiši rezultat poziva funkcije `upper.tri` nad matricom `m`</span></span>
+<span id="cb107-6"><a href="tipovi.html#cb107-6" tabindex="-1"></a></span>
+<span id="cb107-7"><a href="tipovi.html#cb107-7" tabindex="-1"></a></span>
+<span id="cb107-8"><a href="tipovi.html#cb107-8" tabindex="-1"></a><span class="co"># ispiši matricu 5 x 5 sa sljedećim karakteristikama</span></span>
+<span id="cb107-9"><a href="tipovi.html#cb107-9" tabindex="-1"></a><span class="co"># - broj 1 iznad glavne dijagonale</span></span>
+<span id="cb107-10"><a href="tipovi.html#cb107-10" tabindex="-1"></a><span class="co"># - broj -1 ispod glavne dijagonale</span></span>
+<span id="cb107-11"><a href="tipovi.html#cb107-11" tabindex="-1"></a><span class="co"># - broj 0 na dijagonali</span></span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
+## [1,]   66   64   15   99   18   37
+## [2,]   92   20   86   59   89   28
+## [3,]   41   95   13   12   82   75
+## [4,]   43   68   22   60   47   73
+## [5,]   90   74   44   97   50   54
+## [6,]   30   25   23   84   58   42</code></pre>
+<div class="fold s o">
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="tipovi.html#cb109-1" tabindex="-1"></a><span class="fu">upper.tri</span>(m)</span>
+<span id="cb109-2"><a href="tipovi.html#cb109-2" tabindex="-1"></a></span>
+<span id="cb109-3"><a href="tipovi.html#cb109-3" tabindex="-1"></a></span>
+<span id="cb109-4"><a href="tipovi.html#cb109-4" tabindex="-1"></a>rez <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb109-5"><a href="tipovi.html#cb109-5" tabindex="-1"></a>rez[<span class="fu">upper.tri</span>(rez)] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb109-6"><a href="tipovi.html#cb109-6" tabindex="-1"></a>rez[<span class="fu">lower.tri</span>(rez)] <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb109-7"><a href="tipovi.html#cb109-7" tabindex="-1"></a>rez</span></code></pre></div>
+<pre><code>##       [,1]  [,2]  [,3]  [,4]  [,5]  [,6]
+## [1,] FALSE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [2,] FALSE FALSE  TRUE  TRUE  TRUE  TRUE
+## [3,] FALSE FALSE FALSE  TRUE  TRUE  TRUE
+## [4,] FALSE FALSE FALSE FALSE  TRUE  TRUE
+## [5,] FALSE FALSE FALSE FALSE FALSE  TRUE
+## [6,] FALSE FALSE FALSE FALSE FALSE FALSE
+##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    0    1    1    1    1
+## [2,]   -1    0    1    1    1
+## [3,]   -1   -1    0    1    1
+## [4,]   -1   -1   -1    0    1
+## [5,]   -1   -1   -1   -1    0</code></pre>
+</div>
+<p>Konačno, funkcija <code>solve</code> izračunava inverz matrice (ako postoji).</p>
+<p><strong>Zadatak 2.27 - Funkcija <code>solve</code></strong></p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="tipovi.html#cb111-1" tabindex="-1"></a><span class="co"># stvaramo matricu 3x3 nasumično odabranih elemenata iz skupa od 1 do 100</span></span>
+<span id="cb111-2"><a href="tipovi.html#cb111-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb111-3"><a href="tipovi.html#cb111-3" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">9</span>, T)), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">byrow =</span> T)</span>
+<span id="cb111-4"><a href="tipovi.html#cb111-4" tabindex="-1"></a></span>
+<span id="cb111-5"><a href="tipovi.html#cb111-5" tabindex="-1"></a><span class="co"># izračunajte inverznu matricu uz pomoć funkcije `solve`</span></span>
+<span id="cb111-6"><a href="tipovi.html#cb111-6" tabindex="-1"></a><span class="co"># provjerite da li umnožak originalne i inverzne matrice daje jediničnu matricu </span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="tipovi.html#cb112-1" tabindex="-1"></a><span class="fu">solve</span>(m) <span class="sc">%*%</span> m</span></code></pre></div>
+<pre><code>##               [,1]          [,2]         [,3]
+## [1,]  1.000000e+00  1.110223e-16 0.000000e+00
+## [2,]  0.000000e+00  1.000000e+00 8.881784e-16
+## [3,] -1.110223e-16 -8.326673e-17 1.000000e+00</code></pre>
+</div>
+<p>Pokušajte samostalno objasniti zašto kao rezultat nismo dobili “čistu” jediničnu matricu (naputak: sjetimo se nepreciznosti realnih brojeva). Obzirom da se radi o pogrešci oko 16. decimale, u ovom slučaju se pogreške možemo relativno lako riješiti zaokruživanjem:</p>
+<div class="fold s o">
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="tipovi.html#cb114-1" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">solve</span>(m) <span class="sc">%*%</span> m)</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    0    0
+## [2,]    0    1    0
+## [3,]    0    0    1</code></pre>
+</div>
+<hr />
+<!-- SLIDE_REMOVE -->
+<p>Ovdje ćemo završiti priču o matricama. Ove strukture su vrlo korisne kod rješavanja matematičkih zadataka zasnovanih na matricama, pri čemu je često zgodno pogledati dokumentaciju jezika R kako bi vidjeli koje funkcije i operatori su nam dostupni za takav posao. Isto tako, neki prikazani principi upravljanja matricama biti će korisni kod upravljanja tzv. podatkovnim okvirima - vjerojatno najpopularnijem tipu objekta jezika R kojeg ćemo upoznati u jednom od nastupajućih poglavlja.</p>
+<p>Konačno, iako se nećemo detaljno baviti poljima, prikažimo radi potpunosti primjer programskog koda koji stvara trodimenzionalno polje te potom ispisuje jedan njegov dio standardnim principom rezanja kojeg smo upoznali kod vektora i matrica.
+<!-- SLIDE_REMOVE --></p>
+<!-- ## Polje - primjer -->
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="tipovi.html#cb116-1" tabindex="-1"></a>polje <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">24</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>))  <span class="co"># polje dimenzija 2 x 3 x 4</span></span>
+<span id="cb116-2"><a href="tipovi.html#cb116-2" tabindex="-1"></a></span>
+<span id="cb116-3"><a href="tipovi.html#cb116-3" tabindex="-1"></a>polje[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">3</span>, drop <span class="ot">=</span> <span class="cn">FALSE</span>]           <span class="co"># ispis svih redaka, prvog i drugog stupca</span></span>
+<span id="cb116-4"><a href="tipovi.html#cb116-4" tabindex="-1"></a>                                        <span class="co"># trećeg &quot;sloja&quot;, uz zadržavanje tipa polja</span></span></code></pre></div>
+<hr />
+</div>
+<div id="zadaci-za-vježbu" class="section level2 unnumbered hasAnchor">
+<h2>Zadaci za vježbu<a href="tipovi.html#zadaci-za-vježbu" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Ispišite na zaslon rezultate sljedećih izraza zadanih opisno:</li>
+</ol>
+<ul>
+<li>“tri puta deset na devetu”</li>
+<li>“logaritam od 5”</li>
+<li>“cjelobrojno dijeljenje 10 sa 3”</li>
+<li>“ostatak cjelobrojnog dijeljenja 10 sa 3”</li>
+<li>“tangens od 75 stupnjeva” |</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li><p>Ubacite u varijablu <code>x</code> vrijednost <code>5</code>. Ispišite sve varijable okoline. Potom u varijablu <code>x</code> ubacite <code>NULL</code>. Postoji li i dalje ova varijabla?</p></li>
+<li><p>Stvorite i ispišite na zaslon sljedeće vektore:</p></li>
+</ol>
+<ul>
+<li>(11, 12, 13,…, 99)</li>
+<li>(0, 0, 0, 0, … , 0) (100 nula)</li>
+<li>(0, 0.2, 0.4, …., 88.8)</li>
+<li>(1, NA, 2, NA, 3, NA, 4, NA, …., 100, NA)</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li><p>Kolika je suma svih brojeva od 101 do 1001, ako preskočimo sve brojeve djeljive sa 10? Koristite se funkcijom <code>sum</code>?</p></li>
+<li><p>Stvorite matricu <code>m</code> dimenzija <code>8 x 8</code> koja će sadržavati nasumične brojeve iz intervala 10 do 99 bez ponavljanja. Potom promijenite predznak elementima svakog drugog stupca i ispišite rezultantnu matricu.</p></li>
+</ol>
+<p>(NAPUTAK: razmislite što je rezultat matričnog množenja <code>diag(1:8)</code> i matrice <code>m</code> i kako vam isti može pomoći u rješavanju zadatka)</p>
+<hr />
+<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Programirajmo u R-u</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.fer.unizg.hr/en/damir.pintar" property="cc:attributionName" rel="cc:attributionURL">Damir Pintar</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://ratnip.github.io/FER_OPJR/" rel="dct:source">https://ratnip.github.io/FER_OPJR/</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="uvod.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="okviri.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "google", "twitter", "weibo", "instapaper"],
+    "google": false,
+    "instapper": false
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": true
+  },
+  "toolbar": {
+    "position": "fixed",
+    "edit": null,
+    "download": null,
+    "search": true
+  }
+});
+});
+</script>
+
+</body>
+
+</html>
