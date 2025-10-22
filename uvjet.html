@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Uvjetne naredbe i petlje | Programirajmo u R-u</title>
+  <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Uvjetne naredbe i petlje | Programirajmo u R-u" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Uvjetne naredbe i petlje | Programirajmo u R-u" />
+  
+  <meta name="twitter:description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  
+
+<meta name="author" content="Damir Pintar" />
+
+
+<meta name="date" content="2025-10-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="okviri.html"/>
+<link rel="next" href="paketi.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+.showopt {
+  background-color: #004c93;
+  color: #FFFFFF; 
+  width: 140px;
+  height: 4	0px;
+  text-align: center;
+  vertical-align: middle !important;
+  float: right;
+  font-family: sans-serif;
+  font-size:10 pt;
+  border-radius: 8px;
+}
+
+.showopt:hover {
+    background-color: #dfe4f2;
+    color: #004c93;
+}
+
+pre.plot {
+  background-color: white !important;
+}
+</style>
+
+<script>
+ $(document).ready(function() {
+
+  $chunks = $('.fold');
+
+  $chunks.each(function () {
+
+    // add button to source code chunks
+    if ( $(this).hasClass('s') ) {
+      $('pre.r', this).prepend("<div class=\"showopt\">Prikaži rješenje</div><br style=\"line-height:22px;\"/>");
+      $('pre.r', this).children('code').attr('class', 'folded');
+    }
+
+    // add button to output chunks
+    if ( $(this).hasClass('o') ) {
+      $('pre:not(.r)', this).has('code').prepend("<div class=\"showopt\">Prikaži ispis</div><br style=\"line-height:22px;\"/>");
+      $('pre:not(.r)', this).children('code:not(r)').addClass('folded');
+
+      // add button to plots
+      $(this).find('img').wrap('<pre class=\"plot\"></pre>');
+      $('pre.plot', this).prepend("<div class=\"showopt\">Prikaži sliku</div><br style=\"line-height:22px;\"/>");
+      $('pre.plot', this).children('img').addClass('folded');
+
+    }
+  });
+
+  // hide all chunks when document is loaded
+  $('.folded').css('display', 'none')
+
+  // function to toggle the visibility
+  $('.showopt').click(function() {
+    var label = $(this).html();
+    if (label.indexOf("Prikaži") >= 0) {
+      $(this).html(label.replace("Prikaži", "Sakrij"));
+    } else {
+      $(this).html(label.replace("Sakrij", "Prikaži"));
+    }
+    $(this).siblings('code, img').slideToggle('fast', 'swing');
+  });
+});
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>(Udžbenik za predmet “Osnove statističkog programiranja”)</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#predgovor"><i class="fa fa-check"></i>Predgovor</a></li>
+</ul></li>
+<li class="part"><span><b>I Osnovni elementi jezika R</b></span></li>
+<li class="chapter" data-level="1" data-path="uvod.html"><a href="uvod.html"><i class="fa fa-check"></i><b>1</b> Uvod</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="uvod.html"><a href="uvod.html#što-je-programski-jezik-r"><i class="fa fa-check"></i><b>1.1</b> Što je programski jezik R?</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="uvod.html"><a href="uvod.html#općenito-o-r-u"><i class="fa fa-check"></i><b>1.1.1</b> Općenito o R-u</a></li>
+<li class="chapter" data-level="1.1.2" data-path="uvod.html"><a href="uvod.html#alternative-jeziku-r"><i class="fa fa-check"></i><b>1.1.2</b> Alternative jeziku R</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="uvod.html"><a href="uvod.html#instalacija-programske-podrške"><i class="fa fa-check"></i><b>1.2</b> Instalacija programske podrške</a></li>
+<li class="chapter" data-level="1.3" data-path="uvod.html"><a href="uvod.html#pregled-razvojnog-sučelja-rstudio"><i class="fa fa-check"></i><b>1.3</b> Pregled razvojnog sučelja <em>RStudio</em></a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="uvod.html"><a href="uvod.html#interaktivna-konzola"><i class="fa fa-check"></i><b>1.3.1</b> Interaktivna konzola</a></li>
+<li class="chapter" data-level="1.3.2" data-path="uvod.html"><a href="uvod.html#pisanje-r-skripti"><i class="fa fa-check"></i><b>1.3.2</b> Pisanje R skripti</a></li>
+<li class="chapter" data-level="1.3.3" data-path="uvod.html"><a href="uvod.html#instalacija-dodatnih-paketa"><i class="fa fa-check"></i><b>1.3.3</b> Instalacija dodatnih paketa</a></li>
+<li class="chapter" data-level="1.3.4" data-path="uvod.html"><a href="uvod.html#r-markdown"><i class="fa fa-check"></i><b>1.3.4</b> <em>R Markdown</em></a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="uvod.html"><a href="uvod.html#organizacija-procesa-podatkovne-analize-uz-r-i-rstudio"><i class="fa fa-check"></i><b>1.4</b> Organizacija procesa podatkovne analize uz R i RStudio</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="uvod.html"><a href="uvod.html#poželjne-karakteristike-procesa-analize-podataka"><i class="fa fa-check"></i><b>1.4.1</b> Poželjne karakteristike procesa analize podataka</a></li>
+<li class="chapter" data-level="1.4.2" data-path="uvod.html"><a href="uvod.html#organizacija-mapa-za-potrebe-analize-podataka"><i class="fa fa-check"></i><b>1.4.2</b> Organizacija mapa za potrebe analize podataka</a></li>
+<li class="chapter" data-level="1.4.3" data-path="uvod.html"><a href="uvod.html#pojam-projekta"><i class="fa fa-check"></i><b>1.4.3</b> Pojam projekta</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="uvod.html"><a href="uvod.html#kako-koristiti-ovaj-udžbenik"><i class="fa fa-check"></i><b>1.5</b> Kako koristiti ovaj udžbenik?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="tipovi.html"><a href="tipovi.html"><i class="fa fa-check"></i><b>2</b> Osnovni elementi, vektori i matrice</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tipovi.html"><a href="tipovi.html#osnovni-tipovi-podataka"><i class="fa fa-check"></i><b>2.1</b> Osnovni tipovi podataka</a></li>
+<li class="chapter" data-level="2.2" data-path="tipovi.html"><a href="tipovi.html#operatori"><i class="fa fa-check"></i><b>2.2</b> Operatori</a></li>
+<li class="chapter" data-level="2.3" data-path="tipovi.html"><a href="tipovi.html#nedostajuće-nepoznate-i-nemoguće-vrijednosti"><i class="fa fa-check"></i><b>2.3</b> Nedostajuće, nepoznate i nemoguće vrijednosti</a></li>
+<li class="chapter" data-level="2.4" data-path="tipovi.html"><a href="tipovi.html#vektori"><i class="fa fa-check"></i><b>2.4</b> Vektori</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="tipovi.html"><a href="tipovi.html#stvaranje-vektora"><i class="fa fa-check"></i><b>2.4.1</b> Stvaranje vektora</a></li>
+<li class="chapter" data-level="2.4.2" data-path="tipovi.html"><a href="tipovi.html#operator"><i class="fa fa-check"></i><b>2.4.2</b> Operator <code>[</code></a></li>
+<li class="chapter" data-level="2.4.3" data-path="tipovi.html"><a href="tipovi.html#principi-vektorizacije-i-recikliranja"><i class="fa fa-check"></i><b>2.4.3</b> Principi vektorizacije i recikliranja</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="tipovi.html"><a href="tipovi.html#indeksni-vektori"><i class="fa fa-check"></i><b>2.5</b> Indeksni vektori</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="tipovi.html"><a href="tipovi.html#lokacijsko-referenciranje"><i class="fa fa-check"></i><b>2.5.1</b> Lokacijsko referenciranje</a></li>
+<li class="chapter" data-level="2.5.2" data-path="tipovi.html"><a href="tipovi.html#uvjetno-referenciranje"><i class="fa fa-check"></i><b>2.5.2</b> Uvjetno referenciranje</a></li>
+<li class="chapter" data-level="2.5.3" data-path="tipovi.html"><a href="tipovi.html#imensko-referenciranje"><i class="fa fa-check"></i><b>2.5.3</b> Imensko referenciranje</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="tipovi.html"><a href="tipovi.html#matrice-i-polja"><i class="fa fa-check"></i><b>2.6</b> Matrice i polja</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="tipovi.html"><a href="tipovi.html#rezanje-matrica"><i class="fa fa-check"></i><b>2.6.1</b> Rezanje matrica</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="tipovi.html"><a href="tipovi.html#osnovne-operacije-matrične-algebre"><i class="fa fa-check"></i><b>2.7</b> Osnovne operacije matrične algebre</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="tipovi.html"><a href="tipovi.html#skalarni-produkt"><i class="fa fa-check"></i><b>2.7.1</b> Skalarni produkt</a></li>
+<li class="chapter" data-level="2.7.2" data-path="tipovi.html"><a href="tipovi.html#matrično-množenje"><i class="fa fa-check"></i><b>2.7.2</b> Matrično množenje</a></li>
+<li class="chapter" data-level="2.7.3" data-path="tipovi.html"><a href="tipovi.html#množenje-po-elementima"><i class="fa fa-check"></i><b>2.7.3</b> Množenje po elementima</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="tipovi.html"><a href="tipovi.html#funkcije-diag-upper.tri-lower.tri-i-solve"><i class="fa fa-check"></i><b>2.8</b> Funkcije <code>diag</code>, <code>upper.tri</code>, <code>lower.tri</code> i <code>solve</code></a></li>
+<li class="chapter" data-level="" data-path="tipovi.html"><a href="tipovi.html#zadaci-za-vježbu"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="okviri.html"><a href="okviri.html"><i class="fa fa-check"></i><b>3</b> Liste, podatkovni okviri i faktori</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="okviri.html"><a href="okviri.html#liste"><i class="fa fa-check"></i><b>3.1</b> Liste</a></li>
+<li class="chapter" data-level="3.2" data-path="okviri.html"><a href="okviri.html#podatkovni-okviri"><i class="fa fa-check"></i><b>3.2</b> Podatkovni okviri</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="okviri.html"><a href="okviri.html#odabir-redaka-i-stupaca-podatkovnih-okvira"><i class="fa fa-check"></i><b>3.2.1</b> Odabir redaka i stupaca podatkovnih okvira</a></li>
+<li class="chapter" data-level="3.2.2" data-path="okviri.html"><a href="okviri.html#dodavanje-i-brisanje-redaka-i-stupaca"><i class="fa fa-check"></i><b>3.2.2</b> Dodavanje i brisanje redaka i stupaca</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="okviri.html"><a href="okviri.html#faktori"><i class="fa fa-check"></i><b>3.3</b> Faktori</a></li>
+<li class="chapter" data-level="" data-path="okviri.html"><a href="okviri.html#zadaci-za-vježbu-1"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="uvjet.html"><a href="uvjet.html"><i class="fa fa-check"></i><b>4</b> Uvjetne naredbe i petlje</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="uvjet.html"><a href="uvjet.html#naredbe-kontrole-toka"><i class="fa fa-check"></i><b>4.1</b> Naredbe kontrole toka</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="uvjet.html"><a href="uvjet.html#uvjetno-izvođenje-naredbi"><i class="fa fa-check"></i><b>4.1.1</b> Uvjetno izvođenje naredbi</a></li>
+<li class="chapter" data-level="4.1.2" data-path="uvjet.html"><a href="uvjet.html#programske-petlje"><i class="fa fa-check"></i><b>4.1.2</b> Programske petlje</a></li>
+<li class="chapter" data-level="4.1.3" data-path="uvjet.html"><a href="uvjet.html#petlja-repeat"><i class="fa fa-check"></i><b>4.1.3</b> Petlja <code>repeat</code></a></li>
+<li class="chapter" data-level="4.1.4" data-path="uvjet.html"><a href="uvjet.html#petlja-while"><i class="fa fa-check"></i><b>4.1.4</b> Petlja <code>while</code></a></li>
+<li class="chapter" data-level="4.1.5" data-path="uvjet.html"><a href="uvjet.html#petlja-for"><i class="fa fa-check"></i><b>4.1.5</b> Petlja <code>for</code></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="uvjet.html"><a href="uvjet.html#zadaci-za-vježbu-2"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="paketi.html"><a href="paketi.html"><i class="fa fa-check"></i><b>5</b> Paketi, ugrađene funkcije i okoline</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="paketi.html"><a href="paketi.html#rad-s-paketima"><i class="fa fa-check"></i><b>5.1</b> Rad s paketima</a></li>
+<li class="chapter" data-level="5.2" data-path="paketi.html"><a href="paketi.html#ugrađene-funkcije"><i class="fa fa-check"></i><b>5.2</b> Ugrađene funkcije</a></li>
+<li class="chapter" data-level="5.3" data-path="paketi.html"><a href="paketi.html#okoline"><i class="fa fa-check"></i><b>5.3</b> Okoline</a></li>
+<li class="chapter" data-level="" data-path="paketi.html"><a href="paketi.html#zadaci-za-vježbu-3"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Programirajmo u R-u</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="uvjet" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> Uvjetne naredbe i petlje<a href="uvjet.html#uvjet" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<hr />
+<div id="naredbe-kontrole-toka" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Naredbe kontrole toka<a href="uvjet.html#naredbe-kontrole-toka" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Pod naredbama kontrole toka smatramo uglavnom konstrukte za uvjetno izvođenje naredbi i/ili tzv. “programske petlje” gdje se segment programa kontinuirano izvodi sve do (opcionalnog) ispunjavana određenih uvjeta koji će rezultirati “izlaskom” iz petlje i nastavljanjem programa.</p>
+<div id="uvjetno-izvođenje-naredbi" class="section level3 hasAnchor" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Uvjetno izvođenje naredbi<a href="uvjet.html#uvjetno-izvođenje-naredbi" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Uvjetno izvođenje naredbi već smo upoznali. Radi se o konstruktu <code>if (uvjet) { blok } else { blok }</code> pri čemu se vitičaste zagrade mogu izbaciti ako imamo samo jednu uvjetnu naredbu. Ovdje je možda zgodno napomenuti kako izbjeći jednu relativno čestu početničku grešku kod pisanja <code>if</code> naredbe. Pokušajte ju samostalno uočiti i ispraviti u sljedećem primjeru.</p>
+<hr />
+<p><strong>Zadatak 4.1 - naredba <code>if</code></strong></p>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="uvjet.html#cb197-1" tabindex="-1"></a><span class="co"># izvršite sljedeću naredbu uvjetnog izvođenja</span></span>
+<span id="cb197-2"><a href="uvjet.html#cb197-2" tabindex="-1"></a><span class="cf">if</span> (<span class="dv">2</span> <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="fu">print</span>(<span class="st">&quot;Uspjeh!&quot;</span>)</span>
+<span id="cb197-3"><a href="uvjet.html#cb197-3" tabindex="-1"></a></span>
+<span id="cb197-4"><a href="uvjet.html#cb197-4" tabindex="-1"></a></span>
+<span id="cb197-5"><a href="uvjet.html#cb197-5" tabindex="-1"></a><span class="co"># pronađite grešku u sljedećoj `if-else` naredbi i ispravite ju</span></span>
+<span id="cb197-6"><a href="uvjet.html#cb197-6" tabindex="-1"></a><span class="cf">if</span> (<span class="dv">1</span> <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="fu">print</span>(<span class="st">&quot;Uspjeh!&quot;</span>)</span>
+<span id="cb197-7"><a href="uvjet.html#cb197-7" tabindex="-1"></a><span class="cf">else</span> <span class="fu">print</span>(<span class="st">&quot;Neuspjeh!&quot;</span>)</span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="uvjet.html#cb198-1" tabindex="-1"></a><span class="co"># izvršite sljedeću naredbu uvjetnog izvođenja</span></span>
+<span id="cb198-2"><a href="uvjet.html#cb198-2" tabindex="-1"></a><span class="cf">if</span> (<span class="dv">2</span> <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="fu">print</span>(<span class="st">&quot;Uspjeh!&quot;</span>)</span>
+<span id="cb198-3"><a href="uvjet.html#cb198-3" tabindex="-1"></a></span>
+<span id="cb198-4"><a href="uvjet.html#cb198-4" tabindex="-1"></a></span>
+<span id="cb198-5"><a href="uvjet.html#cb198-5" tabindex="-1"></a><span class="co"># pronađite grešku u sljedećoj `if-else` naredbi i ispravite ju</span></span>
+<span id="cb198-6"><a href="uvjet.html#cb198-6" tabindex="-1"></a><span class="cf">if</span> (<span class="dv">1</span> <span class="sc">&gt;</span> <span class="dv">2</span>) { <span class="fu">print</span>(<span class="st">&quot;Uspjeh!&quot;</span>) </span>
+<span id="cb198-7"><a href="uvjet.html#cb198-7" tabindex="-1"></a>  } <span class="cf">else</span> <span class="fu">print</span>(<span class="st">&quot;Neuspjeh!&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;Uspjeh!&quot;
+## [1] &quot;Neuspjeh!&quot;</code></pre>
+</div>
+<hr />
+<p>Greška se javlja zbog toga što je R interpreterski jezik koji se u pravilu izvršava redak po redak, osim u slučajevima kada smo R-u proslijedili “nedovršenu” naredbu pri čemu će on čekati na “ostatak” prije no što krene sa izvršavanjem. U prethodnom primjeru druga naredba <code>if</code> je zapravo završena u prvom retku, tako da se R “iznenadi” kada idući redak počinje sa <code>else</code>. Kako bi spriječili ovaj scenarij, dovoljno je na nekim način objasniti R-u da naredba još nije dovršena, što je najlakše izvesti otvaranjem bloka u prvom retku i zatvaranjem u retku sa <code>else</code>.</p>
+<p>Čitateljima koji programiraju u jezicima C ili Java biti će poznat pojam tzv. “ternarnog operatora” koji zapravo predstavlja kompaktnu verziju <em>if-else</em> bloka:</p>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="uvjet.html#cb200-1" tabindex="-1"></a>x <span class="ot">=</span> (a <span class="sc">&lt;</span> b) ? c <span class="sc">:</span> d       <span class="co"># nije primjer iz jezika R!</span></span></code></pre></div>
+<p>Ulogu ovog operatora u R-u obavlja funkcija <code>ifelse</code>.</p>
+<hr />
+<p><strong>Zadatak 4.2 - funkcija <code>ifelse</code></strong></p>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="uvjet.html#cb201-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span></span>
+<span id="cb201-2"><a href="uvjet.html#cb201-2" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">4</span>)</span>
+<span id="cb201-3"><a href="uvjet.html#cb201-3" tabindex="-1"></a></span>
+<span id="cb201-4"><a href="uvjet.html#cb201-4" tabindex="-1"></a><span class="co"># kako izgleda vektor `x` nakon izvršavanja sljedeće naredbe?</span></span>
+<span id="cb201-5"><a href="uvjet.html#cb201-5" tabindex="-1"></a><span class="co"># razmislite o odgovoru a potom provjerite ispravnost rješenja</span></span>
+<span id="cb201-6"><a href="uvjet.html#cb201-6" tabindex="-1"></a></span>
+<span id="cb201-7"><a href="uvjet.html#cb201-7" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(a <span class="sc">&lt;</span> b, <span class="dv">2</span>, <span class="dv">5</span>)</span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="uvjet.html#cb202-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(a <span class="sc">&lt;</span> b, <span class="dv">2</span>, <span class="dv">5</span>)</span>
+<span id="cb202-2"><a href="uvjet.html#cb202-2" tabindex="-1"></a>x</span></code></pre></div>
+<pre><code>## [1] 2 2 2 2</code></pre>
+</div>
+<p>Uočite da je funkcija <code>ifelse</code> (očekivano) vektorizirana, zbog čega je posebno pogodna za stvaranje novih stupaca podatkovnih okvira koji su izvedeni iz određenih uvjeta vezanih uz postojeće stupce.</p>
+<p><strong>Zadatak 4.3 - funkcija <code>ifelse</code> i podatkovni okviri</strong></p>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="uvjet.html#cb204-1" tabindex="-1"></a><span class="co"># sljedećem podatkovnom okviru dodajte kategorijski stupac `dijagnoza` sa sljedećim vrijednostima</span></span>
+<span id="cb204-2"><a href="uvjet.html#cb204-2" tabindex="-1"></a><span class="co">#  - za otkucaje strogo manje od 60 &quot;bradikardija&quot;</span></span>
+<span id="cb204-3"><a href="uvjet.html#cb204-3" tabindex="-1"></a><span class="co">#  - za otkucaje strogo veće od 100 &quot;tahikardija&quot;</span></span>
+<span id="cb204-4"><a href="uvjet.html#cb204-4" tabindex="-1"></a><span class="co">#  - inače bez dijagnoze &quot;-&quot;</span></span>
+<span id="cb204-5"><a href="uvjet.html#cb204-5" tabindex="-1"></a>pacijenti <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, </span>
+<span id="cb204-6"><a href="uvjet.html#cb204-6" tabindex="-1"></a>                        <span class="at">otkucajiBpm =</span> <span class="fu">c</span>(<span class="dv">77</span>, <span class="dv">81</span>, <span class="dv">102</span>, <span class="dv">54</span>, <span class="dv">111</span>, <span class="dv">97</span>, <span class="dv">101</span>, <span class="dv">68</span>, <span class="dv">86</span>, <span class="dv">51</span>))</span>
+<span id="cb204-7"><a href="uvjet.html#cb204-7" tabindex="-1"></a></span>
+<span id="cb204-8"><a href="uvjet.html#cb204-8" tabindex="-1"></a><span class="co"># ispišite podatkovni okvir `pacijenti`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="uvjet.html#cb205-1" tabindex="-1"></a>pacijenti<span class="sc">$</span>dijagnoza <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(pacijenti<span class="sc">$</span>otkucajiBpm <span class="sc">&lt;</span> <span class="dv">60</span>, <span class="st">&quot;bradikardija&quot;</span>,</span>
+<span id="cb205-2"><a href="uvjet.html#cb205-2" tabindex="-1"></a>                              <span class="fu">ifelse</span>(pacijenti<span class="sc">$</span>otkucajiBpm <span class="sc">&gt;</span> <span class="dv">100</span>, <span class="st">&quot;tahikardija&quot;</span>, <span class="st">&quot;-&quot;</span>))</span>
+<span id="cb205-3"><a href="uvjet.html#cb205-3" tabindex="-1"></a>pacijenti<span class="sc">$</span>dijagnoza <span class="ot">&lt;-</span> <span class="fu">factor</span>(pacijenti<span class="sc">$</span>dijagnoza)</span>
+<span id="cb205-4"><a href="uvjet.html#cb205-4" tabindex="-1"></a></span>
+<span id="cb205-5"><a href="uvjet.html#cb205-5" tabindex="-1"></a>pacijenti</span></code></pre></div>
+<pre><code>##    id otkucajiBpm    dijagnoza
+## 1   1          77            -
+## 2   2          81            -
+## 3   3         102  tahikardija
+## 4   4          54 bradikardija
+## 5   5         111  tahikardija
+## 6   6          97            -
+## 7   7         101  tahikardija
+## 8   8          68            -
+## 9   9          86            -
+## 10 10          51 bradikardija</code></pre>
+</div>
+<hr />
+</div>
+<div id="programske-petlje" class="section level3 hasAnchor" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> Programske petlje<a href="uvjet.html#programske-petlje" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>U programskom jeziku R imamo tri tipa petlji:</p>
+<ul>
+<li><code>repeat</code> - beskonačna petlja</li>
+<li><code>while</code> - petlja s provjerom uvjeta na početku</li>
+<li><code>for</code> - iteratorska petlja (“petlja s poznatim brojem ponavljanja”)</li>
+</ul>
+</div>
+<div id="petlja-repeat" class="section level3 hasAnchor" number="4.1.3">
+<h3><span class="header-section-number">4.1.3</span> Petlja <code>repeat</code><a href="uvjet.html#petlja-repeat" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Petlja <code>repeat</code> je najjednostavnija petlja. Ona ima sljedeću sintaksu:</p>
+<p><code>repeat {blok}</code></p>
+<p>Ovdje se radi o “beskonačnoj” petlji gdje se nakon završetka bloka on ponovo izvršava i tako unedogled. Jedini način izlaska iz ovakve petlje jest korištenje naredbe <code>break</code>. Pored ove naredbe imamo i naredbu <code>next</code> koja će preskočiti ostatak bloka, ali neće izaći iz petlje već će nastaviti izvršavati blok.</p>
+<p>Pogledajmo kako radi ova petlja u sljedećoj vježbi.</p>
+<p><strong>Zadatak 4.4 - Petlja <code>repeat</code></strong></p>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="uvjet.html#cb207-1" tabindex="-1"></a><span class="co"># napravite isječak koji simulira bacanje kockice dok ne dobijete broj 6 tri puta</span></span>
+<span id="cb207-2"><a href="uvjet.html#cb207-2" tabindex="-1"></a><span class="co"># ispišite broj bacanja</span></span>
+<span id="cb207-3"><a href="uvjet.html#cb207-3" tabindex="-1"></a><span class="co"># koristite se funkcijom `sample` i petljom `repeat`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="uvjet.html#cb208-1" tabindex="-1"></a>sestica <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb208-2"><a href="uvjet.html#cb208-2" tabindex="-1"></a>bacanja <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb208-3"><a href="uvjet.html#cb208-3" tabindex="-1"></a><span class="cf">repeat</span> {</span>
+<span id="cb208-4"><a href="uvjet.html#cb208-4" tabindex="-1"></a>  bacanja <span class="ot">&lt;-</span> bacanja <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb208-5"><a href="uvjet.html#cb208-5" tabindex="-1"></a>  rez <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">1</span>)</span>
+<span id="cb208-6"><a href="uvjet.html#cb208-6" tabindex="-1"></a>  <span class="cf">if</span> (rez <span class="sc">==</span> <span class="dv">6</span>) sestica <span class="ot">&lt;-</span> sestica <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb208-7"><a href="uvjet.html#cb208-7" tabindex="-1"></a>  <span class="cf">if</span> (sestica <span class="sc">==</span> <span class="dv">3</span>) <span class="cf">break</span></span>
+<span id="cb208-8"><a href="uvjet.html#cb208-8" tabindex="-1"></a>}</span>
+<span id="cb208-9"><a href="uvjet.html#cb208-9" tabindex="-1"></a></span>
+<span id="cb208-10"><a href="uvjet.html#cb208-10" tabindex="-1"></a>bacanja</span></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+</div>
+<p>Ovdje smo vidjeli jednostavan primjer programske simulacije - njima ćemo se detaljnije baviti u jednom od budućih poglavlja.</p>
+<p>Često unaprijed znamo uvjet izlaska iz petlje te bismo ga htjeli staviti na jasno vidljivo mjesto tako da nije “skriven” u tijelu petlje. Za to nam pomaže tzv. <code>while</code> petlja.</p>
+</div>
+<div id="petlja-while" class="section level3 hasAnchor" number="4.1.4">
+<h3><span class="header-section-number">4.1.4</span> Petlja <code>while</code><a href="uvjet.html#petlja-while" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Petlja <code>while</code> predstavlja “najčišći” oblik programske petlje čija sintaksa doslovno glasi “dok je uvjet ispunjen, ponavljaj navedeni kod”:</p>
+<p><code>while (uvjet) {blok}</code></p>
+<p><strong>Zadatak 4.5 - Petlja <code>while</code></strong></p>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="uvjet.html#cb210-1" tabindex="-1"></a><span class="co"># preoblikujte rješenje prethodnog zadatka tako da koristi petlju `while`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="uvjet.html#cb211-1" tabindex="-1"></a>sestica <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb211-2"><a href="uvjet.html#cb211-2" tabindex="-1"></a>bacanja <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb211-3"><a href="uvjet.html#cb211-3" tabindex="-1"></a><span class="cf">while</span> (sestica <span class="sc">&lt;</span> <span class="dv">3</span>) {</span>
+<span id="cb211-4"><a href="uvjet.html#cb211-4" tabindex="-1"></a>  bacanja <span class="ot">&lt;-</span> bacanja <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb211-5"><a href="uvjet.html#cb211-5" tabindex="-1"></a>  rez <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">1</span>)</span>
+<span id="cb211-6"><a href="uvjet.html#cb211-6" tabindex="-1"></a>  <span class="cf">if</span> (rez <span class="sc">==</span> <span class="dv">6</span>) sestica <span class="ot">&lt;-</span> sestica <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb211-7"><a href="uvjet.html#cb211-7" tabindex="-1"></a>}</span>
+<span id="cb211-8"><a href="uvjet.html#cb211-8" tabindex="-1"></a></span>
+<span id="cb211-9"><a href="uvjet.html#cb211-9" tabindex="-1"></a>bacanja</span></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+</div>
+<p>Kod ove petlje moramo paziti da se u određenoj iteraciji moraju stvoriti uvjeti za izlaz, inače ona također postaje “beskonačna” petlja. Usprkos tome što imamo jasno definiran način izlaska iz petlje, mi i u ovoj petlji možemo slobodno koristiti ključne riječi <code>next</code> i <code>break</code>, koje imaju istu funkciju kao i kod petlje <code>repeat</code>.</p>
+<p><strong>Zadatak 4.6 - Petlja <code>while</code> (2)</strong></p>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="uvjet.html#cb213-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1234</span></span>
+<span id="cb213-2"><a href="uvjet.html#cb213-2" tabindex="-1"></a>nbin <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">0</span>)</span>
+<span id="cb213-3"><a href="uvjet.html#cb213-3" tabindex="-1"></a>  </span>
+<span id="cb213-4"><a href="uvjet.html#cb213-4" tabindex="-1"></a><span class="co"># napunite vektor `nbin` znamenkama `n` pretvorenog u binarni oblik</span></span>
+<span id="cb213-5"><a href="uvjet.html#cb213-5" tabindex="-1"></a><span class="co"># primjer: ako je `n` bio 12, `nbin` bi trebao biti c(1,1,0,0)</span></span>
+<span id="cb213-6"><a href="uvjet.html#cb213-6" tabindex="-1"></a><span class="co"># koristite se petljom `while` </span></span>
+<span id="cb213-7"><a href="uvjet.html#cb213-7" tabindex="-1"></a><span class="co"># naputak: proučite kako radi funkcija `rev` koja se u ovom zadatku može pokazati korisnom</span></span>
+<span id="cb213-8"><a href="uvjet.html#cb213-8" tabindex="-1"></a></span>
+<span id="cb213-9"><a href="uvjet.html#cb213-9" tabindex="-1"></a><span class="co"># ispišite `nbin` na zaslon</span></span>
+<span id="cb213-10"><a href="uvjet.html#cb213-10" tabindex="-1"></a></span>
+<span id="cb213-11"><a href="uvjet.html#cb213-11" tabindex="-1"></a><span class="co"># (opcionalno) ispišite rezultat sljedeće naredbe na zaslon</span></span>
+<span id="cb213-12"><a href="uvjet.html#cb213-12" tabindex="-1"></a><span class="co"># paste(nbin, collapse = &quot;&quot;)</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="uvjet.html#cb214-1" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1234</span></span>
+<span id="cb214-2"><a href="uvjet.html#cb214-2" tabindex="-1"></a>nbin <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">0</span>)</span>
+<span id="cb214-3"><a href="uvjet.html#cb214-3" tabindex="-1"></a>  </span>
+<span id="cb214-4"><a href="uvjet.html#cb214-4" tabindex="-1"></a><span class="cf">while</span> (n <span class="sc">!=</span> <span class="dv">0</span>) {</span>
+<span id="cb214-5"><a href="uvjet.html#cb214-5" tabindex="-1"></a>  nbin <span class="ot">&lt;-</span> <span class="fu">c</span>(nbin, n <span class="sc">%%</span> <span class="dv">2</span>)</span>
+<span id="cb214-6"><a href="uvjet.html#cb214-6" tabindex="-1"></a>  n <span class="ot">&lt;-</span> n <span class="sc">%/%</span> <span class="dv">2</span></span>
+<span id="cb214-7"><a href="uvjet.html#cb214-7" tabindex="-1"></a>}</span>
+<span id="cb214-8"><a href="uvjet.html#cb214-8" tabindex="-1"></a></span>
+<span id="cb214-9"><a href="uvjet.html#cb214-9" tabindex="-1"></a>nbin <span class="ot">&lt;-</span> <span class="fu">rev</span>(nbin)</span>
+<span id="cb214-10"><a href="uvjet.html#cb214-10" tabindex="-1"></a>nbin</span>
+<span id="cb214-11"><a href="uvjet.html#cb214-11" tabindex="-1"></a></span>
+<span id="cb214-12"><a href="uvjet.html#cb214-12" tabindex="-1"></a><span class="fu">paste</span>(nbin, <span class="at">collapse =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<pre><code>##  [1] 1 0 0 1 1 0 1 0 0 1 0
+## [1] &quot;10011010010&quot;</code></pre>
+</div>
+</div>
+<div id="petlja-for" class="section level3 hasAnchor" number="4.1.5">
+<h3><span class="header-section-number">4.1.5</span> Petlja <code>for</code><a href="uvjet.html#petlja-for" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Petlja <code>for</code> ili “iteratorska petlja” služi za lako “šetanje” po nekoj programskoj strukturi (najčešće vektoru), uzimajući element po element i nešto radeći s njim. Ona koristi ključnu riječ <code>for</code>, ime nove (iteratorske) varijable, ključnu riječ <code>in</code> te vektor čije vrijednosti se uzimaju jedna po jedna i koriste unutar petlje (uočite da navedeni <code>in</code> nije isto što i operator <code>%in%</code> koji provjerava da li se neki element nalazi u nekom skupu!).</p>
+<p>Sintaksa ove petlje je sljedeća:</p>
+<ul>
+<li>“standardna” inačica:</li>
+</ul>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="uvjet.html#cb216-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> v) { </span>
+<span id="cb216-2"><a href="uvjet.html#cb216-2" tabindex="-1"></a>  <span class="co"># radi nešto sa i</span></span>
+<span id="cb216-3"><a href="uvjet.html#cb216-3" tabindex="-1"></a>}   </span></code></pre></div>
+<ul>
+<li>“indeksna” inačica:</li>
+</ul>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="uvjet.html#cb217-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(a)) {</span>
+<span id="cb217-2"><a href="uvjet.html#cb217-2" tabindex="-1"></a>  <span class="co"># radi nešto sa a[i]</span></span>
+<span id="cb217-3"><a href="uvjet.html#cb217-3" tabindex="-1"></a>}</span></code></pre></div>
+<ul>
+<li>“imenska” inačica (ako <code>a</code> ima definirana imena):</li>
+</ul>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="uvjet.html#cb218-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">names</span>(a)) {</span>
+<span id="cb218-2"><a href="uvjet.html#cb218-2" tabindex="-1"></a>  <span class="co"># radi nešto sa a[i]</span></span>
+<span id="cb218-3"><a href="uvjet.html#cb218-3" tabindex="-1"></a>}</span></code></pre></div>
+<p><strong>Zadatak 4.7 - Petlja <code>for</code></strong></p>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="uvjet.html#cb219-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)   <span class="co"># radi ponovljivosti</span></span>
+<span id="cb219-2"><a href="uvjet.html#cb219-2" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1000</span><span class="sc">:</span><span class="dv">9999</span>, <span class="dv">50</span>)</span>
+<span id="cb219-3"><a href="uvjet.html#cb219-3" tabindex="-1"></a></span>
+<span id="cb219-4"><a href="uvjet.html#cb219-4" tabindex="-1"></a><span class="co"># ispišite sve elemente vektora `a` koji su djeljivi sa 7 </span></span>
+<span id="cb219-5"><a href="uvjet.html#cb219-5" tabindex="-1"></a><span class="co"># uz pomoć petlje `for`</span></span>
+<span id="cb219-6"><a href="uvjet.html#cb219-6" tabindex="-1"></a><span class="co"># pristupajte elementima direktno</span></span>
+<span id="cb219-7"><a href="uvjet.html#cb219-7" tabindex="-1"></a></span>
+<span id="cb219-8"><a href="uvjet.html#cb219-8" tabindex="-1"></a></span>
+<span id="cb219-9"><a href="uvjet.html#cb219-9" tabindex="-1"></a><span class="co"># ispišite elemente vektora `a` koji su djeljivi sa 7 i njihove pozicije</span></span>
+<span id="cb219-10"><a href="uvjet.html#cb219-10" tabindex="-1"></a><span class="co"># a potom ih zamijenite nulom</span></span>
+<span id="cb219-11"><a href="uvjet.html#cb219-11" tabindex="-1"></a><span class="co"># koristite se funkcijom `paste` (npr. paste(1,2) -&gt; &quot;1 2&quot;)</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="uvjet.html#cb220-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> a) {</span>
+<span id="cb220-2"><a href="uvjet.html#cb220-2" tabindex="-1"></a>  <span class="cf">if</span> (i <span class="sc">%%</span> <span class="dv">7</span> <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">print</span>(i)</span>
+<span id="cb220-3"><a href="uvjet.html#cb220-3" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] 3773
+## [1] 1995
+## [1] 1078
+## [1] 7448
+## [1] 6895</code></pre>
+</div>
+<div class="fold s o">
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="uvjet.html#cb222-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(a)) {</span>
+<span id="cb222-2"><a href="uvjet.html#cb222-2" tabindex="-1"></a>  <span class="cf">if</span> (a[i] <span class="sc">%%</span> <span class="dv">7</span> <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb222-3"><a href="uvjet.html#cb222-3" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste</span>(a[i], i))</span>
+<span id="cb222-4"><a href="uvjet.html#cb222-4" tabindex="-1"></a>    a[i] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb222-5"><a href="uvjet.html#cb222-5" tabindex="-1"></a>  }</span>
+<span id="cb222-6"><a href="uvjet.html#cb222-6" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;3773 10&quot;
+## [1] &quot;1995 21&quot;
+## [1] &quot;1078 37&quot;
+## [1] &quot;7448 38&quot;
+## [1] &quot;6895 50&quot;</code></pre>
+</div>
+<p>Uočite da je drugi način bolji ako želite mijenjati elemente vektora ili imati informaciju na kojem mjestu unutar originalnog vektora se trenutno nalazite.</p>
+<p><strong>Zadatak 4.8 - Petlja <code>for</code> (2)</strong></p>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="uvjet.html#cb224-1" tabindex="-1"></a><span class="co"># pročitajte podatke iz datoteke &quot;people.csv&quot; u podatkovni okvir `people`</span></span>
+<span id="cb224-2"><a href="uvjet.html#cb224-2" tabindex="-1"></a><span class="co"># potom uz pomoć petlje `for` za svaki numerički stupac</span></span>
+<span id="cb224-3"><a href="uvjet.html#cb224-3" tabindex="-1"></a><span class="co"># ispišite njegov naziv i aritmetičku sredinu njegovih vrijednosti (funkcija `mean`)</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="uvjet.html#cb225-1" tabindex="-1"></a><span class="co"># pročitajte podatke iz datoteke &quot;people.csv&quot; u podatkovni okvir `people`</span></span>
+<span id="cb225-2"><a href="uvjet.html#cb225-2" tabindex="-1"></a><span class="co"># potom uz pomoć petlje `for` za svaki numerički stupac</span></span>
+<span id="cb225-3"><a href="uvjet.html#cb225-3" tabindex="-1"></a><span class="co"># ispišite njegov naziv i aritmetičku sredinu njegovih vrijednosti (funkcija `mean`)</span></span>
+<span id="cb225-4"><a href="uvjet.html#cb225-4" tabindex="-1"></a></span>
+<span id="cb225-5"><a href="uvjet.html#cb225-5" tabindex="-1"></a>people <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;people.csv&quot;</span>)</span>
+<span id="cb225-6"><a href="uvjet.html#cb225-6" tabindex="-1"></a></span>
+<span id="cb225-7"><a href="uvjet.html#cb225-7" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(people)) {</span>
+<span id="cb225-8"><a href="uvjet.html#cb225-8" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.numeric</span>(people[[i]])) {</span>
+<span id="cb225-9"><a href="uvjet.html#cb225-9" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste</span>(<span class="fu">names</span>(people)[i], <span class="fu">mean</span>(people[[i]])))</span>
+<span id="cb225-10"><a href="uvjet.html#cb225-10" tabindex="-1"></a>  } </span>
+<span id="cb225-11"><a href="uvjet.html#cb225-11" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;birthyear 1978.404&quot;
+## [1] &quot;weight 75.1223&quot;
+## [1] &quot;height 160.51908&quot;</code></pre>
+</div>
+<hr />
+<p>Sad kad smo naučili sintaksu petlji važno je naglasiti jednu činjenicu - <strong>u programskom jeziku R u pravilu se ne preporučuje korištenje programskih petlji</strong> . Iako ovo inicijalno možda djeluje neočekivano i pomalo šokantno, razlog je jednostavan - R je jezik dizajniran upravo da radi po principu “sve odjednom”. Već smo vidjeli da principu vektoriziranosti i recikliranja učinkovito obavljaju poslove koji bi u drugim programskim jezicima zahtijevali petlju, a u poglavljima koje slijede vidjet ćemo da R nudi i mnoge druge konstrukte koji izbjegavaju eksplicitno ponavljanje koda uz uvjet nauštrb deklarativne sintakse koja to obavlja automatski.</p>
+<p>Na primjer, sljedeći primjer je sintaksno potpuno ispravan:</p>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="uvjet.html#cb227-1" tabindex="-1"></a><span class="co"># primjer nepotrebnog korištenja petlje</span></span>
+<span id="cb227-2"><a href="uvjet.html#cb227-2" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
+<span id="cb227-3"><a href="uvjet.html#cb227-3" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">6</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb227-4"><a href="uvjet.html#cb227-4" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">numeric</span>()</span>
+<span id="cb227-5"><a href="uvjet.html#cb227-5" tabindex="-1"></a></span>
+<span id="cb227-6"><a href="uvjet.html#cb227-6" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(a)) c[i] <span class="ot">&lt;-</span> a[i] <span class="sc">+</span> b[i]</span></code></pre></div>
+<p>ali vjerojatno radi sporije i puno je nečitljiviji od:</p>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="uvjet.html#cb228-1" tabindex="-1"></a><span class="co"># R-ovska sintaksa</span></span>
+<span id="cb228-2"><a href="uvjet.html#cb228-2" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
+<span id="cb228-3"><a href="uvjet.html#cb228-3" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">6</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb228-4"><a href="uvjet.html#cb228-4" tabindex="-1"></a></span>
+<span id="cb228-5"><a href="uvjet.html#cb228-5" tabindex="-1"></a>c <span class="ot">&lt;-</span> a <span class="sc">+</span> b</span></code></pre></div>
+<p>Sve navedeno naravno ne znači da petlje u R-u ne smijemo koristiti, samo da bi njihovo korištenje trebalo biti popraćeno dodatnim razmatranjem da li je na tom mjestu petlja zaista potrebna te da li postoji alternativna sintaksa koji isti posao obavlja deklarativno (i potencijalno brže, budući da su mnoge rutine R-a implementirane u jeziku C). Rano prihvaćanje “R-ovskog” načina razmišljanja rezultirati će dugoročnim benefitom koji će se očitovati kompaktnijim, čišćim i često učinkovitijim programskim kodom.</p>
+<hr />
+</div>
+</div>
+<div id="zadaci-za-vježbu-2" class="section level2 unnumbered hasAnchor">
+<h2>Zadaci za vježbu<a href="uvjet.html#zadaci-za-vježbu-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Stvorite podatkovni okvir mjesto uz pomoć sljedeće naredbe:</li>
+</ol>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="uvjet.html#cb229-1" tabindex="-1"></a>mjesto <span class="ot">&lt;-</span> <span class="fu">data.frame</span>( <span class="at">pbr =</span> <span class="fu">c</span>(<span class="dv">10000</span>, <span class="dv">51000</span>, <span class="dv">21000</span>, <span class="dv">31000</span>, <span class="dv">2000</span>),</span>
+<span id="cb229-2"><a href="uvjet.html#cb229-2" tabindex="-1"></a>         <span class="at">nazivMjesta =</span> <span class="fu">c</span>(<span class="st">&quot;Zagreb&quot;</span>, <span class="st">&quot;Rijeka&quot;</span>, <span class="st">&quot;Split&quot;</span>, <span class="st">&quot;Osijek&quot;</span>, <span class="st">&quot;Dubrovnik&quot;</span>),</span>
+<span id="cb229-3"><a href="uvjet.html#cb229-3" tabindex="-1"></a>         <span class="at">prirez =</span> <span class="fu">c</span>(<span class="dv">18</span>, <span class="dv">15</span>, <span class="dv">10</span>, <span class="dv">13</span>, <span class="dv">10</span>))</span></code></pre></div>
+<p>Dodajte ovom okviru stupac <code>prirezOpis</code> koji će biti ordinalna faktorska varijabla sa razinama <code>"mali"</code>, <code>"srednji"</code> i <code>"visok"</code> ovisno o tome da li je postotak prireza strogo manji od 12, između 12 i 15 ili strogo veći od 15. Koristite se naredbom <code>ifelse</code>.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Zamijenite petlje u sljedećem bloku ekvivalentnim vektoriziranim operacijama (za drugu petlju proučite dokumentaciju funkcije <code>sum</code>).</li>
+</ol>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="uvjet.html#cb230-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">numeric</span>()</span>
+<span id="cb230-2"><a href="uvjet.html#cb230-2" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb230-3"><a href="uvjet.html#cb230-3" tabindex="-1"></a></span>
+<span id="cb230-4"><a href="uvjet.html#cb230-4" tabindex="-1"></a><span class="cf">while</span> (i <span class="sc">&lt;=</span> <span class="dv">100</span>)  {</span>
+<span id="cb230-5"><a href="uvjet.html#cb230-5" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">c</span>(a, i)</span>
+<span id="cb230-6"><a href="uvjet.html#cb230-6" tabindex="-1"></a>  i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb230-7"><a href="uvjet.html#cb230-7" tabindex="-1"></a>}</span>
+<span id="cb230-8"><a href="uvjet.html#cb230-8" tabindex="-1"></a></span>
+<span id="cb230-9"><a href="uvjet.html#cb230-9" tabindex="-1"></a>suma <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb230-10"><a href="uvjet.html#cb230-10" tabindex="-1"></a></span>
+<span id="cb230-11"><a href="uvjet.html#cb230-11" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> a) {</span>
+<span id="cb230-12"><a href="uvjet.html#cb230-12" tabindex="-1"></a>  <span class="cf">if</span> (i <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) suma <span class="ot">&lt;-</span> suma <span class="sc">+</span> i<span class="sc">*</span>i</span>
+<span id="cb230-13"><a href="uvjet.html#cb230-13" tabindex="-1"></a>}</span>
+<span id="cb230-14"><a href="uvjet.html#cb230-14" tabindex="-1"></a></span>
+<span id="cb230-15"><a href="uvjet.html#cb230-15" tabindex="-1"></a><span class="fu">print</span>(suma)</span></code></pre></div>
+<hr />
+<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Programirajmo u R-u</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.fer.unizg.hr/en/damir.pintar" property="cc:attributionName" rel="cc:attributionURL">Damir Pintar</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://ratnip.github.io/FER_OPJR/" rel="dct:source">https://ratnip.github.io/FER_OPJR/</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="okviri.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="paketi.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "google", "twitter", "weibo", "instapaper"],
+    "google": false,
+    "instapper": false
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": true
+  },
+  "toolbar": {
+    "position": "fixed",
+    "edit": null,
+    "download": null,
+    "search": true
+  }
+});
+});
+</script>
+
+</body>
+
+</html>

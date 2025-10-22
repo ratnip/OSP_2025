@@ -45,3 +45,14 @@ podatkovni-okviri
 odabir-redaka-i-stupaca-podatkovnih-okvira
 dodavanje-i-brisanje-redaka-i-stupaca
 faktori
+uvjet
+naredbe-kontrole-toka
+uvjetno-izvođenje-naredbi
+programske-petlje
+petlja-repeat
+petlja-while
+petlja-for
+paketi
+rad-s-paketima
+ugrađene-funkcije
+okoline
