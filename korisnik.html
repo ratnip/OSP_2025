@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>6 Korisnički definirane funkcije | Programirajmo u R-u</title>
+  <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="6 Korisnički definirane funkcije | Programirajmo u R-u" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="6 Korisnički definirane funkcije | Programirajmo u R-u" />
+  
+  <meta name="twitter:description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  
+
+<meta name="author" content="Damir Pintar" />
+
+
+<meta name="date" content="2025-11-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="paketi.html"/>
+<link rel="next" href="objekti.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+.showopt {
+  background-color: #004c93;
+  color: #FFFFFF; 
+  width: 140px;
+  height: 4	0px;
+  text-align: center;
+  vertical-align: middle !important;
+  float: right;
+  font-family: sans-serif;
+  font-size:10 pt;
+  border-radius: 8px;
+}
+
+.showopt:hover {
+    background-color: #dfe4f2;
+    color: #004c93;
+}
+
+pre.plot {
+  background-color: white !important;
+}
+</style>
+
+<script>
+ $(document).ready(function() {
+
+  $chunks = $('.fold');
+
+  $chunks.each(function () {
+
+    // add button to source code chunks
+    if ( $(this).hasClass('s') ) {
+      $('pre.r', this).prepend("<div class=\"showopt\">Prikaži rješenje</div><br style=\"line-height:22px;\"/>");
+      $('pre.r', this).children('code').attr('class', 'folded');
+    }
+
+    // add button to output chunks
+    if ( $(this).hasClass('o') ) {
+      $('pre:not(.r)', this).has('code').prepend("<div class=\"showopt\">Prikaži ispis</div><br style=\"line-height:22px;\"/>");
+      $('pre:not(.r)', this).children('code:not(r)').addClass('folded');
+
+      // add button to plots
+      $(this).find('img').wrap('<pre class=\"plot\"></pre>');
+      $('pre.plot', this).prepend("<div class=\"showopt\">Prikaži sliku</div><br style=\"line-height:22px;\"/>");
+      $('pre.plot', this).children('img').addClass('folded');
+
+    }
+  });
+
+  // hide all chunks when document is loaded
+  $('.folded').css('display', 'none')
+
+  // function to toggle the visibility
+  $('.showopt').click(function() {
+    var label = $(this).html();
+    if (label.indexOf("Prikaži") >= 0) {
+      $(this).html(label.replace("Prikaži", "Sakrij"));
+    } else {
+      $(this).html(label.replace("Sakrij", "Prikaži"));
+    }
+    $(this).siblings('code, img').slideToggle('fast', 'swing');
+  });
+});
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>(Udžbenik za predmet “Osnove statističkog programiranja”)</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#predgovor"><i class="fa fa-check"></i>Predgovor</a></li>
+</ul></li>
+<li class="part"><span><b>I Osnovni elementi jezika R</b></span></li>
+<li class="chapter" data-level="1" data-path="uvod.html"><a href="uvod.html"><i class="fa fa-check"></i><b>1</b> Uvod</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="uvod.html"><a href="uvod.html#što-je-programski-jezik-r"><i class="fa fa-check"></i><b>1.1</b> Što je programski jezik R?</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="uvod.html"><a href="uvod.html#općenito-o-r-u"><i class="fa fa-check"></i><b>1.1.1</b> Općenito o R-u</a></li>
+<li class="chapter" data-level="1.1.2" data-path="uvod.html"><a href="uvod.html#alternative-jeziku-r"><i class="fa fa-check"></i><b>1.1.2</b> Alternative jeziku R</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="uvod.html"><a href="uvod.html#instalacija-programske-podrške"><i class="fa fa-check"></i><b>1.2</b> Instalacija programske podrške</a></li>
+<li class="chapter" data-level="1.3" data-path="uvod.html"><a href="uvod.html#pregled-razvojnog-sučelja-rstudio"><i class="fa fa-check"></i><b>1.3</b> Pregled razvojnog sučelja <em>RStudio</em></a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="uvod.html"><a href="uvod.html#interaktivna-konzola"><i class="fa fa-check"></i><b>1.3.1</b> Interaktivna konzola</a></li>
+<li class="chapter" data-level="1.3.2" data-path="uvod.html"><a href="uvod.html#pisanje-r-skripti"><i class="fa fa-check"></i><b>1.3.2</b> Pisanje R skripti</a></li>
+<li class="chapter" data-level="1.3.3" data-path="uvod.html"><a href="uvod.html#instalacija-dodatnih-paketa"><i class="fa fa-check"></i><b>1.3.3</b> Instalacija dodatnih paketa</a></li>
+<li class="chapter" data-level="1.3.4" data-path="uvod.html"><a href="uvod.html#r-markdown"><i class="fa fa-check"></i><b>1.3.4</b> <em>R Markdown</em></a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="uvod.html"><a href="uvod.html#organizacija-procesa-podatkovne-analize-uz-r-i-rstudio"><i class="fa fa-check"></i><b>1.4</b> Organizacija procesa podatkovne analize uz R i RStudio</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="uvod.html"><a href="uvod.html#poželjne-karakteristike-procesa-analize-podataka"><i class="fa fa-check"></i><b>1.4.1</b> Poželjne karakteristike procesa analize podataka</a></li>
+<li class="chapter" data-level="1.4.2" data-path="uvod.html"><a href="uvod.html#organizacija-mapa-za-potrebe-analize-podataka"><i class="fa fa-check"></i><b>1.4.2</b> Organizacija mapa za potrebe analize podataka</a></li>
+<li class="chapter" data-level="1.4.3" data-path="uvod.html"><a href="uvod.html#pojam-projekta"><i class="fa fa-check"></i><b>1.4.3</b> Pojam projekta</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="uvod.html"><a href="uvod.html#kako-koristiti-ovaj-udžbenik"><i class="fa fa-check"></i><b>1.5</b> Kako koristiti ovaj udžbenik?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="tipovi.html"><a href="tipovi.html"><i class="fa fa-check"></i><b>2</b> Osnovni elementi, vektori i matrice</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tipovi.html"><a href="tipovi.html#osnovni-tipovi-podataka"><i class="fa fa-check"></i><b>2.1</b> Osnovni tipovi podataka</a></li>
+<li class="chapter" data-level="2.2" data-path="tipovi.html"><a href="tipovi.html#operatori"><i class="fa fa-check"></i><b>2.2</b> Operatori</a></li>
+<li class="chapter" data-level="2.3" data-path="tipovi.html"><a href="tipovi.html#nedostajuće-nepoznate-i-nemoguće-vrijednosti"><i class="fa fa-check"></i><b>2.3</b> Nedostajuće, nepoznate i nemoguće vrijednosti</a></li>
+<li class="chapter" data-level="2.4" data-path="tipovi.html"><a href="tipovi.html#vektori"><i class="fa fa-check"></i><b>2.4</b> Vektori</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="tipovi.html"><a href="tipovi.html#stvaranje-vektora"><i class="fa fa-check"></i><b>2.4.1</b> Stvaranje vektora</a></li>
+<li class="chapter" data-level="2.4.2" data-path="tipovi.html"><a href="tipovi.html#operator"><i class="fa fa-check"></i><b>2.4.2</b> Operator <code>[</code></a></li>
+<li class="chapter" data-level="2.4.3" data-path="tipovi.html"><a href="tipovi.html#principi-vektorizacije-i-recikliranja"><i class="fa fa-check"></i><b>2.4.3</b> Principi vektorizacije i recikliranja</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="tipovi.html"><a href="tipovi.html#indeksni-vektori"><i class="fa fa-check"></i><b>2.5</b> Indeksni vektori</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="tipovi.html"><a href="tipovi.html#lokacijsko-referenciranje"><i class="fa fa-check"></i><b>2.5.1</b> Lokacijsko referenciranje</a></li>
+<li class="chapter" data-level="2.5.2" data-path="tipovi.html"><a href="tipovi.html#uvjetno-referenciranje"><i class="fa fa-check"></i><b>2.5.2</b> Uvjetno referenciranje</a></li>
+<li class="chapter" data-level="2.5.3" data-path="tipovi.html"><a href="tipovi.html#imensko-referenciranje"><i class="fa fa-check"></i><b>2.5.3</b> Imensko referenciranje</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="tipovi.html"><a href="tipovi.html#matrice-i-polja"><i class="fa fa-check"></i><b>2.6</b> Matrice i polja</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="tipovi.html"><a href="tipovi.html#rezanje-matrica"><i class="fa fa-check"></i><b>2.6.1</b> Rezanje matrica</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="tipovi.html"><a href="tipovi.html#osnovne-operacije-matrične-algebre"><i class="fa fa-check"></i><b>2.7</b> Osnovne operacije matrične algebre</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="tipovi.html"><a href="tipovi.html#skalarni-produkt"><i class="fa fa-check"></i><b>2.7.1</b> Skalarni produkt</a></li>
+<li class="chapter" data-level="2.7.2" data-path="tipovi.html"><a href="tipovi.html#matrično-množenje"><i class="fa fa-check"></i><b>2.7.2</b> Matrično množenje</a></li>
+<li class="chapter" data-level="2.7.3" data-path="tipovi.html"><a href="tipovi.html#množenje-po-elementima"><i class="fa fa-check"></i><b>2.7.3</b> Množenje po elementima</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="tipovi.html"><a href="tipovi.html#funkcije-diag-upper.tri-lower.tri-i-solve"><i class="fa fa-check"></i><b>2.8</b> Funkcije <code>diag</code>, <code>upper.tri</code>, <code>lower.tri</code> i <code>solve</code></a></li>
+<li class="chapter" data-level="" data-path="tipovi.html"><a href="tipovi.html#zadaci-za-vježbu"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="okviri.html"><a href="okviri.html"><i class="fa fa-check"></i><b>3</b> Liste, podatkovni okviri i faktori</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="okviri.html"><a href="okviri.html#liste"><i class="fa fa-check"></i><b>3.1</b> Liste</a></li>
+<li class="chapter" data-level="3.2" data-path="okviri.html"><a href="okviri.html#podatkovni-okviri"><i class="fa fa-check"></i><b>3.2</b> Podatkovni okviri</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="okviri.html"><a href="okviri.html#odabir-redaka-i-stupaca-podatkovnih-okvira"><i class="fa fa-check"></i><b>3.2.1</b> Odabir redaka i stupaca podatkovnih okvira</a></li>
+<li class="chapter" data-level="3.2.2" data-path="okviri.html"><a href="okviri.html#dodavanje-i-brisanje-redaka-i-stupaca"><i class="fa fa-check"></i><b>3.2.2</b> Dodavanje i brisanje redaka i stupaca</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="okviri.html"><a href="okviri.html#faktori"><i class="fa fa-check"></i><b>3.3</b> Faktori</a></li>
+<li class="chapter" data-level="" data-path="okviri.html"><a href="okviri.html#zadaci-za-vježbu-1"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="uvjet.html"><a href="uvjet.html"><i class="fa fa-check"></i><b>4</b> Uvjetne naredbe i petlje</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="uvjet.html"><a href="uvjet.html#naredbe-kontrole-toka"><i class="fa fa-check"></i><b>4.1</b> Naredbe kontrole toka</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="uvjet.html"><a href="uvjet.html#uvjetno-izvođenje-naredbi"><i class="fa fa-check"></i><b>4.1.1</b> Uvjetno izvođenje naredbi</a></li>
+<li class="chapter" data-level="4.1.2" data-path="uvjet.html"><a href="uvjet.html#programske-petlje"><i class="fa fa-check"></i><b>4.1.2</b> Programske petlje</a></li>
+<li class="chapter" data-level="4.1.3" data-path="uvjet.html"><a href="uvjet.html#petlja-repeat"><i class="fa fa-check"></i><b>4.1.3</b> Petlja <code>repeat</code></a></li>
+<li class="chapter" data-level="4.1.4" data-path="uvjet.html"><a href="uvjet.html#petlja-while"><i class="fa fa-check"></i><b>4.1.4</b> Petlja <code>while</code></a></li>
+<li class="chapter" data-level="4.1.5" data-path="uvjet.html"><a href="uvjet.html#petlja-for"><i class="fa fa-check"></i><b>4.1.5</b> Petlja <code>for</code></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="uvjet.html"><a href="uvjet.html#zadaci-za-vježbu-2"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="paketi.html"><a href="paketi.html"><i class="fa fa-check"></i><b>5</b> Paketi, ugrađene funkcije i okoline</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="paketi.html"><a href="paketi.html#rad-s-paketima"><i class="fa fa-check"></i><b>5.1</b> Rad s paketima</a></li>
+<li class="chapter" data-level="5.2" data-path="paketi.html"><a href="paketi.html#ugrađene-funkcije"><i class="fa fa-check"></i><b>5.2</b> Ugrađene funkcije</a></li>
+<li class="chapter" data-level="5.3" data-path="paketi.html"><a href="paketi.html#okoline"><i class="fa fa-check"></i><b>5.3</b> Okoline</a></li>
+<li class="chapter" data-level="" data-path="paketi.html"><a href="paketi.html#zadaci-za-vježbu-3"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="korisnik.html"><a href="korisnik.html"><i class="fa fa-check"></i><b>6</b> Korisnički definirane funkcije</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="korisnik.html"><a href="korisnik.html#kako-definirati-funkciju"><i class="fa fa-check"></i><b>6.1</b> Kako definirati funkciju</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="korisnik.html"><a href="korisnik.html#princip-kopiranja-kod-izmjene-copy-on-modify"><i class="fa fa-check"></i><b>6.1.1</b> Princip “kopiranja kod izmjene” (copy-on-modify)</a></li>
+<li class="chapter" data-level="6.1.2" data-path="korisnik.html"><a href="korisnik.html#funkcija-kao-objekt"><i class="fa fa-check"></i><b>6.1.2</b> Funkcija kao objekt</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="korisnik.html"><a href="korisnik.html#generičke-funkcije"><i class="fa fa-check"></i><b>6.2</b> Generičke funkcije</a></li>
+<li class="chapter" data-level="6.3" data-path="korisnik.html"><a href="korisnik.html#što-su-apply-funkcije"><i class="fa fa-check"></i><b>6.3</b> Što su <code>apply</code> funkcije?</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="korisnik.html"><a href="korisnik.html#funkcija-apply"><i class="fa fa-check"></i><b>6.3.1</b> Funkcija <code>apply</code></a></li>
+<li class="chapter" data-level="6.3.2" data-path="korisnik.html"><a href="korisnik.html#funkcije-lapply-sapply-i-vapply"><i class="fa fa-check"></i><b>6.3.2</b> Funkcije <code>lapply</code>, <code>sapply</code> i <code>vapply</code></a></li>
+<li class="chapter" data-level="6.3.3" data-path="korisnik.html"><a href="korisnik.html#ostale-funkcije-iz-porodice-apply-i-dostupne-alternative"><i class="fa fa-check"></i><b>6.3.3</b> Ostale funkcije iz porodice <code>apply</code> i dostupne alternative</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="korisnik.html"><a href="korisnik.html#zadaci-za-vježbu-4"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="objekti.html"><a href="objekti.html"><i class="fa fa-check"></i><b>7</b> Objektni modeli</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="objekti.html"><a href="objekti.html#objektni-modeli-u-jeziku-r"><i class="fa fa-check"></i><b>7.1</b> Objektni modeli u jeziku R</a></li>
+<li class="chapter" data-level="7.2" data-path="objekti.html"><a href="objekti.html#pomoćni-paket-sloop"><i class="fa fa-check"></i><b>7.2</b> Pomoćni paket <code>sloop</code></a></li>
+<li class="chapter" data-level="7.3" data-path="objekti.html"><a href="objekti.html#pregled-objektnog-modela-s3"><i class="fa fa-check"></i><b>7.3</b> Pregled objektnog modela S3</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="objekti.html"><a href="objekti.html#konstruktorska-funkcija"><i class="fa fa-check"></i><b>7.3.1</b> Konstruktorska funkcija</a></li>
+<li class="chapter" data-level="7.3.2" data-path="objekti.html"><a href="objekti.html#generičke-funkcije-1"><i class="fa fa-check"></i><b>7.3.2</b> Generičke funkcije</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Programirajmo u R-u</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="korisnik" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">6</span> Korisnički definirane funkcije<a href="korisnik.html#korisnik" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<hr />
+<p>Programski jezik R, iako objektnog tipa, u svojoj je srži jezik za funkcijsko programiranje. Ova programska paradigma nije nova (datira još iz 50-tih godina prošlog stoljeća), no u posljednje vrijeme dobiva znatno na popularnosti kao svojevrsni komplement objektno-orijentiranom programiranju, za koje bi se moglo reći da je dominantna programska paradigma u zadnjih nekoliko desetljeća.</p>
+<p>Kako ne bi preduboko ulazili u značajke funkcijskog programiranja te provodili detaljnu usporednu analizu sa objektno-orijentiranim principima, navesti ćemo samo nekoliko okvirnih značajki i smjernica vezano uz te dvije paradigme. <strong>Objektno-orijentirano programiranje</strong> u principu program gleda kao <strong>sustav imenica</strong> gdje komponente realiziramo u obliku objekata koji enkapsuliraju atribute spomenute imenice te metoda koje izvršavaju određene zadatke vezane uz navedenu imenicu. Isto tako, objektno-orijentirani sustavi usredotočavaju se na <strong>kontroliranu izmjenu stanja komponenata</strong> informacijskog sustava kao rezultat razmjene poruka između njih. <strong>Funkcijsko programiranje</strong> program gleda kao <strong>sustav glagola</strong> gdje funkcije, tj zadaci koje želimo izvršavati imaju prioritet naspram komponenata nad kojima se ti zadaci izvršavaju. Funkcijsko programiranje modelira informacijski sustav kroz <strong>komponente koje u pravilu ne mijenjaju vlastito stanje</strong>, tako da rezultat programa strogo ovisi o ulazima što olakšava testiranje i održavanje. Ukratko, razlika između objektno-orijentiranog programiranja i funkcijskog programiranje se često navodi na sljedeći način: <em>“Kod objektno-orijentiranog programiranja stvaramo podatke koji sadrže funkcije; kod funkcijskog stvaramo funkcije koje sadrže podatke”</em>.</p>
+<p>Za učenje R-a ne moramo se previše zamarati sa karakteristikama funkcijskog programiranja niti biti primorani usvojiti potpuno novu programsku paradigmu. No za uspješno učenje R-a svladavanje nekih koncepata funkcijskog programiranja može se pokazati iznimno korisnim budući da će nam omogućiti pisanje čišćeg i učinkovitijeg programskog koda koji će biti u skladu sa načinom na koji je R kao jezik i dizajniran. U R-u vrijedi sljedeće: <em>funkcije su “punokrvni” objekti</em>, možemo ih <em>referencirati varijablom</em> iz birane okoline, <em>slati u funkcije</em> kao argumente, <em>primati kao povratnu vrijednost</em> funkcije ili <em>pohranjivati u podatkovne strukture</em> kao što je npr. lista. Funkcija u R-u je jednostavno objekt kojeg se može “izvršiti” tj. natjerati da obavi neki posao. Veliki broj funkcija - pogotovo onih koje zamjenjuju konstrukt programske petlje - radi na principu funkcijskih jezika gdje posao obavljamo na način da deklarativno navedemo koju funkciju želimo primijeniti na kojoj podatkovnoj strukturi te pustimo da programski jezik sam obavlja niskorazinske poslove kao što je iteriranje po strukturi i pripremanje rezultata. Primjere ovoga ćemo naučiti uskoro, a sada se prvo upoznajmo sa sintaksom definiranja funkcije u R-u.</p>
+<hr />
+<div id="kako-definirati-funkciju" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Kako definirati funkciju<a href="korisnik.html#kako-definirati-funkciju" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>U općenitom slučaju, definicija nove funkcije izgleda ovako:</p>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="korisnik.html#cb262-1" tabindex="-1"></a>ime_funkcije <span class="ot">&lt;-</span> <span class="cf">function</span>(ulazni argumenti) {</span>
+<span id="cb262-2"><a href="korisnik.html#cb262-2" tabindex="-1"></a>    tijelo funkcije</span>
+<span id="cb262-3"><a href="korisnik.html#cb262-3" tabindex="-1"></a>  <span class="fu">return</span>(izraz)</span>
+<span id="cb262-4"><a href="korisnik.html#cb262-4" tabindex="-1"></a>}</span></code></pre></div>
+<p>Uočimo da kod definicije funkcije koristimo operator <code>&lt;-</code>. Ovo nije slučajno - definicija funkcije nije ništa drugo nego stvaranje objekta klase <code>function</code> kojeg onda pridružujemo određenoj varijabli; ime varijable zapravo je “naziv” funkcije.</p>
+<p>U R-u ne definiramo tipove ulaznih i izlaznih argumenata. Ulazni argumenti imaju ime i opcionalnu nazivnu vrijednost. Funkcija formalno vraća jednu vrijednost, što nije nužno restrikcija ukoliko želimo vratiti više vrijednosti - jednostavno ih enkapsuliramo u obliku vektora ili liste. Ključna riječ <code>return</code> je opcionalna - funkcija vraća rezultat zadnjeg izraza u funkciji pa je često dovoljno navesti samo varijablu koja predstavlja povratnu vrijednost kao zadnji red funkcije.</p>
+<p>Konačno, ukoliko želimo povećati robusnost funkcije na način da ćemo odbiti izvođenje logike unutar funkcije ako nisu zadovoljeni određeni uvjeti, za to možemo koristiti funkciju <code>stopifnot(&lt;logički izraz&gt;)</code>. Ova funkcija izračunava zadani logički izraz i prekida funkciju ako navedeni uvjet <em>nije istinit</em>.</p>
+<hr />
+<p><strong>Zadatak 6.1 - prva korisnički definirana funkcija</strong></p>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="korisnik.html#cb263-1" tabindex="-1"></a><span class="co"># napišite funkciju `veci` koja prima dva numerička vektora iste duljine </span></span>
+<span id="cb263-2"><a href="korisnik.html#cb263-2" tabindex="-1"></a><span class="co"># i vraća vektor koji sadrži veći od dva elementa na istim mjestima</span></span>
+<span id="cb263-3"><a href="korisnik.html#cb263-3" tabindex="-1"></a><span class="co"># ukoliko jedan ili oba vektora nisu numerički ili nisu iste duljine, </span></span>
+<span id="cb263-4"><a href="korisnik.html#cb263-4" tabindex="-1"></a><span class="co"># funkcija mora izbaciti grešku</span></span>
+<span id="cb263-5"><a href="korisnik.html#cb263-5" tabindex="-1"></a><span class="co"># u funkciji nemojte koristiti petlje</span></span>
+<span id="cb263-6"><a href="korisnik.html#cb263-6" tabindex="-1"></a></span>
+<span id="cb263-7"><a href="korisnik.html#cb263-7" tabindex="-1"></a><span class="co"># pozovite funkciju `veci` nad kombinacijama vektora</span></span>
+<span id="cb263-8"><a href="korisnik.html#cb263-8" tabindex="-1"></a><span class="co"># c(T, F, T) i c(1, 2, 3)</span></span>
+<span id="cb263-9"><a href="korisnik.html#cb263-9" tabindex="-1"></a><span class="co"># c(1, 2, 3, 4) i c(5, 6, 7)</span></span>
+<span id="cb263-10"><a href="korisnik.html#cb263-10" tabindex="-1"></a><span class="co"># c(1, 2, 3) i c(0, 4, 2)</span></span>
+<span id="cb263-11"><a href="korisnik.html#cb263-11" tabindex="-1"></a></span>
+<span id="cb263-12"><a href="korisnik.html#cb263-12" tabindex="-1"></a><span class="co"># (preporuka - drugi dio zadatka isprobati direktno u konzoli!)</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="korisnik.html#cb264-1" tabindex="-1"></a><span class="co"># napišite funkciju `veci` koja prima dva numerička vektora iste duljine </span></span>
+<span id="cb264-2"><a href="korisnik.html#cb264-2" tabindex="-1"></a><span class="co"># i vraća vektor koji sadrži veći od dva elementa na istim mjestima</span></span>
+<span id="cb264-3"><a href="korisnik.html#cb264-3" tabindex="-1"></a><span class="co"># ukoliko jedan ili oba vektora nisu numerički ili nisu iste duljine, </span></span>
+<span id="cb264-4"><a href="korisnik.html#cb264-4" tabindex="-1"></a><span class="co"># funkcija mora izbaciti grešku</span></span>
+<span id="cb264-5"><a href="korisnik.html#cb264-5" tabindex="-1"></a><span class="co"># u funkciji nemojte koristiti petlje</span></span>
+<span id="cb264-6"><a href="korisnik.html#cb264-6" tabindex="-1"></a></span>
+<span id="cb264-7"><a href="korisnik.html#cb264-7" tabindex="-1"></a>veci <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
+<span id="cb264-8"><a href="korisnik.html#cb264-8" tabindex="-1"></a>    <span class="fu">stopifnot</span>(<span class="fu">is.numeric</span>(a) <span class="sc">&amp;&amp;</span> <span class="fu">is.numeric</span>(b) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(a) <span class="sc">==</span> <span class="fu">length</span>(b));</span>
+<span id="cb264-9"><a href="korisnik.html#cb264-9" tabindex="-1"></a>    <span class="fu">ifelse</span>(a <span class="sc">&gt;</span> b, a, b)</span>
+<span id="cb264-10"><a href="korisnik.html#cb264-10" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<hr />
+<p>Kod poziva funkcije možemo ali ne moramo navesti imena parametara, a R dozvoljava miješanje imenovanih i neimenovanih parametara (iako to nije nešto što bismo trebali često koristiti u praksi). Kada R bude povezivao poslane vrijednosti sa formalnim parametrima, imenovani parametri imati će prioritet te će se prvi razriješiti, a potom će se redom razrješavati neimenovani parametri.</p>
+<p>U ovo se možemo uvjeriti u sljedećem zadatku, u kojem ćemo usput iskoristiti priliku i pokazati rad jedne vrlo često korištene funkcije - <code>paste</code>. Ova funkcija konkatenira znakovne nizove uz dodavanje razmaka (za spajanje bez razmaka postoji alternativna funkcija <code>paste0</code>).</p>
+<hr />
+<p><strong>Zadatak 6.2 - parametri funkcije</strong></p>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="korisnik.html#cb265-1" tabindex="-1"></a>ispisiABC <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b, c) {</span>
+<span id="cb265-2"><a href="korisnik.html#cb265-2" tabindex="-1"></a>   <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;A:&quot;</span>, a, <span class="st">&quot;B:&quot;</span>, b, <span class="st">&quot;C:&quot;</span>, c))   </span>
+<span id="cb265-3"><a href="korisnik.html#cb265-3" tabindex="-1"></a>}</span>
+<span id="cb265-4"><a href="korisnik.html#cb265-4" tabindex="-1"></a></span>
+<span id="cb265-5"><a href="korisnik.html#cb265-5" tabindex="-1"></a><span class="co"># razmislite - što ispisuje sljedeći poziv funkcije? </span></span>
+<span id="cb265-6"><a href="korisnik.html#cb265-6" tabindex="-1"></a><span class="fu">ispisiABC</span>(<span class="dv">1</span>, <span class="at">a =</span> <span class="dv">2</span>, <span class="dv">3</span>)</span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="korisnik.html#cb266-1" tabindex="-1"></a>ispisiABC <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b, c) {</span>
+<span id="cb266-2"><a href="korisnik.html#cb266-2" tabindex="-1"></a>   <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;A:&quot;</span>, a, <span class="st">&quot;B:&quot;</span>, b, <span class="st">&quot;C:&quot;</span>, c))   </span>
+<span id="cb266-3"><a href="korisnik.html#cb266-3" tabindex="-1"></a>}</span>
+<span id="cb266-4"><a href="korisnik.html#cb266-4" tabindex="-1"></a></span>
+<span id="cb266-5"><a href="korisnik.html#cb266-5" tabindex="-1"></a><span class="fu">ispisiABC</span>(<span class="dv">1</span>, <span class="at">a =</span> <span class="dv">2</span>, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;A: 2 B: 1 C: 3&quot;</code></pre>
+</div>
+<hr />
+<p>U praksi bismo se trebali držati konvencije da prvo koristimo neimenovane parametre, a potom imenovane. Uobičajeno je da postavljamo samo one imenovane parametre čija nazivna vrijednost nam ne odgovara pri čemu strogi raspored nije bitan (iako će praćenje rasporeda zadanog potpisom funkcije povećati čitljivost našeg koda).</p>
+<p>Ako želimo napisati funkciju koja prima proizvoljan broj argumenata, koristimo se elementom <code>...</code>, tj. trotočkom. Primjer ovakve funkcije jest gore prikazana ugrađena funkcija <code>paste</code> koja može primiti proizvoljan broj znakovnih nizova. Ako koristimo trotočku u našoj funkciji, u potpisu ju u pravilu stavljamo na kraj liste argumenata, a unutar same funkcije ju potom jednostavno pretvorimo u listu te potom pristupamo njenim parametrima na način koji nam odgovara.</p>
+<hr />
+<p><strong>Zadatak 6.3 - funkcija sa proizvoljnim brojem parametara</strong></p>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="korisnik.html#cb268-1" tabindex="-1"></a>ispisiParametre <span class="ot">&lt;-</span> <span class="cf">function</span>(...) {</span>
+<span id="cb268-2"><a href="korisnik.html#cb268-2" tabindex="-1"></a>   parametri <span class="ot">&lt;-</span> <span class="fu">list</span>(...)</span>
+<span id="cb268-3"><a href="korisnik.html#cb268-3" tabindex="-1"></a>   <span class="cf">for</span> (p <span class="cf">in</span> parametri) <span class="fu">print</span>(p)</span>
+<span id="cb268-4"><a href="korisnik.html#cb268-4" tabindex="-1"></a>}</span>
+<span id="cb268-5"><a href="korisnik.html#cb268-5" tabindex="-1"></a></span>
+<span id="cb268-6"><a href="korisnik.html#cb268-6" tabindex="-1"></a><span class="co"># pozovite gornju funkciju sa proizvoljnim parametrima</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="korisnik.html#cb269-1" tabindex="-1"></a><span class="fu">ispisiParametre</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="dv">5</span>, T, <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">y =</span> <span class="fu">c</span>(T, F)))</span></code></pre></div>
+<pre><code>## [1] 1 2 3
+## [1] 5
+## [1] TRUE
+##   x     y
+## 1 1  TRUE
+## 2 2 FALSE</code></pre>
+</div>
+<hr />
+<p>Za kraj, prisjetimo se priče o S3 objektima i činjenice da R nema formalni sustav stvaranja i korištenja objekata, ali da se preporučuje korištenje zasebne konstruktorske funkcije koja zamjenjuje “ručno” slaganje objekta i deklariranje njegove klase. Sada kada znamo stvoriti vlastitu funkciju možemo pogledati kako bi izgledao mogući konstruktor klase <code>Osoba</code>.</p>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="korisnik.html#cb271-1" tabindex="-1"></a><span class="co"># konstruktor klase osoba</span></span>
+<span id="cb271-2"><a href="korisnik.html#cb271-2" tabindex="-1"></a></span>
+<span id="cb271-3"><a href="korisnik.html#cb271-3" tabindex="-1"></a>Osoba <span class="ot">&lt;-</span> <span class="cf">function</span>(oib, prezime, tezina) {</span>
+<span id="cb271-4"><a href="korisnik.html#cb271-4" tabindex="-1"></a></span>
+<span id="cb271-5"><a href="korisnik.html#cb271-5" tabindex="-1"></a>    <span class="fu">stopifnot</span>(<span class="fu">is.character</span>(oib))</span>
+<span id="cb271-6"><a href="korisnik.html#cb271-6" tabindex="-1"></a>    <span class="fu">stopifnot</span>(<span class="fu">is.character</span>(prezime))</span>
+<span id="cb271-7"><a href="korisnik.html#cb271-7" tabindex="-1"></a>    <span class="fu">stopifnot</span>(<span class="fu">is.numeric</span>(tezina) <span class="sc">&amp;&amp;</span> tezina <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb271-8"><a href="korisnik.html#cb271-8" tabindex="-1"></a></span>
+<span id="cb271-9"><a href="korisnik.html#cb271-9" tabindex="-1"></a>    o <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">oib =</span> oib, <span class="at">prezime =</span> prezime, <span class="at">tezina =</span> tezina)</span>
+<span id="cb271-10"><a href="korisnik.html#cb271-10" tabindex="-1"></a>    <span class="fu">class</span>(o) <span class="ot">&lt;-</span> <span class="st">&quot;Osoba&quot;</span></span>
+<span id="cb271-11"><a href="korisnik.html#cb271-11" tabindex="-1"></a></span>
+<span id="cb271-12"><a href="korisnik.html#cb271-12" tabindex="-1"></a>    o</span>
+<span id="cb271-13"><a href="korisnik.html#cb271-13" tabindex="-1"></a>}</span></code></pre></div>
+<p>Pokušajmo uz pomoć prikazanog konstruktora stvoriti novi objekt klase <code>Osoba</code>.</p>
+<hr />
+<p><strong>Zadatak 6.4 - konstruktorska funkcija</strong></p>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="korisnik.html#cb272-1" tabindex="-1"></a><span class="co"># stvorite varijablu `ivo` koja će biti klase `Osoba` a koja će imati sljedeće vrijednosti atributa:</span></span>
+<span id="cb272-2"><a href="korisnik.html#cb272-2" tabindex="-1"></a><span class="co"># OIB: 1357135713, prezime: Ivić, tezina: 76</span></span>
+<span id="cb272-3"><a href="korisnik.html#cb272-3" tabindex="-1"></a></span>
+<span id="cb272-4"><a href="korisnik.html#cb272-4" tabindex="-1"></a><span class="co"># ispišite varijablu `ivo`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="korisnik.html#cb273-1" tabindex="-1"></a>ivo <span class="ot">&lt;-</span> <span class="fu">Osoba</span>(<span class="st">&quot;135135713&quot;</span>, <span class="st">&quot;Ivić&quot;</span>, <span class="dv">76</span>)</span>
+<span id="cb273-2"><a href="korisnik.html#cb273-2" tabindex="-1"></a></span>
+<span id="cb273-3"><a href="korisnik.html#cb273-3" tabindex="-1"></a>ivo</span></code></pre></div>
+<pre><code>## $oib
+## [1] &quot;135135713&quot;
+## 
+## $prezime
+## [1] &quot;Ivić&quot;
+## 
+## $tezina
+## [1] 76
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;Osoba&quot;</code></pre>
+</div>
+<hr />
+<p>Prednost konstruktora je dodatna robustnost u vidu točno definiranih imena atributa ali i mogućnosti ugrađivanja i dodatnih kontrola (npr. <code>OIB</code> i <code>prezime</code> moraju biti znakovni nizovi dok <code>tezina</code> mora biti realni broj i sl.). Ukoliko stvaramo vlastite S3 objekte, preporuka je da za njih definiramo pripadajuće konstruktorske funkcije.</p>
+<hr />
+<div id="princip-kopiranja-kod-izmjene-copy-on-modify" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Princip “kopiranja kod izmjene” (copy-on-modify)<a href="korisnik.html#princip-kopiranja-kod-izmjene-copy-on-modify" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Jedno od češćih pitanja koje se postavlja kod učenja novih programskih jezika jest da li funkcije rade na način “poziva preko vrijednosti” (engl. <em>call-by-value</em>) ili “poziva preko reference” (engl. <em>call-by-reference</em>). Razlika se svodi na sposobnost funkcije da mijenja vrijednosti varijabli koje su poslane na mjestu formalnih argumenata funkcije; kod <em>call-by-value</em> principa u funkciju se šalju samo “vrijednosti” parametara, tj. “kopije” originalnih argumenata. S druge strane, kod “<em>call-by-reference</em>” principa funkcija prima “reference” originalnih varijabli, tj. ponaša se kao da su originalne varijable proslijeđene funkciji i sve izmjene nad njima odraziti će se u pozivajućem programu.</p>
+<p>Jezik R koristi hibridni princip poznat po nazivom “kopiranje kod izmjene” (engl. <em>copy-on-modify</em>). Kod ovog principa u funkciju se prosljeđuju reference argumenata, što nam omogućuje da prenosimo i “velike” varijable bez straha da će doći do nepotrebnog kopiranja. No ovo vrijedi samo ukoliko funkcija ne mijenja vrijednost dobivenih varijabli - u trenutku kada funkcija pokuša provesti bilo kakvu izmjenu, provodi se kopiranje varijable i funkcija dalje nastavlja rad na kopiji. Zbog ovoga se kaže da R kao takav ne podržava <em>call-by-reference</em> (jedan razlog uvođenja objekata tipa “<em>reference classes</em>” tj. RC objekata u jezik R upravo je uvođenje ovog principa).</p>
+<p>Provjerimo gore navedene tvrdnje na konkretnom primjeru.</p>
+<hr />
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="korisnik.html#cb275-1" tabindex="-1"></a><span class="co"># pokušaj izmjene varijable iz pozivajuće okoline</span></span>
+<span id="cb275-2"><a href="korisnik.html#cb275-2" tabindex="-1"></a></span>
+<span id="cb275-3"><a href="korisnik.html#cb275-3" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb275-4"><a href="korisnik.html#cb275-4" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">&quot;x u funkciji:&quot;</span>, x, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb275-5"><a href="korisnik.html#cb275-5" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb275-6"><a href="korisnik.html#cb275-6" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">&quot;x nakon izmjene:&quot;</span>, x, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb275-7"><a href="korisnik.html#cb275-7" tabindex="-1"></a>}</span>
+<span id="cb275-8"><a href="korisnik.html#cb275-8" tabindex="-1"></a></span>
+<span id="cb275-9"><a href="korisnik.html#cb275-9" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb275-10"><a href="korisnik.html#cb275-10" tabindex="-1"></a><span class="fu">f</span>()</span>
+<span id="cb275-11"><a href="korisnik.html#cb275-11" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;x nakon povratka:&quot;</span>, x, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>## x u funkciji: 5 
+## x nakon izmjene: 6 
+## x nakon povratka: 5</code></pre>
+<hr />
+<p>Funkcija pri izvođenju stvara <strong>privremenu vlastitu okolinu</strong> unutar koje se pohranjuju “lokalne” varijable. U gornjem primjeru unutar tijela funkcije <code>f</code> pojavljuje se varijabla <code>x</code> koja “maskira” vanjsku varijablu <code>x</code> tako da se sve izmjene više ne odražavaju na vrijednost vanjske varijable. Važno je uočiti da funkcija pristupa vanjskoj varijabli čak i bez njenog slanja u funkciju, budući da referenciranje varijable <code>x</code> koja ne postoji u lokalnoj okolini funkcije R pretragu nastavio u okolini roditelju što bi u ovom slučaju bila globalna okolina. Pokušaj izmjene ove varijable ipak ne uspijeva - R <strong>detektira pokušaj izmjene varijable i stvara lokalnu kopiju istog imena</strong>.</p>
+<p>Da li ovo znači da funkcija nikada ne može mijenjati varijable iz pozivajuće okoline? Naravno da ne - jedan od načina kako ovo izvesti jest taj da funkciji pošaljemo referencu na okolinu unutar kojeg se nalazi objekt kojeg mijenjamo (ili pustimo funkciju da sama dohvati referencu na globalnu okolinu ukoliko se varijabla tamo nalazi).</p>
+<hr />
+<p><strong>Zadatak 6.5 - izmjena varijable globalne okoline</strong></p>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="korisnik.html#cb277-1" tabindex="-1"></a><span class="co"># implementirajte funkciju f tako da dohvati referencu na globalnu okolinu </span></span>
+<span id="cb277-2"><a href="korisnik.html#cb277-2" tabindex="-1"></a><span class="co"># i poveća &quot;vanjski&quot; x za 1</span></span>
+<span id="cb277-3"><a href="korisnik.html#cb277-3" tabindex="-1"></a></span>
+<span id="cb277-4"><a href="korisnik.html#cb277-4" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb277-5"><a href="korisnik.html#cb277-5" tabindex="-1"></a><span class="co"># pozovite f(x) i ispisite x</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="korisnik.html#cb278-1" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb278-2"><a href="korisnik.html#cb278-2" tabindex="-1"></a>  e <span class="ot">&lt;-</span> <span class="fu">globalenv</span>()</span>
+<span id="cb278-3"><a href="korisnik.html#cb278-3" tabindex="-1"></a>  e<span class="sc">$</span>x <span class="ot">&lt;-</span> e<span class="sc">$</span>x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb278-4"><a href="korisnik.html#cb278-4" tabindex="-1"></a>}</span>
+<span id="cb278-5"><a href="korisnik.html#cb278-5" tabindex="-1"></a></span>
+<span id="cb278-6"><a href="korisnik.html#cb278-6" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb278-7"><a href="korisnik.html#cb278-7" tabindex="-1"></a><span class="fu">f</span>()</span>
+<span id="cb278-8"><a href="korisnik.html#cb278-8" tabindex="-1"></a><span class="fu">print</span>(x)</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+</div>
+<hr />
+<p>Jednostavniji način rješavanja gornjeg zadatka bio bi korištenjem operatora <code>&lt;&lt;-</code>. Ovo je tzv. “operator dodjele vanjskom opsegu” (engl. <em>scoping assignment operator</em>), a njegova funkcija jest da izmjeni varijablu zadanog imena koja se nalazi ’negdje” na stazi pretrage. R ide sekvencijalno po stazi pretrage i mijenja prvu pojavu navedene varijable. Ukoliko varijabla tog naziva ne postoji nigdje u stazi pretrage, R će stvoriti novu varijablu u prvoj okolini iznad okoline funkcije.</p>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="korisnik.html#cb280-1" tabindex="-1"></a><span class="co"># operator `&lt;&lt;-`</span></span>
+<span id="cb280-2"><a href="korisnik.html#cb280-2" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb280-3"><a href="korisnik.html#cb280-3" tabindex="-1"></a>    x <span class="ot">&lt;&lt;-</span> <span class="dv">7</span></span>
+<span id="cb280-4"><a href="korisnik.html#cb280-4" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb280-5"><a href="korisnik.html#cb280-5" tabindex="-1"></a>}</span>
+<span id="cb280-6"><a href="korisnik.html#cb280-6" tabindex="-1"></a></span>
+<span id="cb280-7"><a href="korisnik.html#cb280-7" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb280-8"><a href="korisnik.html#cb280-8" tabindex="-1"></a><span class="fu">f</span>()</span>
+<span id="cb280-9"><a href="korisnik.html#cb280-9" tabindex="-1"></a>x</span></code></pre></div>
+<pre><code>## [1] 7</code></pre>
+<p>Ovaj operator je potencijalno nepredvidiv tako da ćemo veću robusnost ipak postići korištenjem funkcije <code>assign</code> ili operatora <code>$</code> uz referencu na okolinu gdje se nalazi varijabla koju želimo mijenjati.</p>
+<p>Za kraj spomenimo samo jedno svojstvo funkcija u R-u - tzv. “lijena evaluacija” (engl. <em>lazy evaluation</em>). Ovo jednostavno znači da R neće evaluirati primljeni parametar sve do trenutka kada ga eksplicitno koristimo. Do tog trenutka taj objekt je tzv. “obećanje” (engl. <em>promise</em>) - R “zna” kako evaluirati taj objekt ali to ne radi dok zaista ne treba a do tada imamo samo njegovo obećanje da će to učiniti :) . Na ovaj način povećava se učinkovitost jezika; ako se neki parametar koristi samo u nekoj uvjetnoj grani, onda se u scenarijima kada on nije potreban neće na njega trošiti memorija. No isto tako, moramo biti oprezni jer lijena evaluacija može dovesti do neočekivanih problema ako ne vodimo računa o njenom postojanju.</p>
+</div>
+<div id="funkcija-kao-objekt" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Funkcija kao objekt<a href="korisnik.html#funkcija-kao-objekt" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Već smo rekli da R ima kvalitetnu podršku za tzv. “funkcionalno programiranje” što predstavlja programsku paradigmu koja naglasak stavlja na dizajniranje funkcija bez oslanjanja na objekte sa izmjenjivim stanjima. Jedna od karakteristika ovakvih jezika su i tzv. “funkcije prve klase” (engl. <em>first class functions</em>), što zapravo znači da jezik podržava definiciju funkcija na način da su one ravnopravni objekti svim drugim tipovima objekata - mogu se pohraniti u varijablu, koristiti kao ulazni argument druge funkcije ili kao njezina povratna vrijednost, pohranjivati u druge podatkovne strukture i sl. Iako koncepti funkcionalnog programiranja izlaze iz okvira gradiva kojeg želimo prikazati, činjenicu da R tretira funkcije kao sve druge objekte je vrlo važno znati budući da se ova činjenica iznimno često koristi kod programiranja u jeziku R.</p>
+<p>Pokažimo ovo na trivijalnom primjeru. Znamo da R nudi funkciju <code>sum</code> unutar paketa <code>base</code> koja računa aritmetičku sumu elemenata vektora koje joj proslijedimo. No <code>sum</code> je zapravo <em>ime varijable</em> koja referencira kod koji implementira dotičnu funkciju. Ukoliko želimo, možemo vrlo lako pridružiti ovu funkciju nekoj drugoj varijabli čime smo joj efektivno “promijenili ime” ili bolje reći dodali alternativni način pozivanja iz potpuno druge okoline.</p>
+<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb282-1"><a href="korisnik.html#cb282-1" tabindex="-1"></a>zbroji <span class="ot">&lt;-</span> sum</span>
+<span id="cb282-2"><a href="korisnik.html#cb282-2" tabindex="-1"></a></span>
+<span id="cb282-3"><a href="korisnik.html#cb282-3" tabindex="-1"></a><span class="fu">zbroji</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)  <span class="co"># isto kao sum(1:10)</span></span></code></pre></div>
+<p>Ovo je najlakše shvatiti na način da je funkcija jednostavno “varijabla koja se može pozvati”, pri čemu pod “pozivom” smatramo korištenje sintakse koja uključuje referencu na funkciju i ulazne argumente uokvirene u zagrade, a koja će nakon izvršavanja u R okolini vratiti nekakvu vrijednost.</p>
+<hr />
+<p>Funkcija može uredno vraćati i neku drugu funkciju.</p>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="korisnik.html#cb283-1" tabindex="-1"></a>stvoriteljFje <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb283-2"><a href="korisnik.html#cb283-2" tabindex="-1"></a>    f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb283-3"><a href="korisnik.html#cb283-3" tabindex="-1"></a>    <span class="fu">return</span>(f)</span>
+<span id="cb283-4"><a href="korisnik.html#cb283-4" tabindex="-1"></a>}</span>
+<span id="cb283-5"><a href="korisnik.html#cb283-5" tabindex="-1"></a></span>
+<span id="cb283-6"><a href="korisnik.html#cb283-6" tabindex="-1"></a>novaFja <span class="ot">&lt;-</span> <span class="fu">stvoriteljFje</span>() <span class="co"># dobili smo funkciju &quot;dodavanja jedinice&quot;</span></span>
+<span id="cb283-7"><a href="korisnik.html#cb283-7" tabindex="-1"></a><span class="fu">novaFja</span>(<span class="dv">5</span>)  </span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<p>Funkcija je jednostavno stvorila novu funkciju i vratila ju pozivajućem programu kao što bi učinila sa bilo kojim drugim objektom. Povratnu vrijednost spremili smo u varijablu koja je sad “pozivljiva” - ako joj dodamo zagrade i parametre ona će se izvršiti na način na koji je definirana unutar funkcije koja ju je stvorila.</p>
+<p>Uočite da smo mogli iskoristiti činjenicu da funkcija vraća rezultat zadnjeg izraza i funkciju definirati i kraće:</p>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="korisnik.html#cb285-1" tabindex="-1"></a><span class="co">#kraća definicija</span></span>
+<span id="cb285-2"><a href="korisnik.html#cb285-2" tabindex="-1"></a>stvoriteljFje <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb285-3"><a href="korisnik.html#cb285-3" tabindex="-1"></a>    <span class="cf">function</span>(x) x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb285-4"><a href="korisnik.html#cb285-4" tabindex="-1"></a>}</span></code></pre></div>
+<p>Ovakve funkcije često se zovu i “tvornicama” ili “generatorima” funkcija, a za razliku od gornjeg primjera u praksi generatoru funkcija često šaljemo i neke parametre koji određuju kako će se vraćena funkcija ponašati.</p>
+<p>Pokušajte samostalno napraviti generator funkcija koji vraća funkcije za množenje sa unaprijed postavljenim parametrom.</p>
+<hr />
+<p><strong>Zadatak 6.6 - generator funkcija</strong></p>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="korisnik.html#cb286-1" tabindex="-1"></a><span class="co"># stvorite funkciju `tvornicaMnozenja` koja stvara funkcije množenja primljenog broja </span></span>
+<span id="cb286-2"><a href="korisnik.html#cb286-2" tabindex="-1"></a><span class="co"># sa nekom predefiniranom konstantom</span></span>
+<span id="cb286-3"><a href="korisnik.html#cb286-3" tabindex="-1"></a></span>
+<span id="cb286-4"><a href="korisnik.html#cb286-4" tabindex="-1"></a><span class="co"># uz pomoć gornje funkcije napravite funkciju `puta2` koja udvostručuje primljeni broj</span></span>
+<span id="cb286-5"><a href="korisnik.html#cb286-5" tabindex="-1"></a></span>
+<span id="cb286-6"><a href="korisnik.html#cb286-6" tabindex="-1"></a><span class="co"># pozovite funkciju `puta2` s parametrom 3 i ispišite rezultat</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="korisnik.html#cb287-1" tabindex="-1"></a><span class="co"># stvorite funkciju `tvornicaMnozenja` koja stvara funkcije množenja primljenog broja </span></span>
+<span id="cb287-2"><a href="korisnik.html#cb287-2" tabindex="-1"></a><span class="co"># sa nekom predefiniranom konstantom</span></span>
+<span id="cb287-3"><a href="korisnik.html#cb287-3" tabindex="-1"></a>tvornicaMnozenja <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb287-4"><a href="korisnik.html#cb287-4" tabindex="-1"></a>  <span class="cf">function</span>(a) a<span class="sc">*</span>x</span>
+<span id="cb287-5"><a href="korisnik.html#cb287-5" tabindex="-1"></a>}</span>
+<span id="cb287-6"><a href="korisnik.html#cb287-6" tabindex="-1"></a></span>
+<span id="cb287-7"><a href="korisnik.html#cb287-7" tabindex="-1"></a><span class="co"># uz pomoć gornje funkcije napravite funkciju `puta2` koja udvostručuje primljeni broj</span></span>
+<span id="cb287-8"><a href="korisnik.html#cb287-8" tabindex="-1"></a>puta2 <span class="ot">&lt;-</span> <span class="fu">tvornicaMnozenja</span>(<span class="dv">2</span>)</span>
+<span id="cb287-9"><a href="korisnik.html#cb287-9" tabindex="-1"></a></span>
+<span id="cb287-10"><a href="korisnik.html#cb287-10" tabindex="-1"></a><span class="co"># pozovite funkciju `puta2` s parametrom 3 i ispišite rezultat</span></span>
+<span id="cb287-11"><a href="korisnik.html#cb287-11" tabindex="-1"></a><span class="fu">puta2</span>(<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+</div>
+<p>Funkcija <code>tvornicaMnozenja</code> zapravo stvara “porodicu” funkcija koje sve pružaju mogućnost množenja sa odabranim brojem - tj. parametrom kojeg odabire sam programer. Ovakav način upravljanja funkcijama je možda inicijalno zbunjujući, no korištenjem istoga u praksi (što ćemo prikazati već u idućem poglavlju) lako se uočava dodatna fleksibilnost i učinkovitost ovakvog pristupa.</p>
+<hr />
+<p>Ako definiramo funkciju, a ne pridružimo ju nekoj varijabli, onda smo stvorili tzv. “anonimnu funkciju”.</p>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="korisnik.html#cb289-1" tabindex="-1"></a><span class="co"># anonimna funkcija</span></span>
+<span id="cb289-2"><a href="korisnik.html#cb289-2" tabindex="-1"></a><span class="cf">function</span>(x) x <span class="sc">*</span> x </span></code></pre></div>
+<p>Uočimo da je svaka funkcija inicijalno “anonimna”. Ako se vratimo na sintaksu definicije funkcije, vidimo da je ona zapravo kombinacija stvaranja anonimne funkcije i pridjeljivanja iste nekoj varijabli uz operator pridruživanja. Naravno, ostavljanje funkcije anonimnom kao što smo izveli u gornjem primjeru nema previše smisla, isto kao što nema smisla definirati neki vektor ili listu bez pridjeljivanja reference na taj objekt - u tom slučaju stvoreni objekt nije ni na koji način iskoristiv jer nema nijedne poveznice prema njemu te će ga R vrlo brzo obrisati u sklopu rutine “čišćenja smeća”.</p>
+<p>Možemo se zapitati - kako onda izgleda scenarij gdje je korištenje anonimne funkcije smisleno i korisno? Eksplicitne anonimne funkcije koristimo kada nam dobro dođe “jednokratna” funkcija, recimo kao argument neke druge funkcije. Ako je funkciju koju želimo poslati kao argument lako definirati u jednom retku, a ne planiramo ju više koristiti u programu, onda nema smisla zasebno ju definirati i dodijeliti joj vlastitu referencu. Primjer ovoga vidjet ćemo u lekciji o <code>apply</code> porodici funkcija.</p>
+<hr />
+<p>Za kraj ovog dijela ponovimo najbitnije stvari - u R-u je funkcija objekt kao i svaki drugi, jedina specifičnost jest da se radi o objektu koji je “izvršiv”, tj. koji uz korištenje sintakse za poziv funkcije obavlja neki posao i vraća neku vrijednost. Čak i anonimnu funkciju možemo bez problema izvršiti (iako samo jednom, budući da nemamo referencu za njezino ponovno zvanje).</p>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb290-1"><a href="korisnik.html#cb290-1" tabindex="-1"></a><span class="co"># anonimna funkcija s pozivom</span></span>
+<span id="cb290-2"><a href="korisnik.html#cb290-2" tabindex="-1"></a>(<span class="cf">function</span>(x) x <span class="sc">+</span> <span class="dv">1</span>)(<span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<hr />
+</div>
+</div>
+<div id="generičke-funkcije" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Generičke funkcije<a href="korisnik.html#generičke-funkcije" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Generičke funkcije već smo spominjali u poglavlju o objektima no svejedno se kratko podsjetimo o čemu se zapravo radi. Programski jezik R svoje objektno orijentirane principe ne temelji na takozvanom “principu razmjene poruka” gdje bi npr. poziv za crtanje grafa mogao izgledati ovako:</p>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="korisnik.html#cb292-1" tabindex="-1"></a><span class="co"># uobičajeni OOP princip poziva metode objekta</span></span>
+<span id="cb292-2"><a href="korisnik.html#cb292-2" tabindex="-1"></a><span class="fu">graf.crtaj</span>()</span></code></pre></div>
+<p>već ovako:</p>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="korisnik.html#cb293-1" tabindex="-1"></a><span class="co"># R-ovski princip poziva metode objekta</span></span>
+<span id="cb293-2"><a href="korisnik.html#cb293-2" tabindex="-1"></a><span class="fu">crtaj</span>(graf)</span></code></pre></div>
+<p>U prvom slučaju graf je objekt koji implementira posebnu metodu za crtanje te koju moramo pozvati kako bi dobili traženu sliku grafa. U drugom postoji “vanjska” funkcija koja “zna” nacrtati graf. Ovu funkciju nazivamo generička funkcija.</p>
+<hr />
+<p>Općenita svojstva generičke funkcije su sljedeća:</p>
+<ul>
+<li>funkcija ima intuitivnu, jasno određenu svrhu</li>
+<li>očekivani način rada sličan je za više tipova objekata (npr. crtanje će rezultirati slikom)</li>
+<li>svaki tip objekta zahtjeva vlastitu implementaciju ovisno o karakteristikama objekta (npr. način crtanja kruga se razlikuje se od načina crtanja kvadrata)</li>
+</ul>
+<p>Način implementacije generičkih funkcija (za S3 objekte!) zapravo je iznimno jednostavan, što je vjerojatno i razlog njihove široke prihvaćenosti i velike popularnosti u R zajednici. Postupak se svodi na tri jednostavna koraka:</p>
+<ul>
+<li>izaberemo naziv generičke funkcije (npr. <code>ispisi</code>) i deklariramo da se radi o generičkoj funkciji
+<ul>
+<li>alternativno, odaberemo neku od postojećih generičkih funkcija</li>
+</ul></li>
+<li>stvorimo objekt i deklariramo njegovu klasu (npr. <code>Osoba</code>)</li>
+<li>implementiramo funkciju naziva <code>ime_gen_fje.ime_klase</code> (npr. <code>ispisi.Osoba</code>)</li>
+</ul>
+<p>I to je sve! R ne zahtjeva nikakve dodatne korake, gore navedeno je sasvim dovoljno da R prepoznaje novu generičku funkciju i da ju primjenjuje na sve objekte za čiju klasu je implementirana ta generička funkcija u obliku <code>ime_gen_fje.ime_klase</code> (ili <code>ime_gen_fje.default</code> za sve klase za koje ne postoji posebna implementacija).</p>
+<p>Pokušajmo u sljedećem zadatku implementirati generičku metodu <code>ispisi</code> za objekt klase <code>Osoba</code>.</p>
+<hr />
+<p><strong>Zadatak 6.7 - nova generička funkcija</strong></p>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="korisnik.html#cb294-1" tabindex="-1"></a>pero <span class="ot">&lt;-</span> <span class="fu">Osoba</span>(<span class="at">oib =</span> <span class="st">&quot;12345678&quot;</span>, <span class="at">prezime =</span> <span class="st">&quot;Peric&quot;</span>, <span class="at">tezina =</span> <span class="dv">78</span>)</span>
+<span id="cb294-2"><a href="korisnik.html#cb294-2" tabindex="-1"></a></span>
+<span id="cb294-3"><a href="korisnik.html#cb294-3" tabindex="-1"></a><span class="co"># stvaramo novu generičku funkciju `ispisi` uz pomoć funkcije `UseMethod`</span></span>
+<span id="cb294-4"><a href="korisnik.html#cb294-4" tabindex="-1"></a>ispisi <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">UseMethod</span>(<span class="st">&quot;ispisi&quot;</span>)</span>
+<span id="cb294-5"><a href="korisnik.html#cb294-5" tabindex="-1"></a></span>
+<span id="cb294-6"><a href="korisnik.html#cb294-6" tabindex="-1"></a><span class="co"># implementirajte funkciju naziva `ispisi.Osoba` koja prima jedan parametar (očekivano klase `Osoba`)</span></span>
+<span id="cb294-7"><a href="korisnik.html#cb294-7" tabindex="-1"></a><span class="co"># te na zaslon ispisuje podatke o osobi na sljedeći način:</span></span>
+<span id="cb294-8"><a href="korisnik.html#cb294-8" tabindex="-1"></a><span class="co"># OIB: &lt;oib&gt;, Prezime: &lt;prezime&gt;, tezina: &lt;tezina&gt;</span></span>
+<span id="cb294-9"><a href="korisnik.html#cb294-9" tabindex="-1"></a><span class="co"># za slaganje ispisa koristite funkciju `paste`</span></span>
+<span id="cb294-10"><a href="korisnik.html#cb294-10" tabindex="-1"></a><span class="co"># a za sam ispis funkciju `cat`</span></span>
+<span id="cb294-11"><a href="korisnik.html#cb294-11" tabindex="-1"></a></span>
+<span id="cb294-12"><a href="korisnik.html#cb294-12" tabindex="-1"></a><span class="co"># implementirajte funkciju naziva ispisi.default koja prima jedan parametar</span></span>
+<span id="cb294-13"><a href="korisnik.html#cb294-13" tabindex="-1"></a><span class="co"># i ispisuje ga na zaslon uz pomoć funkcije `cat`</span></span>
+<span id="cb294-14"><a href="korisnik.html#cb294-14" tabindex="-1"></a></span>
+<span id="cb294-15"><a href="korisnik.html#cb294-15" tabindex="-1"></a><span class="co"># ispišite varijablu `pero` uz pomoć generičke funkcije `ispisi`</span></span>
+<span id="cb294-16"><a href="korisnik.html#cb294-16" tabindex="-1"></a></span>
+<span id="cb294-17"><a href="korisnik.html#cb294-17" tabindex="-1"></a><span class="co"># ispišite vektor c(1, 2, 3, 4, 5) uz pomoć generičke funkcije `ispisi`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="korisnik.html#cb295-1" tabindex="-1"></a><span class="co"># implementirajte funkciju naziva `ispisi.Osoba` koja prima jedan parametar (očekivano klase `Osoba`)</span></span>
+<span id="cb295-2"><a href="korisnik.html#cb295-2" tabindex="-1"></a><span class="co"># te na zaslon ispisuje podatke o osobi na sljedeći način:</span></span>
+<span id="cb295-3"><a href="korisnik.html#cb295-3" tabindex="-1"></a><span class="co"># OIB: &lt;oib&gt;, Prezime: &lt;prezime&gt;, tezina: &lt;tezina&gt;</span></span>
+<span id="cb295-4"><a href="korisnik.html#cb295-4" tabindex="-1"></a><span class="co"># za slaganje ispisa koristite funkciju `paste`</span></span>
+<span id="cb295-5"><a href="korisnik.html#cb295-5" tabindex="-1"></a><span class="co"># a za sam ispis funkciju `cat`</span></span>
+<span id="cb295-6"><a href="korisnik.html#cb295-6" tabindex="-1"></a>ispisi.Osoba <span class="ot">&lt;-</span> <span class="cf">function</span>(o) {</span>
+<span id="cb295-7"><a href="korisnik.html#cb295-7" tabindex="-1"></a>    rez <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="st">&quot;OIB:&quot;</span>, o<span class="sc">$</span>oib, <span class="st">&quot;, Prezime:&quot;</span>, o<span class="sc">$</span>prezime, <span class="st">&quot;, tezina:&quot;</span>, o<span class="sc">$</span>tezina, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb295-8"><a href="korisnik.html#cb295-8" tabindex="-1"></a>    <span class="fu">cat</span>(rez)</span>
+<span id="cb295-9"><a href="korisnik.html#cb295-9" tabindex="-1"></a>}</span>
+<span id="cb295-10"><a href="korisnik.html#cb295-10" tabindex="-1"></a></span>
+<span id="cb295-11"><a href="korisnik.html#cb295-11" tabindex="-1"></a><span class="co"># implementirajte funkciju naziva ispisi.default koja prima jedan parametar</span></span>
+<span id="cb295-12"><a href="korisnik.html#cb295-12" tabindex="-1"></a><span class="co"># i ispisuje ga na zaslon uz pomoć funkcije `cat`</span></span>
+<span id="cb295-13"><a href="korisnik.html#cb295-13" tabindex="-1"></a>ispisi.default <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">cat</span>(x)</span>
+<span id="cb295-14"><a href="korisnik.html#cb295-14" tabindex="-1"></a></span>
+<span id="cb295-15"><a href="korisnik.html#cb295-15" tabindex="-1"></a><span class="co"># ispišite varijablu `pero` uz pomoć generičke funkcije `ispisi`</span></span>
+<span id="cb295-16"><a href="korisnik.html#cb295-16" tabindex="-1"></a><span class="fu">ispisi</span>(pero)</span>
+<span id="cb295-17"><a href="korisnik.html#cb295-17" tabindex="-1"></a></span>
+<span id="cb295-18"><a href="korisnik.html#cb295-18" tabindex="-1"></a><span class="co"># ispišite vektor c(1, 2, 3, 4, 5) uz pomoć generičke funkcije `ispisi`</span></span>
+<span id="cb295-19"><a href="korisnik.html#cb295-19" tabindex="-1"></a><span class="fu">ispisi</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## OIB: 12345678 , Prezime: Peric , tezina: 78 
+## 1 2 3 4 5</code></pre>
+</div>
+<hr />
+<p>Naravno, nismo morali nužno stvoriti vlastitu funkciju ispisi - vjerojatno bi bolji odabir bio korištenje već postojećih generičkih funkcija kao to su <code>print</code> ili <code>cat</code>.</p>
+<hr />
+<p><strong>Zadatak 6.8 - korištenje postojećih generičkih funkcija</strong></p>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="korisnik.html#cb297-1" tabindex="-1"></a><span class="co"># provjerite da li je print generička funkcija </span></span>
+<span id="cb297-2"><a href="korisnik.html#cb297-2" tabindex="-1"></a><span class="co"># (jednostavno ispišite njezin izvorni kod navođenjem samog imena funkcije)</span></span>
+<span id="cb297-3"><a href="korisnik.html#cb297-3" tabindex="-1"></a></span>
+<span id="cb297-4"><a href="korisnik.html#cb297-4" tabindex="-1"></a><span class="co"># omogućite ispis klase `Osoba` uz pomoć generičke funkcije `print`</span></span>
+<span id="cb297-5"><a href="korisnik.html#cb297-5" tabindex="-1"></a><span class="co"># (možete se poslužiti funkcijom iz prethodnog zadatka)</span></span>
+<span id="cb297-6"><a href="korisnik.html#cb297-6" tabindex="-1"></a></span>
+<span id="cb297-7"><a href="korisnik.html#cb297-7" tabindex="-1"></a><span class="co"># ispišite varijablu `Pero` uz pomoć generičke funkcije `print`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="korisnik.html#cb298-1" tabindex="-1"></a><span class="co"># provjerite da li je print generička funkcija </span></span>
+<span id="cb298-2"><a href="korisnik.html#cb298-2" tabindex="-1"></a><span class="co"># (jednostavno ispišite njezin izvorni kod navođenjem samog imena funkcije)</span></span>
+<span id="cb298-3"><a href="korisnik.html#cb298-3" tabindex="-1"></a>print</span>
+<span id="cb298-4"><a href="korisnik.html#cb298-4" tabindex="-1"></a></span>
+<span id="cb298-5"><a href="korisnik.html#cb298-5" tabindex="-1"></a><span class="co"># omogućite ispis klase `Osoba` uz pomoć generičke funkcije `print`</span></span>
+<span id="cb298-6"><a href="korisnik.html#cb298-6" tabindex="-1"></a><span class="co"># (možete se poslužiti funkcijom iz prethodnog zadatka)</span></span>
+<span id="cb298-7"><a href="korisnik.html#cb298-7" tabindex="-1"></a>print.Osoba <span class="ot">&lt;-</span> ispisi.Osoba</span>
+<span id="cb298-8"><a href="korisnik.html#cb298-8" tabindex="-1"></a></span>
+<span id="cb298-9"><a href="korisnik.html#cb298-9" tabindex="-1"></a></span>
+<span id="cb298-10"><a href="korisnik.html#cb298-10" tabindex="-1"></a><span class="co"># ispišite varijablu `Pero` uz pomoć generičke funkcije `print`</span></span>
+<span id="cb298-11"><a href="korisnik.html#cb298-11" tabindex="-1"></a><span class="fu">print</span>(pero)</span></code></pre></div>
+<pre><code>## function (x, ...) 
+## UseMethod(&quot;print&quot;)
+## &lt;bytecode: 0x0000020a76a66108&gt;
+## &lt;environment: namespace:base&gt;
+## OIB: 12345678 , Prezime: Peric , tezina: 78</code></pre>
+</div>
+<hr />
+<p>Za kraj, prikažimo mogućnost R-a da nam izlista sve trenutno poznate implementacije neke generičke metode. Za to se jednostavno koristimo funkcijom <code>methods</code> kojoj proslijedimo ime dotične metode. Istom funkcijom možemo i provjeriti koje sve implementacije generičkih funkcija postoje za određenu klasu. Za to koristimo parametar <code>class</code> kojem prosljeđujemo naziv klase za koju tražimo spomenute implementacije.</p>
+<hr />
+<p><strong>Zadatak 6.9 - funkcija <code>methods</code></strong></p>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="korisnik.html#cb300-1" tabindex="-1"></a><span class="co"># prikažite sve do sad poznate implementacije generičke funkcije `summary`</span></span>
+<span id="cb300-2"><a href="korisnik.html#cb300-2" tabindex="-1"></a></span>
+<span id="cb300-3"><a href="korisnik.html#cb300-3" tabindex="-1"></a><span class="co"># provjerite koje sve implementacije generičkih funkcija postoje za klasu `factor`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="korisnik.html#cb301-1" tabindex="-1"></a><span class="co"># prikažite sve do sad poznate implementacije generičke funkcije `summary`</span></span>
+<span id="cb301-2"><a href="korisnik.html#cb301-2" tabindex="-1"></a><span class="co">#methods(summary)   # probati na konzoli</span></span>
+<span id="cb301-3"><a href="korisnik.html#cb301-3" tabindex="-1"></a></span>
+<span id="cb301-4"><a href="korisnik.html#cb301-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;-----------------------</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb301-5"><a href="korisnik.html#cb301-5" tabindex="-1"></a></span>
+<span id="cb301-6"><a href="korisnik.html#cb301-6" tabindex="-1"></a><span class="co"># provjerite koje sve implementacije generičkih funkcija postoje za klasu `factor`</span></span>
+<span id="cb301-7"><a href="korisnik.html#cb301-7" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class =</span> <span class="st">&quot;factor&quot;</span>)</span></code></pre></div>
+<pre><code>## -----------------------
+##  [1] -             /             [             [[            [[&lt;-         
+##  [6] [&lt;-           +             all.equal     Arith         as.character 
+## [11] as.data.frame as.Date       as.duration   as.interval   as.list      
+## [16] as.logical    as.period     as.POSIXlt    as.vector     as_date      
+## [21] as_datetime   as_factor     brief         c             cbind2       
+## [26] coerce        Compare       corresp       droplevels    fixed        
+## [31] format        gausspr       histogram     initialize    inlearn      
+## [36] is.na&lt;-       kqr           kronecker     ksvm          length&lt;-     
+## [41] levels&lt;-      Logic         lssvm         Math          Ops          
+## [46] output_column plot          print         rbind2        recode       
+## [51] relevel       relist        rep           rvm           scale_type   
+## [56] show          slotsFromS3   summary       Summary       type_sum     
+## [61] xtfrm        
+## see &#39;?methods&#39; for accessing help and source code</code></pre>
+</div>
+<hr />
+<hr />
+</div>
+<div id="što-su-apply-funkcije" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Što su <code>apply</code> funkcije?<a href="korisnik.html#što-su-apply-funkcije" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Vrlo često se poznavanje osnova jezika R procjenjuje znanjem korištenja tzv. <code>apply</code> porodice funkcija dostupnih u paketu <code>base</code>. Ove funkcije specifično su dizajnirane za provođenje repetitivnih zadataka nad skupovima podataka i kao takve zamjenjuju programsku logiku koja bi se u nekom drugom jeziku realizirala programskom petljom. Dodatno, ove funkcije u pravilu primaju druge funkcije kao ulazne argumente i tako u izvjesnoj mjeri potiču paradigmu funkcionalnog programiranja.</p>
+<p>Naziv porodice potiče od činjenice da funkcije iz nje imaju sufiks “<em>apply</em>”. Neke funkcije iz ove porodice su:</p>
+<ul>
+<li><code>apply</code></li>
+<li><code>lapply</code></li>
+<li><code>sapply</code></li>
+<li><code>vapply</code></li>
+<li><code>tapply</code>, <code>mapply</code>, <code>rapply</code>…</li>
+</ul>
+<p>Sve ove funkcije rade na sličan način - kao ulazne argumente primaju skup podataka, funkciju koju želimo primijeniti na elemente tog skupa te opcionalne dodatne parametre, a kao izlaz daju skup rezultata funkcije, najčešće “upakirane” u prigodni format. Razlika se uglavnom svodi na tipove ulaznih i izlaznih argumenata, te konkretne detalje oko provedbe same funkcije i/ili pripreme rezultata.</p>
+<p>Ovu porodicu funkcija najlakše je upoznati preko primjera. Započnimo sa “osnovnom” funkcijom - <code>apply</code>.</p>
+<div id="funkcija-apply" class="section level3 hasAnchor" number="6.3.1">
+<h3><span class="header-section-number">6.3.1</span> Funkcija <code>apply</code><a href="korisnik.html#funkcija-apply" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Funkcija <code>apply</code> jedina je koja doslovno dijeli ime sa porodicom ovih funkcija. Namijenjena je <strong>radu s matricama</strong> (zapravo sa poljima, ali budući da se relativno rijetko radi sa strukturama koje imaju više od dvije dimenzije, ovdje ćemo se usredotočiti samo na matrice).</p>
+<p>Sintaksa naredbe je sljedeća:</p>
+<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="korisnik.html#cb303-1" tabindex="-1"></a>rezultat <span class="ot">&lt;-</span> <span class="fu">apply</span>( <span class="sc">&lt;</span>matrica<span class="sc">&gt;</span>, <span class="sc">&lt;</span><span class="fu">redovi</span> (<span class="dv">1</span>) ili <span class="fu">stupci</span> (<span class="dv">2</span>)<span class="sc">&gt;</span>, <span class="sc">&lt;</span>funkcija<span class="sc">&gt;</span> )</span></code></pre></div>
+<p>Ili, opisano riječima, za provođenje funkcije <code>apply</code>:</p>
+<ul>
+<li>odaberemo matricu</li>
+<li>odlučimo se da li ju “režemo” po retcima ili stupcima</li>
+<li>primjenjujemo odabranu funkciju na svaki redak (ili stupac)</li>
+</ul>
+<p>Ovisno o tome što funkcija radi, kao rezultat dobivamo matricu ili (što je češći slučaj) vektor.</p>
+<p>Pokušajmo primijeniti ovu funkciju na konkretnom primjeru.</p>
+<hr />
+<p><strong>Zadatak 6.10 - funkcija <code>apply</code></strong></p>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="korisnik.html#cb304-1" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb304-2"><a href="korisnik.html#cb304-2" tabindex="-1"></a></span>
+<span id="cb304-3"><a href="korisnik.html#cb304-3" tabindex="-1"></a><span class="co"># ispišite matricu `m`</span></span>
+<span id="cb304-4"><a href="korisnik.html#cb304-4" tabindex="-1"></a></span>
+<span id="cb304-5"><a href="korisnik.html#cb304-5" tabindex="-1"></a><span class="co"># uz pomoć funkcije `apply` izračunajte </span></span>
+<span id="cb304-6"><a href="korisnik.html#cb304-6" tabindex="-1"></a><span class="co"># i ispišite zbrojeve stupaca matrice `m` </span></span>
+<span id="cb304-7"><a href="korisnik.html#cb304-7" tabindex="-1"></a></span>
+<span id="cb304-8"><a href="korisnik.html#cb304-8" tabindex="-1"></a></span>
+<span id="cb304-9"><a href="korisnik.html#cb304-9" tabindex="-1"></a><span class="co"># uz pomoć funkcije `apply` izračunajte </span></span>
+<span id="cb304-10"><a href="korisnik.html#cb304-10" tabindex="-1"></a><span class="co"># i ispišite umnoške redaka matrice `m` </span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="korisnik.html#cb305-1" tabindex="-1"></a>m</span>
+<span id="cb305-2"><a href="korisnik.html#cb305-2" tabindex="-1"></a></span>
+<span id="cb305-3"><a href="korisnik.html#cb305-3" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;------------</span><span class="sc">\n</span><span class="st">&quot;</span>)  <span class="co"># za pregledniji ispis</span></span>
+<span id="cb305-4"><a href="korisnik.html#cb305-4" tabindex="-1"></a></span>
+<span id="cb305-5"><a href="korisnik.html#cb305-5" tabindex="-1"></a><span class="fu">apply</span>(m, <span class="dv">2</span>, sum)</span>
+<span id="cb305-6"><a href="korisnik.html#cb305-6" tabindex="-1"></a></span>
+<span id="cb305-7"><a href="korisnik.html#cb305-7" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;------------</span><span class="sc">\n</span><span class="st">&quot;</span>) </span>
+<span id="cb305-8"><a href="korisnik.html#cb305-8" tabindex="-1"></a></span>
+<span id="cb305-9"><a href="korisnik.html#cb305-9" tabindex="-1"></a><span class="fu">apply</span>(m, <span class="dv">1</span>, prod)</span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    2    3
+## [2,]    4    5    6
+## [3,]    7    8    9
+## ------------
+## [1] 12 15 18
+## ------------
+## [1]   6 120 504</code></pre>
+</div>
+<hr />
+<p>Ukoliko želimo nad retcima / stupcima provesti neki specifičan zadatak, za to vrlo često koristimo anonimnu funkciju, npr:</p>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="korisnik.html#cb307-1" tabindex="-1"></a><span class="fu">apply</span>(m, <span class="dv">1</span>, <span class="cf">function</span>(x) x[<span class="dv">1</span>])   <span class="co"># izvlačimo prvi element svakog retka</span></span></code></pre></div>
+<hr />
+<p><strong>Zadatak 6.11 - funkcija <code>apply</code> i anonimne funkcije</strong></p>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="korisnik.html#cb308-1" tabindex="-1"></a><span class="co"># uz pomoć funkcije `apply` za svaki redak matrice `m` </span></span>
+<span id="cb308-2"><a href="korisnik.html#cb308-2" tabindex="-1"></a><span class="co"># izračunajte prirodni logaritam sume elemenata</span></span>
+<span id="cb308-3"><a href="korisnik.html#cb308-3" tabindex="-1"></a><span class="co"># zaokružen na 2 decimale  (funkcija `round`!)</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="korisnik.html#cb309-1" tabindex="-1"></a><span class="fu">apply</span>(m, <span class="dv">1</span>, <span class="cf">function</span>(x) <span class="fu">round</span>(<span class="fu">log</span>(<span class="fu">sum</span>(x)),<span class="dv">2</span>))</span></code></pre></div>
+<pre><code>## [1] 1.79 2.71 3.18</code></pre>
+</div>
+<hr />
+<p>Ponovimo - funkcija <code>apply</code> (i srodne funkcije) implicitno <em>“rastavljaju” ulaznu podatkovnu strukturu na elemente</em>. U primjerima gore ti elementi - retci ili stupci - su zapravo numerički vektori. Argument <code>x</code> kojeg prima anonimna funkcija je upravo taj vektor, ili bolje reći <em>svaki od tih vektora</em> koji joj se prosljeđuju jedan po jedan. <em>Rezultati funkcije se “pamte” i “pakiraju”</em> u konačni rezultat.</p>
+<p>Pokušajmo isprogramirati zadnji primjer bez korištenja funkcije <code>apply</code>.</p>
+<hr />
+<p><strong>Zadatak 6.12 - petlja kao alternativa funkciji <code>apply</code></strong></p>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="korisnik.html#cb311-1" tabindex="-1"></a><span class="co"># uz pomoć programske petlje za svaki redak matrice `m` </span></span>
+<span id="cb311-2"><a href="korisnik.html#cb311-2" tabindex="-1"></a><span class="co"># izračunajte prirodni logaritam sume elemenata</span></span>
+<span id="cb311-3"><a href="korisnik.html#cb311-3" tabindex="-1"></a><span class="co"># zaokružen na 2 decimale  (funkcija `round`!)</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="korisnik.html#cb312-1" tabindex="-1"></a>rez <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">nrow</span>(m))</span>
+<span id="cb312-2"><a href="korisnik.html#cb312-2" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(m)) rez[i] <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">log</span>(<span class="fu">sum</span>(m[i,])), <span class="dv">2</span>)</span>
+<span id="cb312-3"><a href="korisnik.html#cb312-3" tabindex="-1"></a>rez</span></code></pre></div>
+<pre><code>## [1] 1.79 2.71 3.18</code></pre>
+</div>
+<hr />
+<p>Ako usporedimo sintakse primjera sa i bez korištenja funkcije <code>apply</code>, možemo se uvjeriti koliko je sintaksa koja koristi <code>apply</code> zapravo “čišća” i jasnija. Ako koristimo petlje moramo eksplicitno navesti logiku prolaženja strukturom i čuvanja međurezultata, što odvlači pažnju od opisa posla kojeg zapravo želimo obaviti.</p>
+<p>Što ako <code>apply</code> funkciji želimo proslijediti više parametara? Npr. recimo da umjesto gornje funkcije koja izvlači prvi element retka želimo funkciju sa dva parametra - prvi je vektor a drugi cijeli broj koji označava koji broj treba izvući. Odgovor je jednostavan - dodatne parametre jednostavno navedemo na kraju poziva funkcije.</p>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="korisnik.html#cb314-1" tabindex="-1"></a><span class="co"># apply funkcija i ulazna funkcija sa više parametara</span></span>
+<span id="cb314-2"><a href="korisnik.html#cb314-2" tabindex="-1"></a><span class="fu">apply</span>(m, <span class="dv">1</span>, <span class="cf">function</span>(x,y) x[y], <span class="dv">2</span>)  <span class="co"># izvlačimo drugi element svakog retka</span></span></code></pre></div>
+<p>Konačno, treba napomenuti da za sličnu obradu podataka u matričnom obliku ne moramo nužno koristiti <code>apply</code> - dosta popularnih operacija kao što su zbrajanje elemenata redaka ili stupaca, računanje prosjeka elemenata redaka i stupaca i sl. već je implementirano kroz funkcije kao što su <code>rowSums</code>, <code>colSums</code>, <code>rowMeans</code>, <code>colMeans</code> i sl. One su jednostavnije za uporabu, no specijalizirane - za dodatnu fleksibilnost najčešće je <code>apply</code> najpogodnija opcija.</p>
+<hr />
+</div>
+<div id="funkcije-lapply-sapply-i-vapply" class="section level3 hasAnchor" number="6.3.2">
+<h3><span class="header-section-number">6.3.2</span> Funkcije <code>lapply</code>, <code>sapply</code> i <code>vapply</code><a href="korisnik.html#funkcije-lapply-sapply-i-vapply" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Ime funkcije <code>lapply</code> dolazi od “<em>list apply</em>” - tj. <strong><code>apply</code> funkcija koja radi sa listama</strong>. Jednostavno - radi se o funkciji koja će kao ulazni argument primiti <strong>listu i neku funkciju</strong>, primijeniti funkciju na <strong>svaki pojedini element liste</strong> i vratiti opet <strong>rezultat u obliku liste</strong>.</p>
+<hr />
+<p><strong>Zadatak 6.13 - funkcija <code>lapply</code></strong></p>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="korisnik.html#cb315-1" tabindex="-1"></a>l <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">b =</span> <span class="fu">rep</span>(<span class="fu">c</span>(T, F), <span class="dv">10</span>), <span class="at">c =</span> LETTERS)</span>
+<span id="cb315-2"><a href="korisnik.html#cb315-2" tabindex="-1"></a></span>
+<span id="cb315-3"><a href="korisnik.html#cb315-3" tabindex="-1"></a><span class="co"># pomoću funkcije `lapply` izračunajte duljinu (broj elemenata) </span></span>
+<span id="cb315-4"><a href="korisnik.html#cb315-4" tabindex="-1"></a><span class="co"># svakog elementa liste `l`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="korisnik.html#cb316-1" tabindex="-1"></a><span class="fu">lapply</span>(l, length)</span></code></pre></div>
+<pre><code>## $a
+## [1] 3
+## 
+## $b
+## [1] 20
+## 
+## $c
+## [1] 26</code></pre>
+</div>
+<hr />
+<p>Isto kao kod funkcije <code>apply</code>, kod funkcije <code>lapply</code> često kao parametar koristimo anonimne funkcije. Sljedeći zadatak nema posebnu praktičnu uporabu, ali će nam pomoći da shvatimo funkcioniranje funkcije <code>lapply</code> te usvojimo činjenicu kako anonimne funkcije ne moraju nužno biti kratke i jednostavne.</p>
+<hr />
+<p><strong>Zadatak 6.14 - funkcija <code>lapply</code> i anonimne funkcije</strong></p>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="korisnik.html#cb318-1" tabindex="-1"></a><span class="co"># obradite elemente liste `l` na sljedeći način:</span></span>
+<span id="cb318-2"><a href="korisnik.html#cb318-2" tabindex="-1"></a></span>
+<span id="cb318-3"><a href="korisnik.html#cb318-3" tabindex="-1"></a><span class="co"># - izračunajte srednju vrijednost ako se radi o numeričkom vektoru</span></span>
+<span id="cb318-4"><a href="korisnik.html#cb318-4" tabindex="-1"></a><span class="co"># - prebrojite vrijednosti TRUE ako se radi o logičkom vektoru</span></span>
+<span id="cb318-5"><a href="korisnik.html#cb318-5" tabindex="-1"></a><span class="co"># - ispišite duljinu vektora za sve ostale slučajeve</span></span>
+<span id="cb318-6"><a href="korisnik.html#cb318-6" tabindex="-1"></a></span>
+<span id="cb318-7"><a href="korisnik.html#cb318-7" tabindex="-1"></a><span class="co"># koristite funkciju `lapply` i anonimnu funkciju</span></span>
+<span id="cb318-8"><a href="korisnik.html#cb318-8" tabindex="-1"></a></span>
+<span id="cb318-9"><a href="korisnik.html#cb318-9" tabindex="-1"></a><span class="co"># ne zaboravite da i anonimna funkcija može koristiti blokove!</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb319-1"><a href="korisnik.html#cb319-1" tabindex="-1"></a><span class="co"># obradite elemente liste `l` na sljedeći način:</span></span>
+<span id="cb319-2"><a href="korisnik.html#cb319-2" tabindex="-1"></a></span>
+<span id="cb319-3"><a href="korisnik.html#cb319-3" tabindex="-1"></a><span class="co"># - izračunajte srednju vrijednost ako se radi o numeričkom vektoru</span></span>
+<span id="cb319-4"><a href="korisnik.html#cb319-4" tabindex="-1"></a><span class="co"># - prebrojite vrijednosti TRUE ako se radi o logičkom vektoru</span></span>
+<span id="cb319-5"><a href="korisnik.html#cb319-5" tabindex="-1"></a><span class="co"># - ispišite duljinu vektora za sve ostale slučajeve</span></span>
+<span id="cb319-6"><a href="korisnik.html#cb319-6" tabindex="-1"></a></span>
+<span id="cb319-7"><a href="korisnik.html#cb319-7" tabindex="-1"></a><span class="co"># koristite funkciju `lapply` i anonimnu funkciju</span></span>
+<span id="cb319-8"><a href="korisnik.html#cb319-8" tabindex="-1"></a></span>
+<span id="cb319-9"><a href="korisnik.html#cb319-9" tabindex="-1"></a><span class="co"># ne zaboravite da i anonimna funkcija može koristiti blokove!</span></span>
+<span id="cb319-10"><a href="korisnik.html#cb319-10" tabindex="-1"></a></span>
+<span id="cb319-11"><a href="korisnik.html#cb319-11" tabindex="-1"></a><span class="fu">lapply</span>(l, <span class="cf">function</span>(x) {</span>
+<span id="cb319-12"><a href="korisnik.html#cb319-12" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.numeric</span>(x)) {</span>
+<span id="cb319-13"><a href="korisnik.html#cb319-13" tabindex="-1"></a>        <span class="fu">mean</span>(x)</span>
+<span id="cb319-14"><a href="korisnik.html#cb319-14" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">is.logical</span>(x)) {</span>
+<span id="cb319-15"><a href="korisnik.html#cb319-15" tabindex="-1"></a>        <span class="fu">sum</span>(x)</span>
+<span id="cb319-16"><a href="korisnik.html#cb319-16" tabindex="-1"></a>    } <span class="cf">else</span> <span class="fu">length</span>(x)</span>
+<span id="cb319-17"><a href="korisnik.html#cb319-17" tabindex="-1"></a>})</span></code></pre></div>
+<pre><code>## $a
+## [1] 2
+## 
+## $b
+## [1] 10
+## 
+## $c
+## [1] 26</code></pre>
+</div>
+<hr />
+<p>Funkcija <code>lapply</code> je u suštini dosta jednostavna za korištenje i baš zbog te činjenice vrlo popularna. No nakon što ju koristimo jedno vrijeme može nas zasmetati činjenica da ona uvijek kao rezultat vraća listu, iako bi nam nekad više odgovarala neka druga podatkovna struktura, kao npr. vektor, pogotovo ako rezultantna lista ima kao elemente jednostavne brojeve. Upravo iz ovog razloga R nudi funkciju <code>unlist</code> za “pojednostavljivanje” liste u vektor ako ona sadrži jednostavne elemente.</p>
+<hr />
+<p><strong>Zadatak 6.15 - funkcija <code>unlist</code></strong></p>
+<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb321-1"><a href="korisnik.html#cb321-1" tabindex="-1"></a>l <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">b =</span> <span class="dv">10</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">c =</span> <span class="dv">100</span><span class="sc">:</span><span class="dv">200</span>)</span>
+<span id="cb321-2"><a href="korisnik.html#cb321-2" tabindex="-1"></a></span>
+<span id="cb321-3"><a href="korisnik.html#cb321-3" tabindex="-1"></a></span>
+<span id="cb321-4"><a href="korisnik.html#cb321-4" tabindex="-1"></a><span class="co"># izračunajte srednje vrijednosti elemenata liste `l`</span></span>
+<span id="cb321-5"><a href="korisnik.html#cb321-5" tabindex="-1"></a><span class="co"># rezultate ispišite kao numerički vektor</span></span>
+<span id="cb321-6"><a href="korisnik.html#cb321-6" tabindex="-1"></a><span class="co"># koristite lapply i unlist</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="korisnik.html#cb322-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">lapply</span>(l, mean))</span></code></pre></div>
+<pre><code>##     a     b     c 
+##   5.5  15.0 150.0</code></pre>
+</div>
+<hr />
+<p>Prikazana kombinacija <code>lapply</code> i <code>unlist</code> će nam kao rezultat dati jednodimenzionalni vektor, što nam u velikom broju slučajeva odgovara. No ponekad bi nam više odgovarala neka druga podatkovna struktura - npr. matrica. U ovom slučaju potreban nam je i dodatni korak preoblikovanja jednodimenzionalnog vektora u matricu uz pomoć funkcije <code>matrix</code>, pri čemu moramo eksplicitno zadati broj redaka i stupaca.</p>
+<p>Može se postaviti pitanje - zašto funkcija <code>lapply</code> ne bi mogla “pogledati” rezultat kojeg je dobila i sama odrediti optimalnu podatkovnu strukturu za oblikovanje rezultata (vektor, matrica ili lista)? Upravo je to ideja iza funkcije <code>sapply</code>, ili “<em>simplified list apply</em>”. Ova funkcija prvo interno obavlja <code>lapply</code>, a potom se rezultat pojednostavljuje na vektor, matricu ili polje, ovisno o karakteristikama dobivenih rezultata.</p>
+<hr />
+<p><strong>Zadatak 6.16 - funkcija <code>sapply</code></strong></p>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="korisnik.html#cb324-1" tabindex="-1"></a>l <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">b =</span> <span class="dv">10</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">c =</span> <span class="dv">100</span><span class="sc">:</span><span class="dv">200</span>)</span>
+<span id="cb324-2"><a href="korisnik.html#cb324-2" tabindex="-1"></a></span>
+<span id="cb324-3"><a href="korisnik.html#cb324-3" tabindex="-1"></a></span>
+<span id="cb324-4"><a href="korisnik.html#cb324-4" tabindex="-1"></a><span class="co"># izračunajte medijane elemenata liste `l` </span></span>
+<span id="cb324-5"><a href="korisnik.html#cb324-5" tabindex="-1"></a><span class="co"># i rezultate ispišite kao numerički vektor</span></span>
+<span id="cb324-6"><a href="korisnik.html#cb324-6" tabindex="-1"></a><span class="co"># koristite funkciju `sapply`</span></span>
+<span id="cb324-7"><a href="korisnik.html#cb324-7" tabindex="-1"></a></span>
+<span id="cb324-8"><a href="korisnik.html#cb324-8" tabindex="-1"></a></span>
+<span id="cb324-9"><a href="korisnik.html#cb324-9" tabindex="-1"></a><span class="co"># izvucite prvi i zadnji element svakog od elemenata liste `l`</span></span>
+<span id="cb324-10"><a href="korisnik.html#cb324-10" tabindex="-1"></a><span class="co"># koristite `sapply` i anonimnu funkciju</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="korisnik.html#cb325-1" tabindex="-1"></a><span class="fu">sapply</span>(l, median)</span>
+<span id="cb325-2"><a href="korisnik.html#cb325-2" tabindex="-1"></a></span>
+<span id="cb325-3"><a href="korisnik.html#cb325-3" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;------------</span><span class="sc">\n</span><span class="st">&quot;</span>)  <span class="co"># za pregledniji ispis</span></span>
+<span id="cb325-4"><a href="korisnik.html#cb325-4" tabindex="-1"></a></span>
+<span id="cb325-5"><a href="korisnik.html#cb325-5" tabindex="-1"></a><span class="fu">sapply</span>(l, <span class="cf">function</span>(x) <span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="fu">length</span>(x)]))</span></code></pre></div>
+<pre><code>##     a     b     c 
+##   5.5  15.0 150.0 
+## ------------
+##       a  b   c
+## [1,]  1 10 100
+## [2,] 10 20 200</code></pre>
+</div>
+<hr />
+<p>Uočite da smo kao rezultat zadnjeg primjera dobili matricu, ali da ju je R oblikovao “po stupcima”. Ukoliko bismo htjeli matricu sa elementima poredanim po retcima, za to nažalost ne možemo koristiti <code>sapply</code> jer se matrica formira interno, bez mogućnosti prosljeđivanja parametra <code>byrow = T</code>. Za dobivanje takve matrice jedna opcija nam je već spomenuta kombinacija funkcija <code>lapply</code>, <code>unlist</code> i <code>matrix</code> ili - što je jednostavnije - transponiranje rezultata <code>sapply</code> uz pomoć funkcije <code>t</code> (od engl. <em>transpose</em>).</p>
+<hr />
+<p>Funkcija <code>sapply</code> je prilično omiljena zbog svoje jednostavnosti i učinkovitosti tako da se relativno često koristi u interaktivnoj analizi. S druge strane, korištenje ove funkcije u programskim skriptama se ne preporučuje budući da je rezultat u općenitom slučaju nepredvidiv - npr. skripta može u nastavku programskog koda očekivati matricu, a funkcija <code>sapply</code> je zbog specifičnosti ulaznih podataka vratila vektor, što može uzrokovati nepredviđene rezultate u nastavku skripte a što nije lako naknadno uočiti te dijagnosticirati gdje je nastala greška.</p>
+<p>Ukoliko razvijamo vlastite programe u R-u i želimo koristiti <code>sapply</code>, onda će nam bolji izbor predstavljati funkcija <code>vapply</code> (od engl. “<em>verified sapply</em>”) koja radi identično funkciji <code>sapply</code>, ali koristi dodatni parametar nazvan <code>FUN.VALUE</code> pomoću kojeg eksplicitno definiramo kakvo “pojednostavljenje” očekujemo. Npr. <code>numeric(3)</code> znači da bi rezultat primjene funkcije <strong>na svaki element originalne liste</strong> trebao biti numerički vektor od tri elementa. Ukoliko se rezultat za bilo koji element liste razlikuje od očekivanog, funkcija će izbaciti grešku.</p>
+<hr />
+<p><strong>Zadatak 6.17 - funkcija <code>vapply</code></strong></p>
+<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb327-1"><a href="korisnik.html#cb327-1" tabindex="-1"></a>podaci <span class="ot">&lt;-</span> <span class="fu">list</span>(brojevi <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>), </span>
+<span id="cb327-2"><a href="korisnik.html#cb327-2" tabindex="-1"></a>               imena <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Ivo&quot;</span>, <span class="st">&quot;Pero&quot;</span>, <span class="st">&quot;Ana&quot;</span>), </span>
+<span id="cb327-3"><a href="korisnik.html#cb327-3" tabindex="-1"></a>               abeceda <span class="ot">&lt;-</span> LETTERS)</span>
+<span id="cb327-4"><a href="korisnik.html#cb327-4" tabindex="-1"></a></span>
+<span id="cb327-5"><a href="korisnik.html#cb327-5" tabindex="-1"></a></span>
+<span id="cb327-6"><a href="korisnik.html#cb327-6" tabindex="-1"></a><span class="co"># razmislite koji će od sljedećih poziva biti uspješan, </span></span>
+<span id="cb327-7"><a href="korisnik.html#cb327-7" tabindex="-1"></a><span class="co"># a koji će izbaciti grešku</span></span>
+<span id="cb327-8"><a href="korisnik.html#cb327-8" tabindex="-1"></a><span class="co"># rezultate provjerite na konzoli</span></span>
+<span id="cb327-9"><a href="korisnik.html#cb327-9" tabindex="-1"></a></span>
+<span id="cb327-10"><a href="korisnik.html#cb327-10" tabindex="-1"></a><span class="fu">vapply</span>(podaci, length, <span class="at">FUN.VALUE =</span> <span class="fu">numeric</span>(<span class="dv">1</span>))</span>
+<span id="cb327-11"><a href="korisnik.html#cb327-11" tabindex="-1"></a><span class="fu">vapply</span>(podaci, <span class="cf">function</span>(x) <span class="fu">as.character</span>(<span class="fu">c</span>(x[<span class="dv">1</span>], x[<span class="dv">2</span>])), <span class="at">FUN.VALUE =</span> <span class="fu">character</span>(<span class="dv">2</span>))</span>
+<span id="cb327-12"><a href="korisnik.html#cb327-12" tabindex="-1"></a><span class="fu">vapply</span>(podaci, <span class="cf">function</span>(x) <span class="fu">as.logical</span>(x), <span class="at">FUN.VALUE =</span> <span class="fu">character</span>(<span class="dv">1</span>))</span></code></pre></div>
+<hr />
+<p>Konačno, vratimo se nakratko funkciji <code>lapply</code> i razmotrimo jednu bitnu činjenicu - ona je namijenjena uporabi nad listama, a <strong>podatkovni okviri su zapravo liste</strong>. Drugim riječima, funkcija <code>lapply</code> je vrlo zgodna za obradu tabličnih podataka kada želimo određenu funkciju primijeniti na stupce podatkovnog okvira.</p>
+<p>Jedna od češćih operacija koje se provode kod analize podataka jest tzv. “normalizacija” numeričkih stupaca podatkovnog okvira - tj. svođenje svih numeričkih vrijednosti na “normalnu” distribuciju aritmetičke sredine 0 i standardne devijacije 1. Ovo možemo uraditi tako da svaku pojedinu vrijednost umanjimo za aritmetičku sredinu stupca (funkcija <code>mean</code>) te podijelimo sa standardnom devijacijom stupca (funkcija <code>sd</code>). Ovo je odličan scenarij za demonstraciju korištenja funkcije <code>lapply</code>.</p>
+<hr />
+<p><strong>Zadatak 6.18 - funkcija <code>lapply</code> i podatkovni okviri</strong></p>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="korisnik.html#cb328-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>( <span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">b =</span> <span class="fu">seq</span>(<span class="dv">100</span>, <span class="dv">550</span>, <span class="dv">50</span>), </span>
+<span id="cb328-2"><a href="korisnik.html#cb328-2" tabindex="-1"></a>                  <span class="at">c =</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>], <span class="at">d =</span> <span class="fu">rep</span>(<span class="fu">c</span>(T,F), <span class="dv">5</span>), </span>
+<span id="cb328-3"><a href="korisnik.html#cb328-3" tabindex="-1"></a>                  <span class="at">e =</span> <span class="sc">-</span><span class="dv">10</span><span class="sc">:-</span><span class="dv">1</span>)</span>
+<span id="cb328-4"><a href="korisnik.html#cb328-4" tabindex="-1"></a></span>
+<span id="cb328-5"><a href="korisnik.html#cb328-5" tabindex="-1"></a><span class="co"># normalizirajte numeričke stupce uz pomoć funkcije `lapply`</span></span>
+<span id="cb328-6"><a href="korisnik.html#cb328-6" tabindex="-1"></a><span class="co"># ostale stupce nemojte mijenjati</span></span>
+<span id="cb328-7"><a href="korisnik.html#cb328-7" tabindex="-1"></a><span class="co"># normalizirane vrijednosti zaokružite na tri decimale</span></span>
+<span id="cb328-8"><a href="korisnik.html#cb328-8" tabindex="-1"></a><span class="co"># rezultat pohranite u varijablu df</span></span>
+<span id="cb328-9"><a href="korisnik.html#cb328-9" tabindex="-1"></a></span>
+<span id="cb328-10"><a href="korisnik.html#cb328-10" tabindex="-1"></a><span class="co"># ispišite df</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="korisnik.html#cb329-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">lapply</span>(df, <span class="cf">function</span>(x) {</span>
+<span id="cb329-2"><a href="korisnik.html#cb329-2" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">is.numeric</span>(x)) {</span>
+<span id="cb329-3"><a href="korisnik.html#cb329-3" tabindex="-1"></a>        <span class="fu">round</span>((x <span class="sc">-</span> <span class="fu">mean</span>(x))<span class="sc">/</span><span class="fu">sd</span>(x), <span class="dv">3</span>)</span>
+<span id="cb329-4"><a href="korisnik.html#cb329-4" tabindex="-1"></a>    } <span class="cf">else</span> x })</span>
+<span id="cb329-5"><a href="korisnik.html#cb329-5" tabindex="-1"></a></span>
+<span id="cb329-6"><a href="korisnik.html#cb329-6" tabindex="-1"></a>df</span></code></pre></div>
+<pre><code>## $a
+##  [1] -1.486 -1.156 -0.826 -0.495 -0.165  0.165  0.495  0.826  1.156  1.486
+## 
+## $b
+##  [1] -1.486 -1.156 -0.826 -0.495 -0.165  0.165  0.495  0.826  1.156  1.486
+## 
+## $c
+##  [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;E&quot; &quot;F&quot; &quot;G&quot; &quot;H&quot; &quot;I&quot; &quot;J&quot;
+## 
+## $d
+##  [1]  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE FALSE
+## 
+## $e
+##  [1] -1.486 -1.156 -0.826 -0.495 -0.165  0.165  0.495  0.826  1.156  1.486</code></pre>
+</div>
+<hr />
+<p>Vidimo da smo nakon korištenja <code>lapply</code> dobili listu te da ukoliko želimo rezultat u obliku podatkovnog okvira moramo dodati još jedan korak korištenja funkcije <code>as.data.frame</code>. Ukoliko tražimo jednostavniji način koji odmah daje podatkovni okvir kao rezultat, postoji jedan zgodan “trik” kojeg ćemo objasniti u nastavku.</p>
+<p>Pogledajmo rješenje prethodnog zadatka, konkretno red gdje rezultat poziva funkcije <code>lapply</code> pohranjujemo u varijablu <code>df</code> koji se sastoji u tome da umjesto pridruživanja rezultata samoj varijabli (<code>df &lt;-</code>) rezultat pridružimo varijabli sa “praznim” operatorom indeksiranja (<code>df[] &lt;-</code>):</p>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="korisnik.html#cb331-1" tabindex="-1"></a>df[] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(...)</span></code></pre></div>
+<p>Na ovaj način R neće napraviti “novu” varijablu imena <code>df</code>, već će rezultat funkcije <code>lapply</code> upisati u “sve retke i stupce okvira <code>df</code>”. Time smo postigli da smo umjesto liste rezultat dobili u obliku podatkovnog okvira, što smo zapravo i htjeli. Upravo zbog ovoga vrlo često ćemo u R skriptama vidjeti sličnu sintaksu (<code>df[] &lt;- lapply...</code>). Pokušajte preinačiti gornji primjer na navedeni način i uvjerite se da će rezultat biti podatkovni okvir.</p>
+<p>Još jedan često korišteni trik u radu sa podatkovnim okvirima i funkcijama iz porodice <code>apply</code> jest sljedeća naredba:</p>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="korisnik.html#cb332-1" tabindex="-1"></a><span class="fu">sapply</span>(df, class)   </span></code></pre></div>
+<p>Ova naredba nam zapravo daje odgovor na pitanje - kojeg su tipa stupci navedenog podatkovnog okvira? Iako postoje i drugi načini da dođemo do ove informacije, ovaj način popularan je kako zbog kompaktnosti rezultata, tako i neovisnosti o dodatnim paketima.</p>
+</div>
+<div id="ostale-funkcije-iz-porodice-apply-i-dostupne-alternative" class="section level3 hasAnchor" number="6.3.3">
+<h3><span class="header-section-number">6.3.3</span> Ostale funkcije iz porodice <code>apply</code> i dostupne alternative<a href="korisnik.html#ostale-funkcije-iz-porodice-apply-i-dostupne-alternative" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>U prethodnim poglavljima naveli smo vjerojatno najpopularnije članove porodice <code>apply</code>. Ova porodica broji još članova, uključujući i neke koji nemaju sufiks <em>-apply</em>:</p>
+<ul>
+<li><code>mapply</code>, koja primjenjuje funkcije paralelno nad više podatkovnih struktura</li>
+<li><code>rapply</code>, koja rekurzivno primjenjuje funkcije unutar strukture</li>
+<li><code>tapply</code>, koja primjenjuje funkcije nad podskupovima unutar strukture definirane faktorima</li>
+<li><code>Map</code>, inačica <code>mapply</code> koja ne pojednostavljuje rezultat</li>
+<li><code>by</code>, inačica <code>tapply</code> predviđena za podatkovne okvire</li>
+<li>itd.</li>
+</ul>
+<p>Razlog zašto ove funkcije nećemo detaljno obrađivati jest dvojak: prvo, kao što je već rečeno, ove funkcije se u praksi primjenjuju puno rjeđe od funkcija koje smo prikazali u prethodnim poglavljima. Drugo, porastom popularnosti jezika R pojavio se i veliki broj paketa orijentiranih upravo poboljšanju postojećih funkcija jezika R u smislu lakšeg i učinkovitijeg programiranja, poglavito u radu s podatkovnim okvirima.</p>
+<p>Ukoliko tražimo zgodne alternative funkcijama iz porodice <code>apply</code>, preporučuje se pogledati neke od sljedećih paketa</p>
+<ul>
+<li><code>plyr</code> - iznimno popularan paket koji između ostalog nudi niz funkcija vrlo srodnih <code>apply</code>¸funkcijama, ali izvedenih na način da imaju konzistentan potpis te eksplicitno definirane ulazne i izlazne oblike koji se lako čitaju iz samog imena funkcije (konkretno, prvih slova); tako funkcija <code>llply</code> kao ulaz prima te kao izlaz daje listu, dok funkcija <code>mdply</code> kao ulaz prima matricu a kao izlaz daje podatkovni okvir</li>
+<li><code>purrr</code> - paket koji zamjenjuje funkcije porodice <code>apply</code> sa funkcijama koje odgovaraju sličnim funkcijama iz drugih programskih jezika za funkcijsko programiranje; budući da se primjena iste funkcije na niz elemenata neke podatkovne strukture u funkcijskim jezicima često zove “mapiranje”, niz funkcija ovog paketa nosi prefiks <code>map_</code> a imena funkcija često odgovaraju očekivanim rezultatima (npr. <code>map2_lgl</code> znači da kao rezultat očekujemo logički vektor, a <code>map2_df</code> podatkovni okvir)</li>
+<li><code>dplyr</code> - relativno novi paket koji u izvjesnom smislu predstavlja “nasljednika” paketa <code>plyr</code> za rad sa podatkovnim okvirima; funkcije ovog paketa nisu toliko orijentirane zamjeni funkcijama porodice <code>apply</code> koliko pružanju svojevrsne platforme za rad sa podatkovnim okvirima na način sličan jezicima domenski orijentiranim upravo za tu svrhu, kao što je npr. jezik SQL</li>
+</ul>
+<p>U lekciji o upravljanju podatkovnim skupovima upoznati ćemo se upravo sa paketom <code>dplyr</code>, upravo zbog činjenice da ovaj paket uvelike olakšava i ubrzava proces analize podataka te je iznimno dobro prihvaćen u R zajednici.</p>
+<hr />
+</div>
+</div>
+<div id="zadaci-za-vježbu-4" class="section level2 unnumbered hasAnchor">
+<h2>Zadaci za vježbu<a href="korisnik.html#zadaci-za-vježbu-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><p>R ima funkciju <code>which</code> koja pretvara logički vektor u numerički sa rednim brojevima elemenata koji su <code>TRUE</code> (tako <code>c(T, F, F, F, F, T, F, T)</code> postaje <code>c(1, 6, 8)</code>). Implementirajte vlastitu inačicu ove funkcije.</p></li>
+<li><p>Uzmimo numerički vektor x duljine n. U statistici standardiziranim momentom k-tog reda zovemo vrijednost:</p></li>
+</ol>
+<p><span class="math display">\[\frac{1}{n}\sum_{i=1}^n{(x_i - \bar{x})}^{k+1}\]</span></p>
+<p>Stvorite generator funkcija <code>moment(k)</code> koji će stvarati funkcije za računanje standardiziranog centralnog momenta k-tog reda. Stvorite funkcije <code>nulti_moment(x)</code> i <code>prvi_moment(x)</code> sa vrijednosti parametra <code>k</code> redom <code>0</code> i <code>1</code>. Testirajte funkcije na vektoru <code>1:1000</code>. Usporedite rezultate koje daje funkcija <code>sd</code> (standardna devijacija) nad vektorom <code>1:1000</code> i korijen rezultata funkcije <code>prvi_moment</code> nad istim vektorom.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Uzmimo matricu <code>m</code> stvorenu sljedećom naredbom:</li>
+</ol>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="korisnik.html#cb333-1" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">2</span>), <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">5</span>), <span class="dv">3</span><span class="sc">:</span><span class="dv">7</span>, <span class="fu">seq</span>(<span class="dv">100</span>, <span class="dv">500</span>, <span class="dv">100</span>))</span></code></pre></div>
+<p>Uz pomoć funkcije <code>apply</code> i nove anonimne funkcije stvorite vektor koji će sadržavati prvi parni element svakog retka, ili nulu ako pripadajući redak nema parnih elemenata.</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Sljedeće naredbe stvoriti će listu od 100 elemenata gdje će svaki element biti numerički vektor nasumične duljine od 1 do 10.</li>
+</ol>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="korisnik.html#cb334-1" tabindex="-1"></a><span class="co">#set.seed(JMBAG)  # otkomentirati i zamijeniti svojim JMBAG-om</span></span>
+<span id="cb334-2"><a href="korisnik.html#cb334-2" tabindex="-1"></a>lista <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">100</span>, <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">1</span>)))</span></code></pre></div>
+<p>Uz pomoć funkcija <code>lapply</code> / <code>sapply</code> (i dodatnih naredbi ako je potrebno) stvorite:</p>
+<ul>
+<li>numerički vektor <code>v</code> sa duljinama elemenata liste</li>
+<li>listu <code>l</code> sa normaliziranim numeričkim vektorima originalne liste</li>
+<li>numerički vektor <code>ind</code> sa indeksima svih elemenata liste koji sadrže broj 4</li>
+<li>podatkovni okvir <code>df5</code> koji kao stupce sadrži sve elemente liste duljine 5</li>
+</ul>
+<hr />
+<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Programirajmo u R-u</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.fer.unizg.hr/en/damir.pintar" property="cc:attributionName" rel="cc:attributionURL">Damir Pintar</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://ratnip.github.io/FER_OPJR/" rel="dct:source">https://ratnip.github.io/FER_OPJR/</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="paketi.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="objekti.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "google", "twitter", "weibo", "instapaper"],
+    "google": false,
+    "instapper": false
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": true
+  },
+  "toolbar": {
+    "position": "fixed",
+    "edit": null,
+    "download": null,
+    "search": true
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

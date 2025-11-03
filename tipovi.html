@@ -23,7 +23,7 @@
 <meta name="author" content="Damir Pintar" />
 
 
-<meta name="date" content="2025-10-22" />
+<meta name="date" content="2025-11-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -290,6 +290,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.2" data-path="paketi.html"><a href="paketi.html#ugrađene-funkcije"><i class="fa fa-check"></i><b>5.2</b> Ugrađene funkcije</a></li>
 <li class="chapter" data-level="5.3" data-path="paketi.html"><a href="paketi.html#okoline"><i class="fa fa-check"></i><b>5.3</b> Okoline</a></li>
 <li class="chapter" data-level="" data-path="paketi.html"><a href="paketi.html#zadaci-za-vježbu-3"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="korisnik.html"><a href="korisnik.html"><i class="fa fa-check"></i><b>6</b> Korisnički definirane funkcije</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="korisnik.html"><a href="korisnik.html#kako-definirati-funkciju"><i class="fa fa-check"></i><b>6.1</b> Kako definirati funkciju</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="korisnik.html"><a href="korisnik.html#princip-kopiranja-kod-izmjene-copy-on-modify"><i class="fa fa-check"></i><b>6.1.1</b> Princip “kopiranja kod izmjene” (copy-on-modify)</a></li>
+<li class="chapter" data-level="6.1.2" data-path="korisnik.html"><a href="korisnik.html#funkcija-kao-objekt"><i class="fa fa-check"></i><b>6.1.2</b> Funkcija kao objekt</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="korisnik.html"><a href="korisnik.html#generičke-funkcije"><i class="fa fa-check"></i><b>6.2</b> Generičke funkcije</a></li>
+<li class="chapter" data-level="6.3" data-path="korisnik.html"><a href="korisnik.html#što-su-apply-funkcije"><i class="fa fa-check"></i><b>6.3</b> Što su <code>apply</code> funkcije?</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="korisnik.html"><a href="korisnik.html#funkcija-apply"><i class="fa fa-check"></i><b>6.3.1</b> Funkcija <code>apply</code></a></li>
+<li class="chapter" data-level="6.3.2" data-path="korisnik.html"><a href="korisnik.html#funkcije-lapply-sapply-i-vapply"><i class="fa fa-check"></i><b>6.3.2</b> Funkcije <code>lapply</code>, <code>sapply</code> i <code>vapply</code></a></li>
+<li class="chapter" data-level="6.3.3" data-path="korisnik.html"><a href="korisnik.html#ostale-funkcije-iz-porodice-apply-i-dostupne-alternative"><i class="fa fa-check"></i><b>6.3.3</b> Ostale funkcije iz porodice <code>apply</code> i dostupne alternative</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="korisnik.html"><a href="korisnik.html#zadaci-za-vježbu-4"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="objekti.html"><a href="objekti.html"><i class="fa fa-check"></i><b>7</b> Objektni modeli</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="objekti.html"><a href="objekti.html#objektni-modeli-u-jeziku-r"><i class="fa fa-check"></i><b>7.1</b> Objektni modeli u jeziku R</a></li>
+<li class="chapter" data-level="7.2" data-path="objekti.html"><a href="objekti.html#pomoćni-paket-sloop"><i class="fa fa-check"></i><b>7.2</b> Pomoćni paket <code>sloop</code></a></li>
+<li class="chapter" data-level="7.3" data-path="objekti.html"><a href="objekti.html#pregled-objektnog-modela-s3"><i class="fa fa-check"></i><b>7.3</b> Pregled objektnog modela S3</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="objekti.html"><a href="objekti.html#konstruktorska-funkcija"><i class="fa fa-check"></i><b>7.3.1</b> Konstruktorska funkcija</a></li>
+<li class="chapter" data-level="7.3.2" data-path="objekti.html"><a href="objekti.html#generičke-funkcije-1"><i class="fa fa-check"></i><b>7.3.2</b> Generičke funkcije</a></li>
+</ul></li>
 </ul></li>
 </ul>
 
@@ -1457,20 +1483,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb103-5"><a href="tipovi.html#cb103-5" tabindex="-1"></a><span class="co"># dijagonalu matrice `m` zamijeni brojevima od 1 do 5</span></span>
 <span id="cb103-6"><a href="tipovi.html#cb103-6" tabindex="-1"></a><span class="co"># pomnoži matricu `m` jediničnom matricom dimenzija 5 x 5 i ispiši rezultat</span></span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5]
-## [1,]  477  165  295  649  358
-## [2,]  231  717  760  241  118
-## [3,]  855  491  981  296  701
-## [4,]  229  900  934  727  506
-## [5,]  400  765  331  654  149</code></pre>
+## [1,]  202  988  696  608  697
+## [2,]  400  606  221  861  226
+## [3,]  203  741  183  877  994
+## [4,]  116  951  658  105  137
+## [5,]  721  856  939  170  126</code></pre>
 <div class="fold s o">
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="tipovi.html#cb105-1" tabindex="-1"></a><span class="fu">diag</span>(m) <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
 <span id="cb105-2"><a href="tipovi.html#cb105-2" tabindex="-1"></a>m <span class="sc">%*%</span> <span class="fu">diag</span>(<span class="at">nrow =</span> <span class="dv">5</span>)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5]
-## [1,]    1  165  295  649  358
-## [2,]  231    2  760  241  118
-## [3,]  855  491    3  296  701
-## [4,]  229  900  934    4  506
-## [5,]  400  765  331  654    5</code></pre>
+## [1,]    1  988  696  608  697
+## [2,]  400    2  221  861  226
+## [3,]  203  741    3  877  994
+## [4,]  116  951  658    4  137
+## [5,]  721  856  939  170    5</code></pre>
 </div>
 <p>Funkcije <code>upper.tri</code> i <code>lower.tri</code> referenciraju elemente ispod tj. iznad dijagonale matrice, pri čemu dijagonala nije uključena u rezultat osim ako ne postavimo parametar <code>diag = TRUE</code>. Poziv funkcije nad matricom zapravo stvara logičku indeksnu matricu odgovarajućih dimenzija, što možemo vidjeti u sljedećem zadatku.</p>
 <p><strong>Zadatak 2.26 - Funkcija <code>upper.tri</code> i <code>lower.tri</code></strong></p>
@@ -1486,12 +1512,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb107-10"><a href="tipovi.html#cb107-10" tabindex="-1"></a><span class="co"># - broj -1 ispod glavne dijagonale</span></span>
 <span id="cb107-11"><a href="tipovi.html#cb107-11" tabindex="-1"></a><span class="co"># - broj 0 na dijagonali</span></span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
-## [1,]   15   10   55   65   20   25
-## [2,]   75   11   52   24   57   79
-## [3,]   59   97   29   85   84   80
-## [4,]   98   39   78   76   94   81
-## [5,]   92   47   27   86   71   19
-## [6,]   37   93   44   12   30   63</code></pre>
+## [1,]   41   83   62   65   55   34
+## [2,]   87   31   51   10   19   64
+## [3,]   89   40   94   45   13   66
+## [4,]   75   61   56   71   11   60
+## [5,]   18   72   98   77   74   20
+## [6,]   24   58   54   28   43   12</code></pre>
 <div class="fold s o">
 <div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="tipovi.html#cb109-1" tabindex="-1"></a><span class="fu">upper.tri</span>(m)</span>
 <span id="cb109-2"><a href="tipovi.html#cb109-2" tabindex="-1"></a></span>
@@ -1650,6 +1676,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>7 Objektni modeli | Programirajmo u R-u</title>
+  <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="7 Objektni modeli | Programirajmo u R-u" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="7 Objektni modeli | Programirajmo u R-u" />
+  
+  <meta name="twitter:description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  
+
+<meta name="author" content="Damir Pintar" />
+
+
+<meta name="date" content="2025-11-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="korisnik.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+.showopt {
+  background-color: #004c93;
+  color: #FFFFFF; 
+  width: 140px;
+  height: 4	0px;
+  text-align: center;
+  vertical-align: middle !important;
+  float: right;
+  font-family: sans-serif;
+  font-size:10 pt;
+  border-radius: 8px;
+}
+
+.showopt:hover {
+    background-color: #dfe4f2;
+    color: #004c93;
+}
+
+pre.plot {
+  background-color: white !important;
+}
+</style>
+
+<script>
+ $(document).ready(function() {
+
+  $chunks = $('.fold');
+
+  $chunks.each(function () {
+
+    // add button to source code chunks
+    if ( $(this).hasClass('s') ) {
+      $('pre.r', this).prepend("<div class=\"showopt\">Prikaži rješenje</div><br style=\"line-height:22px;\"/>");
+      $('pre.r', this).children('code').attr('class', 'folded');
+    }
+
+    // add button to output chunks
+    if ( $(this).hasClass('o') ) {
+      $('pre:not(.r)', this).has('code').prepend("<div class=\"showopt\">Prikaži ispis</div><br style=\"line-height:22px;\"/>");
+      $('pre:not(.r)', this).children('code:not(r)').addClass('folded');
+
+      // add button to plots
+      $(this).find('img').wrap('<pre class=\"plot\"></pre>');
+      $('pre.plot', this).prepend("<div class=\"showopt\">Prikaži sliku</div><br style=\"line-height:22px;\"/>");
+      $('pre.plot', this).children('img').addClass('folded');
+
+    }
+  });
+
+  // hide all chunks when document is loaded
+  $('.folded').css('display', 'none')
+
+  // function to toggle the visibility
+  $('.showopt').click(function() {
+    var label = $(this).html();
+    if (label.indexOf("Prikaži") >= 0) {
+      $(this).html(label.replace("Prikaži", "Sakrij"));
+    } else {
+      $(this).html(label.replace("Sakrij", "Prikaži"));
+    }
+    $(this).siblings('code, img').slideToggle('fast', 'swing');
+  });
+});
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>(Udžbenik za predmet “Osnove statističkog programiranja”)</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#predgovor"><i class="fa fa-check"></i>Predgovor</a></li>
+</ul></li>
+<li class="part"><span><b>I Osnovni elementi jezika R</b></span></li>
+<li class="chapter" data-level="1" data-path="uvod.html"><a href="uvod.html"><i class="fa fa-check"></i><b>1</b> Uvod</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="uvod.html"><a href="uvod.html#što-je-programski-jezik-r"><i class="fa fa-check"></i><b>1.1</b> Što je programski jezik R?</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="uvod.html"><a href="uvod.html#općenito-o-r-u"><i class="fa fa-check"></i><b>1.1.1</b> Općenito o R-u</a></li>
+<li class="chapter" data-level="1.1.2" data-path="uvod.html"><a href="uvod.html#alternative-jeziku-r"><i class="fa fa-check"></i><b>1.1.2</b> Alternative jeziku R</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="uvod.html"><a href="uvod.html#instalacija-programske-podrške"><i class="fa fa-check"></i><b>1.2</b> Instalacija programske podrške</a></li>
+<li class="chapter" data-level="1.3" data-path="uvod.html"><a href="uvod.html#pregled-razvojnog-sučelja-rstudio"><i class="fa fa-check"></i><b>1.3</b> Pregled razvojnog sučelja <em>RStudio</em></a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="uvod.html"><a href="uvod.html#interaktivna-konzola"><i class="fa fa-check"></i><b>1.3.1</b> Interaktivna konzola</a></li>
+<li class="chapter" data-level="1.3.2" data-path="uvod.html"><a href="uvod.html#pisanje-r-skripti"><i class="fa fa-check"></i><b>1.3.2</b> Pisanje R skripti</a></li>
+<li class="chapter" data-level="1.3.3" data-path="uvod.html"><a href="uvod.html#instalacija-dodatnih-paketa"><i class="fa fa-check"></i><b>1.3.3</b> Instalacija dodatnih paketa</a></li>
+<li class="chapter" data-level="1.3.4" data-path="uvod.html"><a href="uvod.html#r-markdown"><i class="fa fa-check"></i><b>1.3.4</b> <em>R Markdown</em></a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="uvod.html"><a href="uvod.html#organizacija-procesa-podatkovne-analize-uz-r-i-rstudio"><i class="fa fa-check"></i><b>1.4</b> Organizacija procesa podatkovne analize uz R i RStudio</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="uvod.html"><a href="uvod.html#poželjne-karakteristike-procesa-analize-podataka"><i class="fa fa-check"></i><b>1.4.1</b> Poželjne karakteristike procesa analize podataka</a></li>
+<li class="chapter" data-level="1.4.2" data-path="uvod.html"><a href="uvod.html#organizacija-mapa-za-potrebe-analize-podataka"><i class="fa fa-check"></i><b>1.4.2</b> Organizacija mapa za potrebe analize podataka</a></li>
+<li class="chapter" data-level="1.4.3" data-path="uvod.html"><a href="uvod.html#pojam-projekta"><i class="fa fa-check"></i><b>1.4.3</b> Pojam projekta</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="uvod.html"><a href="uvod.html#kako-koristiti-ovaj-udžbenik"><i class="fa fa-check"></i><b>1.5</b> Kako koristiti ovaj udžbenik?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="tipovi.html"><a href="tipovi.html"><i class="fa fa-check"></i><b>2</b> Osnovni elementi, vektori i matrice</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tipovi.html"><a href="tipovi.html#osnovni-tipovi-podataka"><i class="fa fa-check"></i><b>2.1</b> Osnovni tipovi podataka</a></li>
+<li class="chapter" data-level="2.2" data-path="tipovi.html"><a href="tipovi.html#operatori"><i class="fa fa-check"></i><b>2.2</b> Operatori</a></li>
+<li class="chapter" data-level="2.3" data-path="tipovi.html"><a href="tipovi.html#nedostajuće-nepoznate-i-nemoguće-vrijednosti"><i class="fa fa-check"></i><b>2.3</b> Nedostajuće, nepoznate i nemoguće vrijednosti</a></li>
+<li class="chapter" data-level="2.4" data-path="tipovi.html"><a href="tipovi.html#vektori"><i class="fa fa-check"></i><b>2.4</b> Vektori</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="tipovi.html"><a href="tipovi.html#stvaranje-vektora"><i class="fa fa-check"></i><b>2.4.1</b> Stvaranje vektora</a></li>
+<li class="chapter" data-level="2.4.2" data-path="tipovi.html"><a href="tipovi.html#operator"><i class="fa fa-check"></i><b>2.4.2</b> Operator <code>[</code></a></li>
+<li class="chapter" data-level="2.4.3" data-path="tipovi.html"><a href="tipovi.html#principi-vektorizacije-i-recikliranja"><i class="fa fa-check"></i><b>2.4.3</b> Principi vektorizacije i recikliranja</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="tipovi.html"><a href="tipovi.html#indeksni-vektori"><i class="fa fa-check"></i><b>2.5</b> Indeksni vektori</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="tipovi.html"><a href="tipovi.html#lokacijsko-referenciranje"><i class="fa fa-check"></i><b>2.5.1</b> Lokacijsko referenciranje</a></li>
+<li class="chapter" data-level="2.5.2" data-path="tipovi.html"><a href="tipovi.html#uvjetno-referenciranje"><i class="fa fa-check"></i><b>2.5.2</b> Uvjetno referenciranje</a></li>
+<li class="chapter" data-level="2.5.3" data-path="tipovi.html"><a href="tipovi.html#imensko-referenciranje"><i class="fa fa-check"></i><b>2.5.3</b> Imensko referenciranje</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="tipovi.html"><a href="tipovi.html#matrice-i-polja"><i class="fa fa-check"></i><b>2.6</b> Matrice i polja</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="tipovi.html"><a href="tipovi.html#rezanje-matrica"><i class="fa fa-check"></i><b>2.6.1</b> Rezanje matrica</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="tipovi.html"><a href="tipovi.html#osnovne-operacije-matrične-algebre"><i class="fa fa-check"></i><b>2.7</b> Osnovne operacije matrične algebre</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="tipovi.html"><a href="tipovi.html#skalarni-produkt"><i class="fa fa-check"></i><b>2.7.1</b> Skalarni produkt</a></li>
+<li class="chapter" data-level="2.7.2" data-path="tipovi.html"><a href="tipovi.html#matrično-množenje"><i class="fa fa-check"></i><b>2.7.2</b> Matrično množenje</a></li>
+<li class="chapter" data-level="2.7.3" data-path="tipovi.html"><a href="tipovi.html#množenje-po-elementima"><i class="fa fa-check"></i><b>2.7.3</b> Množenje po elementima</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="tipovi.html"><a href="tipovi.html#funkcije-diag-upper.tri-lower.tri-i-solve"><i class="fa fa-check"></i><b>2.8</b> Funkcije <code>diag</code>, <code>upper.tri</code>, <code>lower.tri</code> i <code>solve</code></a></li>
+<li class="chapter" data-level="" data-path="tipovi.html"><a href="tipovi.html#zadaci-za-vježbu"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="okviri.html"><a href="okviri.html"><i class="fa fa-check"></i><b>3</b> Liste, podatkovni okviri i faktori</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="okviri.html"><a href="okviri.html#liste"><i class="fa fa-check"></i><b>3.1</b> Liste</a></li>
+<li class="chapter" data-level="3.2" data-path="okviri.html"><a href="okviri.html#podatkovni-okviri"><i class="fa fa-check"></i><b>3.2</b> Podatkovni okviri</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="okviri.html"><a href="okviri.html#odabir-redaka-i-stupaca-podatkovnih-okvira"><i class="fa fa-check"></i><b>3.2.1</b> Odabir redaka i stupaca podatkovnih okvira</a></li>
+<li class="chapter" data-level="3.2.2" data-path="okviri.html"><a href="okviri.html#dodavanje-i-brisanje-redaka-i-stupaca"><i class="fa fa-check"></i><b>3.2.2</b> Dodavanje i brisanje redaka i stupaca</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="okviri.html"><a href="okviri.html#faktori"><i class="fa fa-check"></i><b>3.3</b> Faktori</a></li>
+<li class="chapter" data-level="" data-path="okviri.html"><a href="okviri.html#zadaci-za-vježbu-1"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="uvjet.html"><a href="uvjet.html"><i class="fa fa-check"></i><b>4</b> Uvjetne naredbe i petlje</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="uvjet.html"><a href="uvjet.html#naredbe-kontrole-toka"><i class="fa fa-check"></i><b>4.1</b> Naredbe kontrole toka</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="uvjet.html"><a href="uvjet.html#uvjetno-izvođenje-naredbi"><i class="fa fa-check"></i><b>4.1.1</b> Uvjetno izvođenje naredbi</a></li>
+<li class="chapter" data-level="4.1.2" data-path="uvjet.html"><a href="uvjet.html#programske-petlje"><i class="fa fa-check"></i><b>4.1.2</b> Programske petlje</a></li>
+<li class="chapter" data-level="4.1.3" data-path="uvjet.html"><a href="uvjet.html#petlja-repeat"><i class="fa fa-check"></i><b>4.1.3</b> Petlja <code>repeat</code></a></li>
+<li class="chapter" data-level="4.1.4" data-path="uvjet.html"><a href="uvjet.html#petlja-while"><i class="fa fa-check"></i><b>4.1.4</b> Petlja <code>while</code></a></li>
+<li class="chapter" data-level="4.1.5" data-path="uvjet.html"><a href="uvjet.html#petlja-for"><i class="fa fa-check"></i><b>4.1.5</b> Petlja <code>for</code></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="uvjet.html"><a href="uvjet.html#zadaci-za-vježbu-2"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="paketi.html"><a href="paketi.html"><i class="fa fa-check"></i><b>5</b> Paketi, ugrađene funkcije i okoline</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="paketi.html"><a href="paketi.html#rad-s-paketima"><i class="fa fa-check"></i><b>5.1</b> Rad s paketima</a></li>
+<li class="chapter" data-level="5.2" data-path="paketi.html"><a href="paketi.html#ugrađene-funkcije"><i class="fa fa-check"></i><b>5.2</b> Ugrađene funkcije</a></li>
+<li class="chapter" data-level="5.3" data-path="paketi.html"><a href="paketi.html#okoline"><i class="fa fa-check"></i><b>5.3</b> Okoline</a></li>
+<li class="chapter" data-level="" data-path="paketi.html"><a href="paketi.html#zadaci-za-vježbu-3"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="korisnik.html"><a href="korisnik.html"><i class="fa fa-check"></i><b>6</b> Korisnički definirane funkcije</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="korisnik.html"><a href="korisnik.html#kako-definirati-funkciju"><i class="fa fa-check"></i><b>6.1</b> Kako definirati funkciju</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="korisnik.html"><a href="korisnik.html#princip-kopiranja-kod-izmjene-copy-on-modify"><i class="fa fa-check"></i><b>6.1.1</b> Princip “kopiranja kod izmjene” (copy-on-modify)</a></li>
+<li class="chapter" data-level="6.1.2" data-path="korisnik.html"><a href="korisnik.html#funkcija-kao-objekt"><i class="fa fa-check"></i><b>6.1.2</b> Funkcija kao objekt</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="korisnik.html"><a href="korisnik.html#generičke-funkcije"><i class="fa fa-check"></i><b>6.2</b> Generičke funkcije</a></li>
+<li class="chapter" data-level="6.3" data-path="korisnik.html"><a href="korisnik.html#što-su-apply-funkcije"><i class="fa fa-check"></i><b>6.3</b> Što su <code>apply</code> funkcije?</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="korisnik.html"><a href="korisnik.html#funkcija-apply"><i class="fa fa-check"></i><b>6.3.1</b> Funkcija <code>apply</code></a></li>
+<li class="chapter" data-level="6.3.2" data-path="korisnik.html"><a href="korisnik.html#funkcije-lapply-sapply-i-vapply"><i class="fa fa-check"></i><b>6.3.2</b> Funkcije <code>lapply</code>, <code>sapply</code> i <code>vapply</code></a></li>
+<li class="chapter" data-level="6.3.3" data-path="korisnik.html"><a href="korisnik.html#ostale-funkcije-iz-porodice-apply-i-dostupne-alternative"><i class="fa fa-check"></i><b>6.3.3</b> Ostale funkcije iz porodice <code>apply</code> i dostupne alternative</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="korisnik.html"><a href="korisnik.html#zadaci-za-vježbu-4"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="objekti.html"><a href="objekti.html"><i class="fa fa-check"></i><b>7</b> Objektni modeli</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="objekti.html"><a href="objekti.html#objektni-modeli-u-jeziku-r"><i class="fa fa-check"></i><b>7.1</b> Objektni modeli u jeziku R</a></li>
+<li class="chapter" data-level="7.2" data-path="objekti.html"><a href="objekti.html#pomoćni-paket-sloop"><i class="fa fa-check"></i><b>7.2</b> Pomoćni paket <code>sloop</code></a></li>
+<li class="chapter" data-level="7.3" data-path="objekti.html"><a href="objekti.html#pregled-objektnog-modela-s3"><i class="fa fa-check"></i><b>7.3</b> Pregled objektnog modela S3</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="objekti.html"><a href="objekti.html#konstruktorska-funkcija"><i class="fa fa-check"></i><b>7.3.1</b> Konstruktorska funkcija</a></li>
+<li class="chapter" data-level="7.3.2" data-path="objekti.html"><a href="objekti.html#generičke-funkcije-1"><i class="fa fa-check"></i><b>7.3.2</b> Generičke funkcije</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Programirajmo u R-u</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="objekti" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">7</span> Objektni modeli<a href="objekti.html#objekti" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<hr />
+<hr />
+<div id="objektni-modeli-u-jeziku-r" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Objektni modeli u jeziku R<a href="objekti.html#objektni-modeli-u-jeziku-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Kako bismo objasnili što su zapravo generičke funkcije, moramo se vratiti na priču o programskim paradigmama i činjenici da je R dizajniran kao objektno orijentirani jezik, zajedno sa mehanizmima koje objektno orijentirana paradigma nalaže - <em>enkapsulacija</em> (združivanje različitih varijabli u zajedničku cjelinu), <em>polimorfizam</em> (korištenje iste funkcije nad različitim objektima rezultira različitim operacijama ovisno o prirodi objekta) i <em>nasljeđivanje</em> (izvođenje novih objekata iz postojećih na način da ih proširujemo dodatnim elementima).</p>
+<p>R je svoj inicijalni način modeliranja objekata preuzeo iz jezika S te su stoga takvi objekti poznati kao “S3 objekti” (prema inačici jezika S iz koje su originalno preuzeti). Ovaj način, kojeg ćemo upoznati u nastavku, zapravo je vrlo nekonvencionalan i jednostavan no kao takav i prilično podoban za korištenje R-a kao primarno domenski orijentiranog jezika. Uplivom sve većeg broja programera u R zajednicu rastao je i pritisak da se u R uvede podrška za objekte koja će biti sličnija načinu kako njima upravljaju drugi programski jezici, a koja bi povećala robustnost kod dizajna i upravljanja objektima.</p>
+<p>Sve je to dovelo do toga da danas formalno imamo čak četiri tipa objekata u programskom jeziku R:</p>
+<ul>
+<li>osnovni objekti (<em>base classes</em>) - osnovni, “bazični” elementi jezika R (funkcije, vektori, liste)</li>
+<li>S3 objekti - princip dizajna objekata preuzet iz jezika S (inačica 3)</li>
+<li>S4 objekti - formalniji i rigorozniji način stvaranja objekata koji se približava standardnim objektno-orijentiranim mehanizmima iz drugih jezika</li>
+<li>RC objekti (<em>reference classes</em>) - najnoviji način stvaranja objekata (uveden u inačici R 2.12) koji u potpunosti replicira “klasične” objektno-orijentirane principe utemeljene na razmjeni poruka</li>
+</ul>
+<p>Postojanje tri različita modela definiranja objekata (možemo zanemariti osnovni budući da njega formalno ne možemo “proširivati” novim objektima) može djelovati demotivirajuće - da li je potrebeno naučiti sva tri modela? Kako ih razlikovati? Koji odabrati? No usprkos činjenici da se priča o objektnoj prirodi jezika R tijekom njegova razvoja (nepotrebno) zakomplicirala, dobra vijest je ta da je za većinu potreba sasvim dovoljno naučiti kako radi S3 model, koji je ujedno i najjednostavniji. Veliki broj popularnih R paketa koristi isključivo S3 klase i moguće je raditi dugo vremena u jeziku R bez potrebe za učenjem S4 ili RC modela. Zbog ove činjenice ćemo u nastavku se usredotočiti isključivo na S3 klase (čitatelji koji žele više informacija o ostalim modelima mogu pogledati vrlo dobru knjigu <em>“Advanced R”</em>, autora Hadley-a Wickhama, koja se između ostalog detaljnije bavi objektnim modelima u R-u i njihovom usporedbom).</p>
+<hr />
+</div>
+<div id="pomoćni-paket-sloop" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Pomoćni paket <code>sloop</code><a href="objekti.html#pomoćni-paket-sloop" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Prije nastavka upoznati ćemo se sa paketom <code>sloop</code>, čija je glavna svrha pružanje osnovnih informacija o objektima jezika R te koji je od velike pomoći kod snalaženja u “šumi” objektnih modela. Sličnu funkcionalnost možemo pronaći i u osnovnom R-u, no paket <code>sloop</code> ovaj proces čini dosta jednostavnijim tako da ćemo se sporadično oslanjati na njegove funkcije tijekom ostatka ovog poglavlja. Za početak, isprobajmo funkciju <code>otype</code> (“<em>object type</em>”) nad nekoliko do sada upoznatih objekata i provjerimo da s kojim objektnim modelima smo već imali prilike raditi.</p>
+<p><strong>Zadatak 7.1 - funkcija <code>otype</code></strong></p>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb335-1"><a href="objekti.html#cb335-1" tabindex="-1"></a><span class="co">#library(sloop)</span></span>
+<span id="cb335-2"><a href="objekti.html#cb335-2" tabindex="-1"></a></span>
+<span id="cb335-3"><a href="objekti.html#cb335-3" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(T, F), <span class="dv">10</span>)</span>
+<span id="cb335-4"><a href="objekti.html#cb335-4" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;up&quot;</span>, <span class="st">&quot;up&quot;</span>, <span class="st">&quot;down&quot;</span>, <span class="st">&quot;up&quot;</span>, <span class="st">&quot;down&quot;</span>, <span class="st">&quot;down&quot;</span>, <span class="st">&quot;down&quot;</span>))</span>
+<span id="cb335-5"><a href="objekti.html#cb335-5" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">y =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="at">length =</span> <span class="dv">10</span>))</span>
+<span id="cb335-6"><a href="objekti.html#cb335-6" tabindex="-1"></a></span>
+<span id="cb335-7"><a href="objekti.html#cb335-7" tabindex="-1"></a><span class="co"># isprobajte funkciju `otype` nad ovim varijablama</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="objekti.html#cb336-1" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(T, F), <span class="dv">10</span>)</span>
+<span id="cb336-2"><a href="objekti.html#cb336-2" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;up&quot;</span>, <span class="st">&quot;up&quot;</span>, <span class="st">&quot;down&quot;</span>, <span class="st">&quot;up&quot;</span>, <span class="st">&quot;down&quot;</span>, <span class="st">&quot;down&quot;</span>, <span class="st">&quot;down&quot;</span>))</span>
+<span id="cb336-3"><a href="objekti.html#cb336-3" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">y =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="at">length =</span> <span class="dv">10</span>))</span>
+<span id="cb336-4"><a href="objekti.html#cb336-4" tabindex="-1"></a></span>
+<span id="cb336-5"><a href="objekti.html#cb336-5" tabindex="-1"></a><span class="co"># isprobajte funkciju `otype` nad ovim varijablama</span></span>
+<span id="cb336-6"><a href="objekti.html#cb336-6" tabindex="-1"></a><span class="fu">otype</span>(a)</span>
+<span id="cb336-7"><a href="objekti.html#cb336-7" tabindex="-1"></a><span class="fu">otype</span>(b)</span>
+<span id="cb336-8"><a href="objekti.html#cb336-8" tabindex="-1"></a><span class="fu">otype</span>(c)</span></code></pre></div>
+<pre><code>## [1] &quot;base&quot;
+## [1] &quot;S3&quot;
+## [1] &quot;S3&quot;</code></pre>
+</div>
+</div>
+<div id="pregled-objektnog-modela-s3" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Pregled objektnog modela S3<a href="objekti.html#pregled-objektnog-modela-s3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Kao što je već rečeno, S3 objekti zapravo su preneseni iz programskog jezika S i predstavljaju relativno primitivno poimanje koncepta “objekta”, barem što se tiče očekivanja glede standardnih metoda stvaranja objekata i pripadajućih metoda. <strong>S3 objekt je zapravo obična lista kojoj smo definirali <code>class</code> atribut</strong>.</p>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="objekti.html#cb338-1" tabindex="-1"></a><span class="co"># stvaramo novi objekt klase `Person`</span></span>
+<span id="cb338-2"><a href="objekti.html#cb338-2" tabindex="-1"></a>pero <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">id =</span> <span class="st">&quot;12345678&quot;</span>, <span class="at">surname =</span> <span class="st">&quot;Peric&quot;</span>, <span class="at">weight =</span> <span class="dv">78</span>)</span>
+<span id="cb338-3"><a href="objekti.html#cb338-3" tabindex="-1"></a><span class="fu">class</span>(pero) <span class="ot">&lt;-</span> <span class="st">&quot;Person&quot;</span></span></code></pre></div>
+<p><strong>NAPOMENA</strong>: kao što smo vidjeli u ranijim poglavljima, funkcija <code>class</code> nam vraća <strong>tip</strong> podatka za osnovne objekte - to je zato što u nedostatku ovog atributa funkcija <code>class</code> vraća <em>implicitnu</em> klasu objekta, što je kod osnovnih objekata najčešće njihov tip. Za provjeru da li se uistinu radi o S3 objektu, možemo se koristiti već viđenom funkcijom <code>otype</code> paketa <code>sloop</code>, ili osnovnom funkcijom <code>is.object</code>.</p>
+<div id="konstruktorska-funkcija" class="section level3 hasAnchor" number="7.3.1">
+<h3><span class="header-section-number">7.3.1</span> Konstruktorska funkcija<a href="objekti.html#konstruktorska-funkcija" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Uočite da nemamo formalno definiranog “predloška” klase kojeg onda instanciramo u objekt kao što je ustaljena praksa u drugim programskim jezicima. Kod S3 objekata jednostavno stvaramo listu i onda deklariramo da je ta lista objekt određene klase, iako je struktura te klase zapravo samo implicirana izgledom objekta (i ne mora uopće odgovarati strukturi nekog drugog objekta koji se deklarirao da pripada istoj klasi).</p>
+<p>Naravno, ovako ležeran način konstrukcije objekata ipak nije preporučljiv te se zbog toga preporučuje da klase ne deklariramo “ručno” već da to radimo uz pomoć posebne konstruktorske funkcije čiji će parametri zapravo definirati izgled objekta.</p>
+<p><strong>Zadatak 7.2 - konstruktorska funkcija</strong></p>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="objekti.html#cb339-1" tabindex="-1"></a><span class="co"># stvorite funkciju naziva `Person` </span></span>
+<span id="cb339-2"><a href="objekti.html#cb339-2" tabindex="-1"></a><span class="co"># ulazni parametri: id, surname, weight</span></span>
+<span id="cb339-3"><a href="objekti.html#cb339-3" tabindex="-1"></a><span class="co"># povratna vrijednosti: objekt klase &quot;Person&quot; </span></span>
+<span id="cb339-4"><a href="objekti.html#cb339-4" tabindex="-1"></a><span class="co"># prije stvaranja objekta funkcija mora provjeriti da je:</span></span>
+<span id="cb339-5"><a href="objekti.html#cb339-5" tabindex="-1"></a><span class="co">#      - `id` jednoelementni znakovni vektor od točno 8 znakova</span></span>
+<span id="cb339-6"><a href="objekti.html#cb339-6" tabindex="-1"></a><span class="co">#      - `surname` jednoelementni znakovni vektor</span></span>
+<span id="cb339-7"><a href="objekti.html#cb339-7" tabindex="-1"></a><span class="co">#      - `weight` jednoelementni pozitivni numerički vektor</span></span>
+<span id="cb339-8"><a href="objekti.html#cb339-8" tabindex="-1"></a></span>
+<span id="cb339-9"><a href="objekti.html#cb339-9" tabindex="-1"></a></span>
+<span id="cb339-10"><a href="objekti.html#cb339-10" tabindex="-1"></a><span class="co"># stvorite varijablu `john`, objekt klase `Person` sa sljedećim karakteristikama:</span></span>
+<span id="cb339-11"><a href="objekti.html#cb339-11" tabindex="-1"></a><span class="co"># id: 13571313, surname: Watson, weight: 76</span></span>
+<span id="cb339-12"><a href="objekti.html#cb339-12" tabindex="-1"></a></span>
+<span id="cb339-13"><a href="objekti.html#cb339-13" tabindex="-1"></a><span class="co"># ispišite varijablu `john`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="objekti.html#cb340-1" tabindex="-1"></a><span class="co"># stvorite funkciju naziva `Person` </span></span>
+<span id="cb340-2"><a href="objekti.html#cb340-2" tabindex="-1"></a><span class="co"># ulazni parametri: id, surname, weight</span></span>
+<span id="cb340-3"><a href="objekti.html#cb340-3" tabindex="-1"></a><span class="co"># povratna vrijednosti: objekt klase &quot;Person&quot; </span></span>
+<span id="cb340-4"><a href="objekti.html#cb340-4" tabindex="-1"></a><span class="co"># prije stvaranja objekta funkcija mora provjeriti da je:</span></span>
+<span id="cb340-5"><a href="objekti.html#cb340-5" tabindex="-1"></a><span class="co">#      - `id` jednoelementni znakovni vektor od točno 8 znakova</span></span>
+<span id="cb340-6"><a href="objekti.html#cb340-6" tabindex="-1"></a><span class="co">#      - `surname` jednoelementni znakovni vektor</span></span>
+<span id="cb340-7"><a href="objekti.html#cb340-7" tabindex="-1"></a><span class="co">#      - `weight` jednoelementni pozitivni numerički vektor</span></span>
+<span id="cb340-8"><a href="objekti.html#cb340-8" tabindex="-1"></a></span>
+<span id="cb340-9"><a href="objekti.html#cb340-9" tabindex="-1"></a></span>
+<span id="cb340-10"><a href="objekti.html#cb340-10" tabindex="-1"></a>Person <span class="ot">&lt;-</span> <span class="cf">function</span>(id, surname, weight) {</span>
+<span id="cb340-11"><a href="objekti.html#cb340-11" tabindex="-1"></a></span>
+<span id="cb340-12"><a href="objekti.html#cb340-12" tabindex="-1"></a>    <span class="fu">stopifnot</span>(<span class="fu">is.character</span>(id) <span class="sc">&amp;&amp;</span> <span class="fu">nchar</span>(id) <span class="sc">==</span> <span class="dv">8</span>)</span>
+<span id="cb340-13"><a href="objekti.html#cb340-13" tabindex="-1"></a>    <span class="fu">stopifnot</span>(<span class="fu">is.character</span>(surname))</span>
+<span id="cb340-14"><a href="objekti.html#cb340-14" tabindex="-1"></a>    <span class="fu">stopifnot</span>(<span class="fu">is.numeric</span>(weight) <span class="sc">&amp;&amp;</span> weight <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb340-15"><a href="objekti.html#cb340-15" tabindex="-1"></a></span>
+<span id="cb340-16"><a href="objekti.html#cb340-16" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">id =</span> id, <span class="at">surname =</span> surname, <span class="at">weight =</span> weight)</span>
+<span id="cb340-17"><a href="objekti.html#cb340-17" tabindex="-1"></a>    <span class="fu">class</span>(p) <span class="ot">&lt;-</span> <span class="st">&quot;Person&quot;</span></span>
+<span id="cb340-18"><a href="objekti.html#cb340-18" tabindex="-1"></a></span>
+<span id="cb340-19"><a href="objekti.html#cb340-19" tabindex="-1"></a>    p</span>
+<span id="cb340-20"><a href="objekti.html#cb340-20" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div class="fold s o">
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="objekti.html#cb341-1" tabindex="-1"></a><span class="co"># stvorite varijablu `john`, objekt klase `Person` sa sljedećim karakteristikama:</span></span>
+<span id="cb341-2"><a href="objekti.html#cb341-2" tabindex="-1"></a><span class="co"># id: 13571313, surname: Watson, weight: 76</span></span>
+<span id="cb341-3"><a href="objekti.html#cb341-3" tabindex="-1"></a>john <span class="ot">&lt;-</span> <span class="fu">Person</span>(<span class="st">&quot;13571313&quot;</span>, <span class="st">&quot;Watson&quot;</span>, <span class="dv">76</span>)</span>
+<span id="cb341-4"><a href="objekti.html#cb341-4" tabindex="-1"></a></span>
+<span id="cb341-5"><a href="objekti.html#cb341-5" tabindex="-1"></a><span class="co"># ispišite varijablu `john`</span></span>
+<span id="cb341-6"><a href="objekti.html#cb341-6" tabindex="-1"></a>john</span></code></pre></div>
+<pre><code>## $id
+## [1] &quot;13571313&quot;
+## 
+## $surname
+## [1] &quot;Watson&quot;
+## 
+## $weight
+## [1] 76
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;Person&quot;</code></pre>
+</div>
+<p>Što je s nasljeđivanjem, gdje klasa-dijete nasljeđuje tj. proširuje svojstva klase-roditelja?</p>
+<p>R omogućuje nasljeđivanje, ali također na vrlo neformalan i relativno trivijalan način. Umjesto da navedemo samo jedan “naziv” klase uz pomoć atributa <code>class</code>, mi stvorimo znakovni vektor gdje će prvi element biti naziv klase, a ostali elementi će biti klase roditelji, poredani prema “važnosti”. Na primjer, ako smo stvorili novi objekt <code>mate</code> klase <code>Zaposlenik</code> nad kojim bi htjeli koristiti iste implementacije određenih generičkih metoda razvijenih za potrebe objekata klase <code>Osoba</code>, onda je dovoljno izvesti sljedeće:</p>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="objekti.html#cb343-1" tabindex="-1"></a>mate <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">oib =</span> <span class="st">&quot;12345678&quot;</span>, <span class="at">prezime =</span> <span class="st">&quot;Peric&quot;</span>, <span class="at">tezina =</span> <span class="dv">78</span>, <span class="at">godZaposlenja =</span> <span class="dv">2001</span>)</span>
+<span id="cb343-2"><a href="objekti.html#cb343-2" tabindex="-1"></a><span class="fu">class</span>(mate) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Zaposlenik&quot;</span>, <span class="st">&quot;Osoba&quot;</span>)</span></code></pre></div>
+<p>Primijetimo da sav posao oko nasljeđivanja atributa moramo obaviti “ručno”, tj. moramo se sami pobrinuti da mate ima atribute klase Osoba koje će generička funkcija koju pozivamo koristiti.</p>
+</div>
+<div id="generičke-funkcije-1" class="section level3 hasAnchor" number="7.3.2">
+<h3><span class="header-section-number">7.3.2</span> Generičke funkcije<a href="objekti.html#generičke-funkcije-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Gledajući gore definirani način dizajna objekta opravdano je postaviti i dodatno pitanje - a gdje su metode? Kao što znamo, standardni objektno-orijentirani principi pretpostavljaju enkapsulaciju atributa ali i metoda u okvir objekta. Upravo tu leži osnovna razlika između S3 objekta i “standardnih” objekata iz drugih programskih jezika - <strong>kod S3 objekata metode se definiraju izvan objekta u obliku tzv. generičkih funkcija</strong>.</p>
+<p>Zašto je tome tako? Ideja jest sljedeća - u radu sa objektima korisnik (programer, analitičar) često poziva iste funkcije (npr. “ispis”, “crtanje”, “sažeti opis”) nad objektima različitog tipa. Funkcija istog imena ali različite implementacije ovisno o objektu nad kojim radi zove se <strong>generička funkcija</strong>. Tako recimo funkcija <code>print</code> uvijek rezultira nekakvim ispisom, ali kako će ispis izgledati zapravo ovisi o objektu kojeg ispisujemo.</p>
+<p>Ovaj način dizajna objekata može djelovati iznimno nekonvencionalno, no činjenica jest da on pozive funkcija čini puno intuitivnijim, pogotovo korisnicima koji nemaju veliko iskustvo sa programiranjem. Konkretno, usporedimo naredbu:</p>
+<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="objekti.html#cb344-1" tabindex="-1"></a><span class="fu">pokreni</span>(auto, <span class="at">brzina =</span> <span class="dv">20</span>)</span></code></pre></div>
+<p>s naredbom:</p>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="objekti.html#cb345-1" tabindex="-1"></a><span class="fu">auto.pokreni</span>(<span class="at">brzina =</span> <span class="dv">20</span>)</span></code></pre></div>
+<p>Čitajući prvu naredbu auto doživljavamo kao “objekt” (u smislu službe riječi u rečenicu), tj. nešto radimo “nad” tim objektom. Druga naredba auto postavlja kao subjekt, što je uobičajena praksa u objektno-orijentiranim jezicima ali nije u skladu sa općenitim poimanjem obavljanja radnji nad nekim objektima.</p>
+<p>U radu s programskim jezikom R često radimo “slične” poslove nad različitim objektima - ispisujemo njihov sadržaj, crtamo ih na grafu, tražimo neke sažete detalje o njima i sl. Upravo zbog toga, a i činjenice da u R-u često radimo interaktivno, R je dizajniran na način da razmišljamo <strong>što</strong> želimo učiniti umjesto da se pitamo <strong>gdje</strong> se nalazi funkcija koju želimo pozvati. Ako želimo ispisati neki objekt, logično je da ga samo proslijedimo funkciji <code>print</code>, ako ga želimo nacrtati funkciji <code>plot</code>, a ako želimo sažetak funkciji <code>summary</code>.</p>
+<p>Kako pojedina funkcija “zna” što učinit sa objektom? Odgovor je jednostavan - generička funkcija je samo “sučelje” prema “pravoj” funkciji koju pozivamo, a logika kako pronaći pravu funkciju je vrlo trivijalna - ako je ime generičke funkcije <code>genFun</code> a naziv klase objekta koju joj prosljeđujemo <code>nazKlase</code>, funkcija koja se zapravo poziva jest <code>genFun.nazKlase</code>. Ako takve funkcije nema, poziva se funkcija <code>genFun.default</code>.</p>
+<p>U ovo se lako možemo uvjeriti samostalno u sklopu sljedeće vježbe.</p>
+<p><strong>Zadatak 7.3 - Generičke funkcije</strong></p>
+<div class="sourceCode" id="cb346"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb346-1"><a href="objekti.html#cb346-1" tabindex="-1"></a><span class="co"># ispišite funkciju `summary` (samo naziv funkcije!)</span></span>
+<span id="cb346-2"><a href="objekti.html#cb346-2" tabindex="-1"></a></span>
+<span id="cb346-3"><a href="objekti.html#cb346-3" tabindex="-1"></a><span class="co"># ispišite funkciju koja se zapravo poziva kad pozovete</span></span>
+<span id="cb346-4"><a href="objekti.html#cb346-4" tabindex="-1"></a><span class="co"># funkciju `summary` nad objektom klase `factor`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="objekti.html#cb347-1" tabindex="-1"></a><span class="co"># ispišite funkciju `summary` </span></span>
+<span id="cb347-2"><a href="objekti.html#cb347-2" tabindex="-1"></a>summary</span>
+<span id="cb347-3"><a href="objekti.html#cb347-3" tabindex="-1"></a></span>
+<span id="cb347-4"><a href="objekti.html#cb347-4" tabindex="-1"></a></span>
+<span id="cb347-5"><a href="objekti.html#cb347-5" tabindex="-1"></a><span class="co"># ispišite funkciju koja se zapravo poziva kad pozovete</span></span>
+<span id="cb347-6"><a href="objekti.html#cb347-6" tabindex="-1"></a><span class="co"># funkciju `summary` nad objektom klase `factor`</span></span>
+<span id="cb347-7"><a href="objekti.html#cb347-7" tabindex="-1"></a>summary.factor</span></code></pre></div>
+<pre><code>## standardGeneric for &quot;summary&quot; defined from package &quot;base&quot;
+## 
+## function (object, ...) 
+## standardGeneric(&quot;summary&quot;)
+## &lt;environment: 0x0000020a79b080a0&gt;
+## Methods may be defined for arguments: object
+## Use  showMethods(summary)  for currently available ones.
+## function (object, maxsum = 100L, ...) 
+## {
+##     nas &lt;- is.na(object)
+##     ll &lt;- levels(object)
+##     if (ana &lt;- any(nas)) 
+##         maxsum &lt;- maxsum - 1L
+##     tbl &lt;- table(object)
+##     tt &lt;- c(tbl)
+##     names(tt) &lt;- dimnames(tbl)[[1L]]
+##     if (length(ll) &gt; maxsum) {
+##         drop &lt;- maxsum:length(ll)
+##         o &lt;- sort.list(tt, decreasing = TRUE)
+##         tt &lt;- c(tt[o[-drop]], `(Other)` = sum(tt[o[drop]]))
+##     }
+##     if (ana) 
+##         c(tt, `NA&#39;s` = sum(nas))
+##     else tt
+## }
+## &lt;bytecode: 0x0000020a88d843c8&gt;
+## &lt;environment: namespace:base&gt;</code></pre>
+<p>Razumijevanjem principa rada generičkih funkcija upotpunili smo sliku o S3 objektima. Najvažnija stvar koju moramo usvojiti jest da kod ovog modela funkcije nisu dio samog objekta, već se definiraju zasebno, a poveznica između objekta i “njegove” metode jest samo u nazivu funkcije pomoću kojeg će R “povezati” generičku funkciju i taj objekt. Iako je ovaj princip primitivan i podložan greškama u rukama nepažljivog programera, on je neumitno jednostavan za uporabu i vrlo učinkovit. Konačno, uočimo da ovaj pristup nije u potpunosti svojstven isključivo jeziku R - slične principe nalazimo i u drugim programskim jezicima (npr. <em>Python</em> povezuje <em>print</em> funkciju i objekt preko posebne metode objekta <code>__str__</code>). R je samo specifičan po tome što taj princip koristi otvoreno i gotovo isključivo.</p>
+<p>Objekte i generičke funkcije ćemo ponovo posjetiti kada naučimo stvarati vlastite funkcije, što će nam omogućiti da stvorimo kako konstruktore naših objekata, tako i njihove generičke funkcije.</p>
+<div id="implementacija-generičke-funkcije" class="section level2 hasAnchor" number="7.4">
+<h2><span class="header-section-number">7.4</span> Implementacija generičke funkcije<a href="objekti.html#implementacija-generičke-funkcije" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Način implementacije generičkih funkcija (za S3 objekte!) zapravo je iznimno jednostavan, što je vjerojatno i razlog njihove široke prihvaćenosti i velike popularnosti u R zajednici. Postupak se svodi na tri jednostavna koraka:</p>
+<ul>
+<li>odaberemo postojeću generičku funkciju (npr. <code>print</code>)
+<ul>
+<li>alternativno, deklariramo novu generičku funkciju uz pomoć funkcije <code>UseMethod</code> npr.</li>
+</ul>
+<code>infoAbout &lt;- function(x) UseMethod("infoAbout")</code></li>
+<li>stvorimo objekt i deklariramo njegovu klasu (npr. <code>Osoba</code>)</li>
+<li>implementiramo funkciju naziva <code>ime_gen_fje.ime_klase</code> (npr. <code>print.Osoba</code>)</li>
+</ul>
+<p>I to je sve! R ne zahtjeva nikakve dodatne korake, gore navedeno je sasvim dovoljno da R prepoznaje novu generičku funkciju i da ju primjenjuje na sve objekte za čiju klasu je implementirana ta generička funkcija u obliku <code>ime_gen_fje.ime_klase</code> (ili <code>ime_gen_fje.default</code> za sve klase za koje ne postoji posebna implementacija).</p>
+<p>Pokušajmo u sljedećem zadatku implementirati generičku funkciju <code>print</code> za objekt klase <code>Person</code>.</p>
+<hr />
+<p><strong>Zadatak 7.4 - implementacija nove generičke funkcije</strong></p>
+<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="objekti.html#cb349-1" tabindex="-1"></a>peter <span class="ot">&lt;-</span> <span class="fu">Person</span>(<span class="at">id =</span> <span class="st">&quot;12345678&quot;</span>, <span class="at">surname =</span> <span class="st">&quot;Parker&quot;</span>, <span class="at">weight =</span> <span class="dv">78</span>)</span>
+<span id="cb349-2"><a href="objekti.html#cb349-2" tabindex="-1"></a></span>
+<span id="cb349-3"><a href="objekti.html#cb349-3" tabindex="-1"></a><span class="co"># implementirajte funkciju koja će omogućiti korištenje</span></span>
+<span id="cb349-4"><a href="objekti.html#cb349-4" tabindex="-1"></a><span class="co"># generičke funkcije `print` nad objektom klase `Person`</span></span>
+<span id="cb349-5"><a href="objekti.html#cb349-5" tabindex="-1"></a><span class="co"># pri čemu će se na zaslon ispisati</span></span>
+<span id="cb349-6"><a href="objekti.html#cb349-6" tabindex="-1"></a><span class="co"># ID: &lt;id&gt;, surname: &lt;surname&gt;, weight: &lt;weight&gt;</span></span>
+<span id="cb349-7"><a href="objekti.html#cb349-7" tabindex="-1"></a><span class="co"># koristite se funkcijom `paste` za konkatenaciju znakovnih nizova</span></span>
+<span id="cb349-8"><a href="objekti.html#cb349-8" tabindex="-1"></a><span class="co"># i funkcijom `cat` za ispisivanje na zaslon</span></span>
+<span id="cb349-9"><a href="objekti.html#cb349-9" tabindex="-1"></a></span>
+<span id="cb349-10"><a href="objekti.html#cb349-10" tabindex="-1"></a><span class="co"># ispišite varijablu `peter`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="objekti.html#cb350-1" tabindex="-1"></a><span class="co"># implementirajte funkciju koja će omogućiti korištenje</span></span>
+<span id="cb350-2"><a href="objekti.html#cb350-2" tabindex="-1"></a><span class="co"># generičke funkcije `print` nad objektom klase `Person`</span></span>
+<span id="cb350-3"><a href="objekti.html#cb350-3" tabindex="-1"></a><span class="co"># pri čemu će se na zaslon ispisati</span></span>
+<span id="cb350-4"><a href="objekti.html#cb350-4" tabindex="-1"></a><span class="co"># ID: &lt;id&gt;, surname: &lt;surname&gt;, weight: &lt;weight&gt;</span></span>
+<span id="cb350-5"><a href="objekti.html#cb350-5" tabindex="-1"></a><span class="co"># koristite se funkcijom `paste` za konkatenaciju znakovnih nizova</span></span>
+<span id="cb350-6"><a href="objekti.html#cb350-6" tabindex="-1"></a><span class="co"># i funkcijom `cat` za ispisivanje na zaslon</span></span>
+<span id="cb350-7"><a href="objekti.html#cb350-7" tabindex="-1"></a></span>
+<span id="cb350-8"><a href="objekti.html#cb350-8" tabindex="-1"></a>print.Person <span class="ot">&lt;-</span> <span class="cf">function</span>(p) {</span>
+<span id="cb350-9"><a href="objekti.html#cb350-9" tabindex="-1"></a>    rez <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;ID:&quot;</span>, p<span class="sc">$</span>id, <span class="st">&quot;, surname:&quot;</span>, p<span class="sc">$</span>surname, <span class="st">&quot;, weight:&quot;</span>, p<span class="sc">$</span>weight, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb350-10"><a href="objekti.html#cb350-10" tabindex="-1"></a>    <span class="fu">cat</span>(rez)</span>
+<span id="cb350-11"><a href="objekti.html#cb350-11" tabindex="-1"></a>}</span>
+<span id="cb350-12"><a href="objekti.html#cb350-12" tabindex="-1"></a></span>
+<span id="cb350-13"><a href="objekti.html#cb350-13" tabindex="-1"></a><span class="co"># ispišite varijablu `peter`</span></span>
+<span id="cb350-14"><a href="objekti.html#cb350-14" tabindex="-1"></a>peter</span></code></pre></div>
+<pre><code>## ID:12345678, surname:Parker, weight:78</code></pre>
+</div>
+<div id="funkcija-methods" class="section level3 hasAnchor" number="7.4.1">
+<h3><span class="header-section-number">7.4.1</span> Funkcija <code>methods</code><a href="objekti.html#funkcija-methods" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Za kraj, prikažimo mogućnost R-a da nam izlista sve trenutno poznate implementacije neke generičke metode. Za to se jednostavno koristimo funkcijom <code>methods</code> kojoj proslijedimo ime dotične metode. Istom funkcijom možemo i provjeriti koje sve implementacije generičkih funkcija postoje za određenu klasu. Za to koristimo parametar <code>class</code> kojem prosljeđujemo naziv klase za koju tražimo spomenute implementacije.</p>
+<p><strong>Zadatak 7.5 - funkcija <code>methods</code></strong></p>
+<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb352-1"><a href="objekti.html#cb352-1" tabindex="-1"></a><span class="co"># prikažite sve do sad poznate implementacije generičke funkcije `summary`</span></span>
+<span id="cb352-2"><a href="objekti.html#cb352-2" tabindex="-1"></a></span>
+<span id="cb352-3"><a href="objekti.html#cb352-3" tabindex="-1"></a><span class="co"># provjerite koje sve implementacije generičkih funkcija postoje za klasu `factor`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="objekti.html#cb353-1" tabindex="-1"></a><span class="co"># list all implementations of the `summary` function</span></span>
+<span id="cb353-2"><a href="objekti.html#cb353-2" tabindex="-1"></a><span class="fu">methods</span>(summary)   </span></code></pre></div>
+<pre><code>##   [1] summary,ANY-method                  summary,DBIObject-method           
+##   [3] summary,diagonalMatrix-method       summary,mle-method                 
+##   [5] summary,mselm-method                summary,SECdistrMv-method          
+##   [7] summary,SECdistrUv-method           summary,selm-method                
+##   [9] summary,sparseMatrix-method         summary,SUNdistr-method            
+##  [11] summary.aareg*                      summary.agnes*                     
+##  [13] summary.Anova.mlm*                  summary.aov                        
+##  [15] summary.aovlist*                    summary.areg.boot*                 
+##  [17] summary.aspell*                     summary.bag*                       
+##  [19] summary.bagEarth                    summary.bagFDA*                    
+##  [21] summary.bcnPowerTransform*          summary.bcnPowerTransformlmer*     
+##  [23] summary.bit*                        summary.bitwhich*                  
+##  [25] summary.booltype*                   summary.boot*                      
+##  [27] summary.cch*                        summary.check_packages_in_dir*     
+##  [29] summary.clara*                      summary.classbagg*                 
+##  [31] summary.col_spec*                   summary.connection                 
+##  [33] summary.corAR1*                     summary.corARMA*                   
+##  [35] summary.corCAR1*                    summary.corCompSymm*               
+##  [37] summary.corExp*                     summary.corGaus*                   
+##  [39] summary.corIdent*                   summary.corLin*                    
+##  [41] summary.corNatural*                 summary.corRatio*                  
+##  [43] summary.corSpher*                   summary.corStruct*                 
+##  [45] summary.corSymm*                    summary.coxph*                     
+##  [47] summary.coxph.penal*                summary.data.frame                 
+##  [49] summary.Date                        summary.default                    
+##  [51] summary.diagtest*                   summary.diana*                     
+##  [53] summary.diff.resamples*             summary.dissimilarity*             
+##  [55] summary.Duration*                   summary.ecdf*                      
+##  [57] summary.effects*                    summary.estimate*                  
+##  [59] summary.factor                      summary.fanny*                     
+##  [61] summary.find.matches*               summary.fitdistr.grouped*          
+##  [63] summary.formula*                    summary.FutureJournal*             
+##  [65] summary.ggplot*                     summary.glm                        
+##  [67] summary.gls*                        summary.hcl_palettes*              
+##  [69] summary.Hist*                       summary.impute*                    
+##  [71] summary.inbagg*                     summary.inclass*                   
+##  [73] summary.infl*                       summary.integer64*                 
+##  [75] summary.Interval*                   summary.lca*                       
+##  [77] summary.lm                          summary.lme*                       
+##  [79] summary.lmList*                     summary.loess*                     
+##  [81] summary.loglm*                      summary.lvm*                       
+##  [83] summary.lvm.mixture*                summary.lvmfit*                    
+##  [85] summary.manova                      summary.matrix                     
+##  [87] summary.mChoice*                    summary.mlm*                       
+##  [89] summary.modelStruct*                summary.mona*                      
+##  [91] summary.multigroup*                 summary.multigroupfit*             
+##  [93] summary.multinom*                   summary.negbin*                    
+##  [95] summary.nls*                        summary.nlsList*                   
+##  [97] summary.nnet*                       summary.ordreg*                    
+##  [99] summary.packageStatus*              summary.pam*                       
+## [101] summary.pdBlocked*                  summary.pdCompSymm*                
+## [103] summary.pdDiag*                     summary.pdIdent*                   
+## [105] summary.pdLogChol*                  summary.pdMat*                     
+## [107] summary.pdNatural*                  summary.pdSymm*                    
+## [109] summary.Period*                     summary.polr*                      
+## [111] summary.POSIXct                     summary.POSIXlt                    
+## [113] summary.powerTransform*             summary.ppr*                       
+## [115] summary.pr_DB*                      summary.prcomp*                    
+## [117] summary.princomp*                   summary.proc_time                  
+## [119] summary.prodlim*                    summary.proxy_registry*            
+## [121] summary.pyears*                     summary.ratetable*                 
+## [123] summary.recipe*                     summary.resamples*                 
+## [125] summary.reStruct*                   summary.ri*                        
+## [127] summary.RichSOCKcluster*            summary.RichSOCKnode*              
+## [129] summary.rlang:::list_of_conditions* summary.rlang_error*               
+## [131] summary.rlang_message*              summary.rlang_trace*               
+## [133] summary.rlang_warning*              summary.rlm*                       
+## [135] summary.rpart*                      summary.shingle*                   
+## [137] summary.silhouette*                 summary.sim*                       
+## [139] summary.srcfile                     summary.srcref                     
+## [141] summary.stepfun                     summary.stl*                       
+## [143] summary.survbagg*                   summary.survexp*                   
+## [145] summary.survfit*                    summary.survfitms*                 
+## [147] summary.survreg*                    summary.svm*                       
+## [149] summary.table                       summary.timeDate*                  
+## [151] summary.tmerge*                     summary.train*                     
+## [153] summary.transcan*                   summary.trellis*                   
+## [155] summary.tukeysmooth*                summary.tune*                      
+## [157] summary.twostageCV*                 summary.varComb*                   
+## [159] summary.varConstPower*              summary.varConstProp*              
+## [161] summary.varExp*                     summary.varFixed*                  
+## [163] summary.varFunc*                    summary.varIdent*                  
+## [165] summary.varPower*                   summary.vctrs_sclr*                
+## [167] summary.vctrs_vctr*                 summary.warnings                   
+## [169] summary.which*                      summary.zibreg*                    
+## see &#39;?methods&#39; for accessing help and source code</code></pre>
+</div>
+<div class="fold s o">
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="objekti.html#cb355-1" tabindex="-1"></a><span class="co"># provjerite koje sve implementacije generičkih funkcija postoje za klasu `factor`</span></span>
+<span id="cb355-2"><a href="objekti.html#cb355-2" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class =</span> <span class="st">&quot;factor&quot;</span>)</span></code></pre></div>
+<pre><code>##  [1] -             /             [             [[            [[&lt;-         
+##  [6] [&lt;-           +             all.equal     Arith         as.character 
+## [11] as.data.frame as.Date       as.duration   as.interval   as.list      
+## [16] as.logical    as.period     as.POSIXlt    as.vector     as_date      
+## [21] as_datetime   as_factor     brief         c             cbind2       
+## [26] coerce        Compare       corresp       droplevels    fixed        
+## [31] format        gausspr       histogram     initialize    inlearn      
+## [36] is.na&lt;-       kqr           kronecker     ksvm          length&lt;-     
+## [41] levels&lt;-      Logic         lssvm         Math          Ops          
+## [46] output_column plot          print         rbind2        recode       
+## [51] relevel       relist        rep           rvm           scale_type   
+## [56] show          slotsFromS3   summary       Summary       type_sum     
+## [61] xtfrm        
+## see &#39;?methods&#39; for accessing help and source code</code></pre>
+</div>
+</div>
+<div id="zaključci-o-s3-objektima" class="section level3 hasAnchor" number="7.4.2">
+<h3><span class="header-section-number">7.4.2</span> Zaključci o S3 objektima<a href="objekti.html#zaključci-o-s3-objektima" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Ukratko, zaključci o S3 objektima mogu biti sljedeći:</p>
+<ul>
+<li>S3 objekti funkcioniraju na <strong>jednostavan, neformalan način</strong> - to su jednostavno liste sa postavljenom proizvoljnom vrijednosti <code>class</code> atributa</li>
+<li>puno toga ostavljeno je na <strong>odgovornosti programera</strong></li>
+<li>metode S3 objekata ne enakpsuliraju se unutar objekata, već se dizajniraju “izvan” objekata u obliku generičkih funkcija</li>
+<li>S3 objekti jednostavni su za uporabu ako su i objektni modeli koje dizajniramo nisu jednostavni, ali <strong>nisu pogodni za kompleksnije objektne modele</strong> zbog teškog održavanja modela i velike mogućnosti pogrešaka</li>
+</ul>
+</div>
+</div>
+<div id="kratki-pregled-s4-objekata" class="section level2 hasAnchor" number="7.5">
+<h2><span class="header-section-number">7.5</span> Kratki pregled S4 objekata<a href="objekti.html#kratki-pregled-s4-objekata" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Nećemo se detaljno baviti S4 objektima, već ćemo dati vrlo kratak pregled kako izgledaju i koje su neke od najznačajnijih promjena u odnosu na S3 model.</p>
+<p>S4 objekti nude blagu “nadogradnju” na S3 objekte u smislu da diktiraju više strogosti i formalnosti pri definiranju i korištenju klasa, dok još uvijek zadržavaju većinu jednostavnosti S3 modela. Najznačajnija (i vjerojatno dobrodošla) promjena je dopuštanje formalne definicije predloška klase.</p>
+<p>S4 klasa ima tri glavna svojstva:</p>
+<ul>
+<li>naziv, koji ga identificira</li>
+<li>predložak, koji opisuje njegove atribute (tzv. “slot”-ovi)</li>
+<li>(opcionalno) vektor roditeljskih klasa (klase koje ova klasa “sadrži”)</li>
+</ul>
+<p>S4 ekvivalent naše klase S3 <code>Person</code> bi stoga izgledao ovako:</p>
+<div class="sourceCode" id="cb357"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb357-1"><a href="objekti.html#cb357-1" tabindex="-1"></a><span class="co"># definicija predloška</span></span>
+<span id="cb357-2"><a href="objekti.html#cb357-2" tabindex="-1"></a><span class="fu">setClass</span>(<span class="st">&quot;Person&quot;</span>, <span class="fu">representation</span>(<span class="at">id =</span> <span class="st">&quot;character&quot;</span>, </span>
+<span id="cb357-3"><a href="objekti.html#cb357-3" tabindex="-1"></a>                                  <span class="at">surname =</span> <span class="st">&quot;character&quot;</span>,</span>
+<span id="cb357-4"><a href="objekti.html#cb357-4" tabindex="-1"></a>                                  <span class="at">weight =</span> <span class="st">&quot;numeric&quot;</span>))</span>
+<span id="cb357-5"><a href="objekti.html#cb357-5" tabindex="-1"></a></span>
+<span id="cb357-6"><a href="objekti.html#cb357-6" tabindex="-1"></a><span class="co"># instanciranje klase</span></span>
+<span id="cb357-7"><a href="objekti.html#cb357-7" tabindex="-1"></a>pero <span class="ot">&lt;-</span> <span class="fu">new</span>(<span class="st">&quot;Person&quot;</span>, <span class="at">id =</span> <span class="st">&quot;12345678&quot;</span>, </span>
+<span id="cb357-8"><a href="objekti.html#cb357-8" tabindex="-1"></a>                      <span class="at">surname =</span> <span class="st">&quot;peric&quot;</span>, </span>
+<span id="cb357-9"><a href="objekti.html#cb357-9" tabindex="-1"></a>                      <span class="at">weight =</span> <span class="dv">76</span>)</span></code></pre></div>
+<p>Jedna bitna razlika jest što umjesto operatora <code>$</code> koristimo operator <code>@</code> za pristup atributima (“slot”-ovima) klase. Isto tako, funkcija <code>getSlots</code> nam vraća sve atribute odabrane klase.</p>
+<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="objekti.html#cb358-1" tabindex="-1"></a><span class="co"># ispiši atribute klase `Person` </span></span>
+<span id="cb358-2"><a href="objekti.html#cb358-2" tabindex="-1"></a><span class="fu">getSlots</span>(<span class="st">&quot;Person&quot;</span>)</span>
+<span id="cb358-3"><a href="objekti.html#cb358-3" tabindex="-1"></a></span>
+<span id="cb358-4"><a href="objekti.html#cb358-4" tabindex="-1"></a><span class="co"># dohvati vrijednosti atributa varijable `pero` </span></span>
+<span id="cb358-5"><a href="objekti.html#cb358-5" tabindex="-1"></a><span class="fu">paste0</span>(pero<span class="sc">@</span>id, <span class="st">&quot;: &quot;</span>, pero<span class="sc">@</span>surname)</span></code></pre></div>
+<pre><code>##          id     surname      weight 
+## &quot;character&quot; &quot;character&quot;   &quot;numeric&quot; 
+## [1] &quot;12345678: peric&quot;</code></pre>
+<p>S4 također koristi generičke funkcije, ali uz određene promjene u sintaksi. Ovdje nećemo previše ulaziti u detalje, već ćemo samo prikazati kratki primjer pridjeljivanja postojeće generičke funkcije S4 objektu uz pomoć funkcije <code>setMethod</code>.</p>
+<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb360-1"><a href="objekti.html#cb360-1" tabindex="-1"></a><span class="fu">setMethod</span>(<span class="st">&quot;print&quot;</span>, </span>
+<span id="cb360-2"><a href="objekti.html#cb360-2" tabindex="-1"></a>  <span class="fu">signature</span>(<span class="at">x =</span> <span class="st">&quot;Person&quot;</span>),</span>
+<span id="cb360-3"><a href="objekti.html#cb360-3" tabindex="-1"></a>  <span class="cf">function</span>(x) {</span>
+<span id="cb360-4"><a href="objekti.html#cb360-4" tabindex="-1"></a>    rez <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;ID:&quot;</span>, x<span class="sc">@</span>id, <span class="st">&quot;, surname:&quot;</span>, x<span class="sc">@</span>surname, <span class="st">&quot;, weight:&quot;</span>, x<span class="sc">@</span>weight, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb360-5"><a href="objekti.html#cb360-5" tabindex="-1"></a>    <span class="fu">cat</span>(rez)</span>
+<span id="cb360-6"><a href="objekti.html#cb360-6" tabindex="-1"></a>  })</span>
+<span id="cb360-7"><a href="objekti.html#cb360-7" tabindex="-1"></a></span>
+<span id="cb360-8"><a href="objekti.html#cb360-8" tabindex="-1"></a><span class="fu">print</span>(pero)</span></code></pre></div>
+<pre><code>## ID:12345678, surname:peric, weight:76</code></pre>
+</div>
+<div id="zadaci-za-vježbu-5" class="section level2 unnumbered hasAnchor">
+<h2>Zadaci za vježbu<a href="objekti.html#zadaci-za-vježbu-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Stvorite objekt klase <code>Kvadar</code> sa atributima <code>visina</code>, <code>sirina</code> i <code>dubina</code> jednakim <code>10</code>, <code>20</code> i <code>30</code>.</li>
+</ol>
+<hr />
+<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Programirajmo u R-u</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.fer.unizg.hr/en/damir.pintar" property="cc:attributionName" rel="cc:attributionURL">Damir Pintar</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://ratnip.github.io/FER_OPJR/" rel="dct:source">https://ratnip.github.io/FER_OPJR/</a></p>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="korisnik.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "google", "twitter", "weibo", "instapaper"],
+    "google": false,
+    "instapper": false
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": true
+  },
+  "toolbar": {
+    "position": "fixed",
+    "edit": null,
+    "download": null,
+    "search": true
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
