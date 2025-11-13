@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>10 Obrada znakovnih nizova | Programirajmo u R-u</title>
+  <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="10 Obrada znakovnih nizova | Programirajmo u R-u" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="10 Obrada znakovnih nizova | Programirajmo u R-u" />
+  
+  <meta name="twitter:description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  
+
+<meta name="author" content="Damir Pintar" />
+
+
+<meta name="date" content="2025-11-13" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="datumi.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+.showopt {
+  background-color: #004c93;
+  color: #FFFFFF; 
+  width: 140px;
+  height: 4	0px;
+  text-align: center;
+  vertical-align: middle !important;
+  float: right;
+  font-family: sans-serif;
+  font-size:10 pt;
+  border-radius: 8px;
+}
+
+.showopt:hover {
+    background-color: #dfe4f2;
+    color: #004c93;
+}
+
+pre.plot {
+  background-color: white !important;
+}
+</style>
+
+<script>
+ $(document).ready(function() {
+
+  $chunks = $('.fold');
+
+  $chunks.each(function () {
+
+    // add button to source code chunks
+    if ( $(this).hasClass('s') ) {
+      $('pre.r', this).prepend("<div class=\"showopt\">Prikaži rješenje</div><br style=\"line-height:22px;\"/>");
+      $('pre.r', this).children('code').attr('class', 'folded');
+    }
+
+    // add button to output chunks
+    if ( $(this).hasClass('o') ) {
+      $('pre:not(.r)', this).has('code').prepend("<div class=\"showopt\">Prikaži ispis</div><br style=\"line-height:22px;\"/>");
+      $('pre:not(.r)', this).children('code:not(r)').addClass('folded');
+
+      // add button to plots
+      $(this).find('img').wrap('<pre class=\"plot\"></pre>');
+      $('pre.plot', this).prepend("<div class=\"showopt\">Prikaži sliku</div><br style=\"line-height:22px;\"/>");
+      $('pre.plot', this).children('img').addClass('folded');
+
+    }
+  });
+
+  // hide all chunks when document is loaded
+  $('.folded').css('display', 'none')
+
+  // function to toggle the visibility
+  $('.showopt').click(function() {
+    var label = $(this).html();
+    if (label.indexOf("Prikaži") >= 0) {
+      $(this).html(label.replace("Prikaži", "Sakrij"));
+    } else {
+      $(this).html(label.replace("Sakrij", "Prikaži"));
+    }
+    $(this).siblings('code, img').slideToggle('fast', 'swing');
+  });
+});
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>(Udžbenik za predmet “Osnove statističkog programiranja”)</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#predgovor"><i class="fa fa-check"></i>Predgovor</a></li>
+</ul></li>
+<li class="part"><span><b>I Osnovni elementi jezika R</b></span></li>
+<li class="chapter" data-level="1" data-path="uvod.html"><a href="uvod.html"><i class="fa fa-check"></i><b>1</b> Uvod</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="uvod.html"><a href="uvod.html#što-je-programski-jezik-r"><i class="fa fa-check"></i><b>1.1</b> Što je programski jezik R?</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="uvod.html"><a href="uvod.html#općenito-o-r-u"><i class="fa fa-check"></i><b>1.1.1</b> Općenito o R-u</a></li>
+<li class="chapter" data-level="1.1.2" data-path="uvod.html"><a href="uvod.html#alternative-jeziku-r"><i class="fa fa-check"></i><b>1.1.2</b> Alternative jeziku R</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="uvod.html"><a href="uvod.html#instalacija-programske-podrške"><i class="fa fa-check"></i><b>1.2</b> Instalacija programske podrške</a></li>
+<li class="chapter" data-level="1.3" data-path="uvod.html"><a href="uvod.html#pregled-razvojnog-sučelja-rstudio"><i class="fa fa-check"></i><b>1.3</b> Pregled razvojnog sučelja <em>RStudio</em></a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="uvod.html"><a href="uvod.html#interaktivna-konzola"><i class="fa fa-check"></i><b>1.3.1</b> Interaktivna konzola</a></li>
+<li class="chapter" data-level="1.3.2" data-path="uvod.html"><a href="uvod.html#pisanje-r-skripti"><i class="fa fa-check"></i><b>1.3.2</b> Pisanje R skripti</a></li>
+<li class="chapter" data-level="1.3.3" data-path="uvod.html"><a href="uvod.html#instalacija-dodatnih-paketa"><i class="fa fa-check"></i><b>1.3.3</b> Instalacija dodatnih paketa</a></li>
+<li class="chapter" data-level="1.3.4" data-path="uvod.html"><a href="uvod.html#r-markdown"><i class="fa fa-check"></i><b>1.3.4</b> <em>R Markdown</em></a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="uvod.html"><a href="uvod.html#organizacija-procesa-podatkovne-analize-uz-r-i-rstudio"><i class="fa fa-check"></i><b>1.4</b> Organizacija procesa podatkovne analize uz R i RStudio</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="uvod.html"><a href="uvod.html#poželjne-karakteristike-procesa-analize-podataka"><i class="fa fa-check"></i><b>1.4.1</b> Poželjne karakteristike procesa analize podataka</a></li>
+<li class="chapter" data-level="1.4.2" data-path="uvod.html"><a href="uvod.html#organizacija-mapa-za-potrebe-analize-podataka"><i class="fa fa-check"></i><b>1.4.2</b> Organizacija mapa za potrebe analize podataka</a></li>
+<li class="chapter" data-level="1.4.3" data-path="uvod.html"><a href="uvod.html#pojam-projekta"><i class="fa fa-check"></i><b>1.4.3</b> Pojam projekta</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="uvod.html"><a href="uvod.html#kako-koristiti-ovaj-udžbenik"><i class="fa fa-check"></i><b>1.5</b> Kako koristiti ovaj udžbenik?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="tipovi.html"><a href="tipovi.html"><i class="fa fa-check"></i><b>2</b> Osnovni elementi, vektori i matrice</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tipovi.html"><a href="tipovi.html#osnovni-tipovi-podataka"><i class="fa fa-check"></i><b>2.1</b> Osnovni tipovi podataka</a></li>
+<li class="chapter" data-level="2.2" data-path="tipovi.html"><a href="tipovi.html#operatori"><i class="fa fa-check"></i><b>2.2</b> Operatori</a></li>
+<li class="chapter" data-level="2.3" data-path="tipovi.html"><a href="tipovi.html#nedostajuće-nepoznate-i-nemoguće-vrijednosti"><i class="fa fa-check"></i><b>2.3</b> Nedostajuće, nepoznate i nemoguće vrijednosti</a></li>
+<li class="chapter" data-level="2.4" data-path="tipovi.html"><a href="tipovi.html#vektori"><i class="fa fa-check"></i><b>2.4</b> Vektori</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="tipovi.html"><a href="tipovi.html#stvaranje-vektora"><i class="fa fa-check"></i><b>2.4.1</b> Stvaranje vektora</a></li>
+<li class="chapter" data-level="2.4.2" data-path="tipovi.html"><a href="tipovi.html#operator"><i class="fa fa-check"></i><b>2.4.2</b> Operator <code>[</code></a></li>
+<li class="chapter" data-level="2.4.3" data-path="tipovi.html"><a href="tipovi.html#principi-vektorizacije-i-recikliranja"><i class="fa fa-check"></i><b>2.4.3</b> Principi vektorizacije i recikliranja</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="tipovi.html"><a href="tipovi.html#indeksni-vektori"><i class="fa fa-check"></i><b>2.5</b> Indeksni vektori</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="tipovi.html"><a href="tipovi.html#lokacijsko-referenciranje"><i class="fa fa-check"></i><b>2.5.1</b> Lokacijsko referenciranje</a></li>
+<li class="chapter" data-level="2.5.2" data-path="tipovi.html"><a href="tipovi.html#uvjetno-referenciranje"><i class="fa fa-check"></i><b>2.5.2</b> Uvjetno referenciranje</a></li>
+<li class="chapter" data-level="2.5.3" data-path="tipovi.html"><a href="tipovi.html#imensko-referenciranje"><i class="fa fa-check"></i><b>2.5.3</b> Imensko referenciranje</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="tipovi.html"><a href="tipovi.html#matrice-i-polja"><i class="fa fa-check"></i><b>2.6</b> Matrice i polja</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="tipovi.html"><a href="tipovi.html#rezanje-matrica"><i class="fa fa-check"></i><b>2.6.1</b> Rezanje matrica</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="tipovi.html"><a href="tipovi.html#osnovne-operacije-matrične-algebre"><i class="fa fa-check"></i><b>2.7</b> Osnovne operacije matrične algebre</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="tipovi.html"><a href="tipovi.html#skalarni-produkt"><i class="fa fa-check"></i><b>2.7.1</b> Skalarni produkt</a></li>
+<li class="chapter" data-level="2.7.2" data-path="tipovi.html"><a href="tipovi.html#matrično-množenje"><i class="fa fa-check"></i><b>2.7.2</b> Matrično množenje</a></li>
+<li class="chapter" data-level="2.7.3" data-path="tipovi.html"><a href="tipovi.html#množenje-po-elementima"><i class="fa fa-check"></i><b>2.7.3</b> Množenje po elementima</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="tipovi.html"><a href="tipovi.html#funkcije-diag-upper.tri-lower.tri-i-solve"><i class="fa fa-check"></i><b>2.8</b> Funkcije <code>diag</code>, <code>upper.tri</code>, <code>lower.tri</code> i <code>solve</code></a></li>
+<li class="chapter" data-level="" data-path="tipovi.html"><a href="tipovi.html#zadaci-za-vježbu"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="okviri.html"><a href="okviri.html"><i class="fa fa-check"></i><b>3</b> Liste, podatkovni okviri i faktori</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="okviri.html"><a href="okviri.html#liste"><i class="fa fa-check"></i><b>3.1</b> Liste</a></li>
+<li class="chapter" data-level="3.2" data-path="okviri.html"><a href="okviri.html#podatkovni-okviri"><i class="fa fa-check"></i><b>3.2</b> Podatkovni okviri</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="okviri.html"><a href="okviri.html#odabir-redaka-i-stupaca-podatkovnih-okvira"><i class="fa fa-check"></i><b>3.2.1</b> Odabir redaka i stupaca podatkovnih okvira</a></li>
+<li class="chapter" data-level="3.2.2" data-path="okviri.html"><a href="okviri.html#dodavanje-i-brisanje-redaka-i-stupaca"><i class="fa fa-check"></i><b>3.2.2</b> Dodavanje i brisanje redaka i stupaca</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="okviri.html"><a href="okviri.html#faktori"><i class="fa fa-check"></i><b>3.3</b> Faktori</a></li>
+<li class="chapter" data-level="" data-path="okviri.html"><a href="okviri.html#zadaci-za-vježbu-1"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="uvjet.html"><a href="uvjet.html"><i class="fa fa-check"></i><b>4</b> Uvjetne naredbe i petlje</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="uvjet.html"><a href="uvjet.html#naredbe-kontrole-toka"><i class="fa fa-check"></i><b>4.1</b> Naredbe kontrole toka</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="uvjet.html"><a href="uvjet.html#uvjetno-izvođenje-naredbi"><i class="fa fa-check"></i><b>4.1.1</b> Uvjetno izvođenje naredbi</a></li>
+<li class="chapter" data-level="4.1.2" data-path="uvjet.html"><a href="uvjet.html#programske-petlje"><i class="fa fa-check"></i><b>4.1.2</b> Programske petlje</a></li>
+<li class="chapter" data-level="4.1.3" data-path="uvjet.html"><a href="uvjet.html#petlja-repeat"><i class="fa fa-check"></i><b>4.1.3</b> Petlja <code>repeat</code></a></li>
+<li class="chapter" data-level="4.1.4" data-path="uvjet.html"><a href="uvjet.html#petlja-while"><i class="fa fa-check"></i><b>4.1.4</b> Petlja <code>while</code></a></li>
+<li class="chapter" data-level="4.1.5" data-path="uvjet.html"><a href="uvjet.html#petlja-for"><i class="fa fa-check"></i><b>4.1.5</b> Petlja <code>for</code></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="uvjet.html"><a href="uvjet.html#zadaci-za-vježbu-2"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="paketi.html"><a href="paketi.html"><i class="fa fa-check"></i><b>5</b> Paketi, ugrađene funkcije i okoline</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="paketi.html"><a href="paketi.html#rad-s-paketima"><i class="fa fa-check"></i><b>5.1</b> Rad s paketima</a></li>
+<li class="chapter" data-level="5.2" data-path="paketi.html"><a href="paketi.html#ugrađene-funkcije"><i class="fa fa-check"></i><b>5.2</b> Ugrađene funkcije</a></li>
+<li class="chapter" data-level="5.3" data-path="paketi.html"><a href="paketi.html#okoline"><i class="fa fa-check"></i><b>5.3</b> Okoline</a></li>
+<li class="chapter" data-level="" data-path="paketi.html"><a href="paketi.html#zadaci-za-vježbu-3"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="korisnik.html"><a href="korisnik.html"><i class="fa fa-check"></i><b>6</b> Korisnički definirane funkcije</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="korisnik.html"><a href="korisnik.html#kako-definirati-funkciju"><i class="fa fa-check"></i><b>6.1</b> Kako definirati funkciju</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="korisnik.html"><a href="korisnik.html#princip-kopiranja-kod-izmjene-copy-on-modify"><i class="fa fa-check"></i><b>6.1.1</b> Princip “kopiranja kod izmjene” (copy-on-modify)</a></li>
+<li class="chapter" data-level="6.1.2" data-path="korisnik.html"><a href="korisnik.html#funkcija-kao-objekt"><i class="fa fa-check"></i><b>6.1.2</b> Funkcija kao objekt</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="korisnik.html"><a href="korisnik.html#generičke-funkcije"><i class="fa fa-check"></i><b>6.2</b> Generičke funkcije</a></li>
+<li class="chapter" data-level="6.3" data-path="korisnik.html"><a href="korisnik.html#što-su-apply-funkcije"><i class="fa fa-check"></i><b>6.3</b> Što su <code>apply</code> funkcije?</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="korisnik.html"><a href="korisnik.html#funkcija-apply"><i class="fa fa-check"></i><b>6.3.1</b> Funkcija <code>apply</code></a></li>
+<li class="chapter" data-level="6.3.2" data-path="korisnik.html"><a href="korisnik.html#funkcije-lapply-sapply-i-vapply"><i class="fa fa-check"></i><b>6.3.2</b> Funkcije <code>lapply</code>, <code>sapply</code> i <code>vapply</code></a></li>
+<li class="chapter" data-level="6.3.3" data-path="korisnik.html"><a href="korisnik.html#ostale-funkcije-iz-porodice-apply-i-dostupne-alternative"><i class="fa fa-check"></i><b>6.3.3</b> Ostale funkcije iz porodice <code>apply</code> i dostupne alternative</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="korisnik.html"><a href="korisnik.html#zadaci-za-vježbu-4"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="objekti.html"><a href="objekti.html"><i class="fa fa-check"></i><b>7</b> Objektni modeli</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="objekti.html"><a href="objekti.html#objektni-modeli-u-jeziku-r"><i class="fa fa-check"></i><b>7.1</b> Objektni modeli u jeziku R</a></li>
+<li class="chapter" data-level="7.2" data-path="objekti.html"><a href="objekti.html#pomoćni-paket-sloop"><i class="fa fa-check"></i><b>7.2</b> Pomoćni paket <code>sloop</code></a></li>
+<li class="chapter" data-level="7.3" data-path="objekti.html"><a href="objekti.html#pregled-objektnog-modela-s3"><i class="fa fa-check"></i><b>7.3</b> Pregled objektnog modela S3</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="objekti.html"><a href="objekti.html#konstruktorska-funkcija"><i class="fa fa-check"></i><b>7.3.1</b> Konstruktorska funkcija</a></li>
+<li class="chapter" data-level="7.3.2" data-path="objekti.html"><a href="objekti.html#generičke-funkcije-1"><i class="fa fa-check"></i><b>7.3.2</b> Generičke funkcije</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="objekti.html"><a href="objekti.html#implementacija-generičke-funkcije"><i class="fa fa-check"></i><b>7.4</b> Implementacija generičke funkcije</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="objekti.html"><a href="objekti.html#funkcija-methods"><i class="fa fa-check"></i><b>7.4.1</b> Funkcija <code>methods</code></a></li>
+<li class="chapter" data-level="7.4.2" data-path="objekti.html"><a href="objekti.html#zaključci-o-s3-objektima"><i class="fa fa-check"></i><b>7.4.2</b> Zaključci o S3 objektima</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="objekti.html"><a href="objekti.html#kratki-pregled-s4-objekata"><i class="fa fa-check"></i><b>7.5</b> Kratki pregled S4 objekata</a></li>
+<li class="chapter" data-level="" data-path="objekti.html"><a href="objekti.html#zadaci-za-vježbu-5"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="part"><span><b>II Upravljanje podacima i vizualizacije</b></span></li>
+<li class="chapter" data-level="8" data-path="cijev.html"><a href="cijev.html"><i class="fa fa-check"></i><b>8</b> Koncept urednih podataka</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="cijev.html"><a href="cijev.html#operator-cjevovoda"><i class="fa fa-check"></i><b>8.1</b> Operator cjevovoda</a></li>
+<li class="chapter" data-level="8.2" data-path="cijev.html"><a href="cijev.html#uredni-podaci"><i class="fa fa-check"></i><b>8.2</b> Uredni podaci</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="cijev.html"><a href="cijev.html#funkcije-pivot_longer-i-pivot_wider"><i class="fa fa-check"></i><b>8.2.1</b> Funkcije <code>pivot_longer</code> i <code>pivot_wider</code></a></li>
+<li class="chapter" data-level="8.2.2" data-path="cijev.html"><a href="cijev.html#funkcije-separate-i-unite"><i class="fa fa-check"></i><b>8.2.2</b> Funkcije <code>separate</code> i <code>unite</code></a></li>
+<li class="chapter" data-level="8.2.3" data-path="cijev.html"><a href="cijev.html#funkcije-drop_na-i-replace_na"><i class="fa fa-check"></i><b>8.2.3</b> Funkcije <code>drop_NA</code> i <code>replace_NA</code></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="cijev.html"><a href="cijev.html#zadaci-za-vježbu-6"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="datumi.html"><a href="datumi.html"><i class="fa fa-check"></i><b>9</b> Rad sa vremenskim podacima</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="datumi.html"><a href="datumi.html#rad-sa-datumima"><i class="fa fa-check"></i><b>9.1</b> Rad sa datumima</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="datumi.html"><a href="datumi.html#klasa-date"><i class="fa fa-check"></i><b>9.1.1</b> Klasa <code>Date</code></a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="datumi.html"><a href="datumi.html#klase-posixct-i-posixlt"><i class="fa fa-check"></i><b>9.2</b> Klase <code>POSIXct</code> i <code>POSIXlt</code></a></li>
+<li class="chapter" data-level="9.3" data-path="datumi.html"><a href="datumi.html#paket-lubridate"><i class="fa fa-check"></i><b>9.3</b> Paket <code>lubridate</code></a></li>
+<li class="chapter" data-level="" data-path="datumi.html"><a href="datumi.html#zadaci-za-vježbu-7"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="nizovi.html"><a href="nizovi.html"><i class="fa fa-check"></i><b>10</b> Obrada znakovnih nizova</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="nizovi.html"><a href="nizovi.html#rad-sa-znakovnim-nizovima"><i class="fa fa-check"></i><b>10.1</b> Rad sa znakovnim nizovima</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="nizovi.html"><a href="nizovi.html#analiza-teksta-i-regularni-izrazi"><i class="fa fa-check"></i><b>10.1.1</b> Analiza teksta i regularni izrazi</a></li>
+<li class="chapter" data-level="10.1.2" data-path="nizovi.html"><a href="nizovi.html#paket-stringr"><i class="fa fa-check"></i><b>10.1.2</b> Paket <code>stringr</code></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="nizovi.html"><a href="nizovi.html#zadaci-za-vježbu-8"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Programirajmo u R-u</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="nizovi" class="section level1 hasAnchor" number="10">
+<h1><span class="header-section-number">10</span> Obrada znakovnih nizova<a href="nizovi.html#nizovi" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<hr />
+<div id="rad-sa-znakovnim-nizovima" class="section level2 hasAnchor" number="10.1">
+<h2><span class="header-section-number">10.1</span> Rad sa znakovnim nizovima<a href="nizovi.html#rad-sa-znakovnim-nizovima" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><em>R</em> ima jako dobru podršku za rad sa znakovnim nizovima, no funkcije koje nudi osnovni R nisu intuitivne niti konzistentne ako ih uspoređujemo sa sličnim funkcijama u drugim programskim jezicima.</p>
+<p>Upravo iz ovih razloga pojavio se paket <code>stringr</code> koji nudi vrlo učinkovitu alternativu postojećim funkcijama vezanih uz znakovne nizove te predstavlja jedan od najpopularnijih “dodatnih” R paketa. No prije upoznavanja sa funkcijama koje nudi ovaj paket potrebno je kratko se osvrnuti na općenitu problematiku upravljanja znakovnim nizovima u analizi podataka te na tehnologiju bez koje je provedba analize znakovnih nizova gotovo nezamisliva - tzv. regularni izrazi.</p>
+<div id="analiza-teksta-i-regularni-izrazi" class="section level3 hasAnchor" number="10.1.1">
+<h3><span class="header-section-number">10.1.1</span> Analiza teksta i regularni izrazi<a href="nizovi.html#analiza-teksta-i-regularni-izrazi" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Analiza teksta neizbježan je element kod analize podatkovnih skupova. Bilo da se radi o jednostavnoj identifikaciji kategorija, traženju podnizova ili nečem daleko složenijem kao što su specijalizirane metode rudarenja teksta (engl. <em>text mining</em>), teško je zamisliti bilo kakvu smislenu analizu podataka koja prije ili kasnije ne zahtijeva poznavanje barem osnovnih metoda analize znakovnih nizova.</p>
+<p>Neovisno o razini složenosti analize znakovnih nizova koju želimo provesti, jedna tehnologija je sveprisutna i univerzalno primjenjiva - <strong>regularni izrazi</strong>. Ovdje se radi o posebnom jeziku uz pomoć kojeg definiramo “uzorke” (<em>patterns</em>) na osnovu kojih pretražujemo neki tekst, radimo izmjene i sl.</p>
+<p>Detaljni pregled tehnologije regularnih izraza izlazi iz okvira ovog udžbenika. U nastavku ćemo navesti samo kratke informacije u svrhu brzog pregleda ili podsjetnika. Ukoliko se do sada uopće niste susretali s ovom tehnologijom, snažno preporučujemo ulaganje truda i svladavanje barem osnovnih koncepata, npr. uz pomoć nekog od dostupnih internetskih. Jedan od vrlo kratkih ali učinkovitih mini-tečajeva regularnih izraza možete naći <a href = "https://regexone.com/">ovdje</a> .</p>
+<p>Regularni izraz jednostavno je niz znakova koji predstavlja uzorak kojeg tražimo unutar nekog teksta. Npr. regularni izraz <code>gram</code> se nalazi u znakovnom nizu <code>Programski jezik R</code> ali se ne nalazi u znakovnom nizu <code>Analiza teksta</code>. Kažemo da smo pronašli “slaganje” (<em>match</em>) regularnog izraza sa prvim nizom ali ne i sa drugim.</p>
+<p>Ovakav regularni izraz nije previše fleksibilan - prava moć regularnih izraza krije se u mogućnosti slaganja posebnih izraza koji će se uz pomoć posebnog opisa moći slagati sa “općenitijim” oblicima znakovnih nizova. Tipičan primjer je adresa elektroničke pošte - konkretnije, provjera da li je korisnik unio adresu koja odgovara “općenitom” obliku adrese elektroničke pošte. Jedno od mogućnosti je jednostavno izraz <code>@</code> kojim zapravo samo provjeravamo postojanje tog znaka u danom znakovnom nizu. Time smo osigurali određenu razinu kontrole, ali isto tako smo dopustili “adrese” tipa <code>@@@</code> i <code>@23456</code>. Uz malo “rada” na izrazu mogli bi doći do malo boljeg rješenja, koje npr. može izgledati ovako:</p>
+<div class="sourceCode" id="cb479"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb479-1"><a href="nizovi.html#cb479-1" tabindex="-1"></a>\w<span class="sc">+</span><span class="er">@</span>\w<span class="sc">+</span>\.\w<span class="sc">+</span></span></code></pre></div>
+<p>Iako izgleda kao niz nasumičnih znakova, osnovnim poznavanjem regularnih izraza možemo relativno lako interpretirati gornji izraz. Znak <code>\w</code> označava “slovo ili znamenku”, znak <code>+</code> znači “1 ili više” i sl. Ako bi htjeli “prepričati” gornji regularni izraz govornim jezikom, to bi bilo “jedno ili više slova ili znamenki, potom znak <code>@</code>, pa jedno ili više slova ili znamenki, zatim točka i onda konačno opet jedno ili više slova ili znamenki”. Iako ovo nije pretjerano sofisticirani izraz, on je ipak kvalitetniji od prvog pokušaja. Daljnje proširenje je itekako moguće i iako naknadnim dodavanjima sve više gubimo neposrednu čitljivost, isto tako postižemo sve višu i višu razinu kontrole koja se približava formalnim odrednicama kako adresa elektroničke pošte mora izgledati (za ovakve specifične uporabe često se isplati i provjeriti javno dostupne repozitorije regularnih izraza gdje možemo naći složene ali kvalitetne i pomno testirane izraze koje je dovoljno jednostavno prekopirati u naš programski kod).</p>
+<p>Važno je napomenuti da nema jednog jedinstvenog standarda za regularne izraze. Postoji tzv. <em>“POSIX standard”</em> u dvije inačice - <em>BRE</em> i <em>ERE</em> (<em>Basic Regular Expressions</em> i <em>Extended Regular Expressions</em>) koje su zapravo gotovo iste, osim što <em>BRE</em> zahtjeva malo intenzivniju uporabu znaka <code>\</code>. Još jedan popularni standard je tzv. <em>“Perl standard”</em> koji predstavlja inačicu regularnih izraza implementiranih u jeziku <em>Perl</em>. Budući da je <em>Perl</em> jedan od vodećih jezika za upravljanje tekstom tako je i ovaj standard postao jedan od najšire prihvaćenih načina korištenja regularnih izraza.</p>
+<p>U općenitom slučaju, gotovo svi popularniji programski jezici imaju podršku za regularne izraze, bilo već ugrađene u jezik, bilo uz pomoć dodatnih paketa. <em>R</em> je jedan od jezika koji već sadrži podršku za regularne izraze u svojem osnovnom paketu. Štoviše, <em>R</em> ima ugrađenu paralelnu podršku za tri najraširenija standarda - <em>POSIX ERE</em>, <em>POSIX BRE</em> i <em>Perl</em>. <em>POSIX ERE</em> je zadana postavka, a određenim parametrima možemo se lako “prebaciti” na <em>BRE</em> (<code>extended = FALSE</code>) ili <em>Perl</em> (<code>perl = TRUE</code>). U daljnjim poglavljima držati ćemo se <em>ERE</em> standarda, ali bitno je znati i za prethodno navedene postavke želimo li koristiti već gotove izraze koji su razvijeni u nekom drugom standardu (a ne želimo se zamarati sa prebacivanjem iz jednog standarda u drugi).</p>
+<p>Sljedeća tablica daje kratki pregled nekih češće korištenih elemenata regularnih izraza u jeziku <em>R</em>:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Element</th>
+<th>Značenje</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>abcd</code></td>
+<td>niz slova “abcd”</td>
+</tr>
+<tr class="even">
+<td><code>1234</code></td>
+<td>niz znamenki “1234”</td>
+</tr>
+<tr class="odd">
+<td><code>\\d</code> ili <code>[:digit:]</code></td>
+<td>ili <code>[0-9]</code> bilo koja znamenka</td>
+</tr>
+<tr class="even">
+<td><code>\\D</code> ili <code>[:alpha:]</code></td>
+<td>ili <code>[A-Za-z]</code> bilo koje slovo</td>
+</tr>
+<tr class="odd">
+<td><code>[:alnum:]</code></td>
+<td>bilo koje slovo ili znamenka</td>
+</tr>
+<tr class="even">
+<td><code>.</code></td>
+<td>bilo koji znak</td>
+</tr>
+<tr class="odd">
+<td><code>\\.</code></td>
+<td>točka</td>
+</tr>
+<tr class="even">
+<td><code>[abc]</code></td>
+<td>samo navedeni znakovi</td>
+</tr>
+<tr class="odd">
+<td><code>[^abc]</code></td>
+<td>svi znakovi osim navedenih</td>
+</tr>
+<tr class="even">
+<td><code>*</code></td>
+<td>nula ili više ponavljanja</td>
+</tr>
+<tr class="odd">
+<td><code>+</code></td>
+<td>jedno ili više ponavljanja</td>
+</tr>
+<tr class="even">
+<td><code>{n}</code></td>
+<td>točno n ponavljanja</td>
+</tr>
+<tr class="odd">
+<td><code>{m, n}</code></td>
+<td>najmanje m, najviše n ponavljanja</td>
+</tr>
+<tr class="even">
+<td><code>?</code></td>
+<td>opcionalni znak</td>
+</tr>
+<tr class="odd">
+<td><code>[:space:]</code> ili <code>\\s</code></td>
+<td>bilo kakva praznina</td>
+</tr>
+<tr class="even">
+<td><code>[:punct:]</code></td>
+<td>znakovi interpunkcije</td>
+</tr>
+<tr class="odd">
+<td><code>^...$</code></td>
+<td>oznaka za početak i kraj</td>
+</tr>
+<tr class="even">
+<td><code>(ab|cd)</code></td>
+<td>niz “ab” ili niz “cd”</td>
+</tr>
+</tbody>
+</table>
+<p>Uočite da kod korištenja specijalnog znaka <code>\</code> zapravo moramo koristiti “dvostruki znak” <code>\\</code> (prvi put da naznačimo <em>R</em>-u da se radi o specijalnom znaku, drugi put da ga doslovno upotrijebimo kao dio regularnog izraza).</p>
+<p>Osnovne funkcije jezika <em>R</em> za rad sa znakovnim nizovima (a time i regularnim izrazima) su između ostalog <code>grep</code>, <code>grepl</code>, <code>regexrp</code>, <code>gregexrp</code>, <code>regmatches</code>, <code>sub</code>, <code>gsub</code> itd. No budući da paket <code>stringr</code> nudi skup alternativnih funkcija sa gotovo istim funkcionalnostima ali uz daleko intuitivnija imena i konzistentnije potpise, mi ćemo se usredotočiti na upravo te funkcije a učenje osnovnih ostavljamo čitateljima koji žele upotpuniti svoje znanje učenjem svih dostupnih alata koje nudi jezik <em>R</em>.</p>
+</div>
+<div id="paket-stringr" class="section level3 hasAnchor" number="10.1.2">
+<h3><span class="header-section-number">10.1.2</span> Paket <code>stringr</code><a href="nizovi.html#paket-stringr" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Već smo rekli da paket <code>stringr</code> zapravo u izvjesnoj mjeri reimplementira već postojeće funkcije jezika <em>R</em>, ali na intuitivniji i konzistentniji način. Ako želimo biti precizni, funkcije paketa <code>stringr</code> su zapravo funkcionalno nešto skromnije, no to je napravljeno s konkretnom namjerom - funkcionalnost je reducirana na poslove za koje se smatra da predstavljaju daleko najčešće korištene funkcionalnosti kod analize teksta. Funkcionalnost koja je “izbačena” tiče se specifičnih slučajeva za koje će programer morati potražiti alternativna rješenja (često u obliku osnovnih funkcija), no dobitak je u jednostavnijim, intuitivnijim funkcijama koje su lakše za učenje i učinkovito dugoročno korištenje.</p>
+<p>Pored navedenih “popravljanja” paket <code>stringr</code> omogućuje i sljedeće:</p>
+<ul>
+<li>konzistentno tretiranje faktora kao znakovnih nizova</li>
+<li>lakše korištenje izlaza funkcija za ulaz nastupajuće funkcije, što je pogotovo korisno uz operator <code>%&gt;%</code></li>
+</ul>
+<p>Možemo početi sa nekim jednostavnijim funkcijama za koje ne trebamo regularne izraze (navodimo pojednostavljene potpise funkcija, za potpune pogledajte dokumentaciju):</p>
+<ul>
+<li><code>str_c(string1, string2, ...)</code> - spajanje znakovnih nizova, alternativa funkciji paste0</li>
+<li><code>str_length(string)</code> - vraća duljinu znakovnog niza</li>
+<li><code>str_sub(string, start, end)</code> - vraća podniz</li>
+<li><code>str_sub(string, start, end) &lt;- string2</code> - umetanje novog podniza (ne mora biti iste duljine kao izbačeni podniz!)</li>
+<li><code>str_trim(string)</code> - uklanjanje praznina s početka i kraja niza</li>
+</ul>
+<hr />
+<p><strong>Zadatak 10.1 - osnovne funkcije za rad sa znakovnim nizovima</strong></p>
+<div class="sourceCode" id="cb480"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb480-1"><a href="nizovi.html#cb480-1" tabindex="-1"></a>niz1 <span class="ot">&lt;-</span> <span class="st">&quot;        Ovo je primjer &quot;</span></span>
+<span id="cb480-2"><a href="nizovi.html#cb480-2" tabindex="-1"></a>niz2 <span class="ot">&lt;-</span> <span class="st">&quot;spajanja nizova!       &quot;</span></span>
+<span id="cb480-3"><a href="nizovi.html#cb480-3" tabindex="-1"></a></span>
+<span id="cb480-4"><a href="nizovi.html#cb480-4" tabindex="-1"></a><span class="co"># uz pomoć jedne naredbe spojite gornje nizove, potom</span></span>
+<span id="cb480-5"><a href="nizovi.html#cb480-5" tabindex="-1"></a><span class="co"># iz rezultata uklonite praznine s početka i kraja niza,</span></span>
+<span id="cb480-6"><a href="nizovi.html#cb480-6" tabindex="-1"></a><span class="co"># zatim izdvojite podniz od 8. do 23. znaka te konačni rezultat ispišite na zaslon</span></span>
+<span id="cb480-7"><a href="nizovi.html#cb480-7" tabindex="-1"></a></span>
+<span id="cb480-8"><a href="nizovi.html#cb480-8" tabindex="-1"></a>niz <span class="ot">&lt;-</span> <span class="st">&quot;R je pretjerano kompliciran i nimalo lagan jezik!&quot;</span></span>
+<span id="cb480-9"><a href="nizovi.html#cb480-9" tabindex="-1"></a></span>
+<span id="cb480-10"><a href="nizovi.html#cb480-10" tabindex="-1"></a><span class="co"># u gornjem nizu znakova zamjenite sve od 9. znaka (brojeno od početka)</span></span>
+<span id="cb480-11"><a href="nizovi.html#cb480-11" tabindex="-1"></a><span class="co"># do 13. (brojeno od kraja) sa praznim nizom </span></span>
+<span id="cb480-12"><a href="nizovi.html#cb480-12" tabindex="-1"></a></span>
+<span id="cb480-13"><a href="nizovi.html#cb480-13" tabindex="-1"></a><span class="co"># ispišite niz</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb481"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb481-1"><a href="nizovi.html#cb481-1" tabindex="-1"></a>niz1 <span class="ot">&lt;-</span> <span class="st">&quot;        Ovo je primjer &quot;</span></span>
+<span id="cb481-2"><a href="nizovi.html#cb481-2" tabindex="-1"></a>niz2 <span class="ot">&lt;-</span> <span class="st">&quot;spajanja nizova!       &quot;</span></span>
+<span id="cb481-3"><a href="nizovi.html#cb481-3" tabindex="-1"></a></span>
+<span id="cb481-4"><a href="nizovi.html#cb481-4" tabindex="-1"></a></span>
+<span id="cb481-5"><a href="nizovi.html#cb481-5" tabindex="-1"></a><span class="co"># uz pomoć jedne naredbe spojite gornje nizove, potom</span></span>
+<span id="cb481-6"><a href="nizovi.html#cb481-6" tabindex="-1"></a><span class="co"># iz rezultata uklonite praznine s početka i kraja niza,</span></span>
+<span id="cb481-7"><a href="nizovi.html#cb481-7" tabindex="-1"></a><span class="co"># zatim izdvojite podniz od 8. do 23. znaka te konačni rezultat ispišite na zaslon</span></span>
+<span id="cb481-8"><a href="nizovi.html#cb481-8" tabindex="-1"></a><span class="fu">str_c</span>(niz1, niz2) <span class="sc">%&gt;%</span> <span class="fu">str_trim</span>() <span class="sc">%&gt;%</span> <span class="fu">str_sub</span>(<span class="dv">8</span>, <span class="dv">23</span>)</span>
+<span id="cb481-9"><a href="nizovi.html#cb481-9" tabindex="-1"></a></span>
+<span id="cb481-10"><a href="nizovi.html#cb481-10" tabindex="-1"></a>niz <span class="ot">&lt;-</span> <span class="st">&quot;R je pretjerano kompliciran i nimalo lagan jezik!&quot;</span></span>
+<span id="cb481-11"><a href="nizovi.html#cb481-11" tabindex="-1"></a></span>
+<span id="cb481-12"><a href="nizovi.html#cb481-12" tabindex="-1"></a><span class="co"># u gornjem nizu znakova zamjenite sve od 9. znaka (brojeno od početka)</span></span>
+<span id="cb481-13"><a href="nizovi.html#cb481-13" tabindex="-1"></a><span class="co"># do 13. (brojeno od kraja) sa praznim nizom </span></span>
+<span id="cb481-14"><a href="nizovi.html#cb481-14" tabindex="-1"></a><span class="fu">str_sub</span>(niz, <span class="dv">9</span>, <span class="sc">-</span><span class="dv">13</span>) <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb481-15"><a href="nizovi.html#cb481-15" tabindex="-1"></a></span>
+<span id="cb481-16"><a href="nizovi.html#cb481-16" tabindex="-1"></a><span class="co"># ispišite niz</span></span>
+<span id="cb481-17"><a href="nizovi.html#cb481-17" tabindex="-1"></a>niz</span></code></pre></div>
+<pre><code>## [1] &quot;primjer spajanja&quot;
+## [1] &quot;R je prelagan jezik!&quot;</code></pre>
+</div>
+<hr />
+<p>Funkcija <code>str_c</code> ima i parametar <code>sep</code> za dodavanje separatora, te parametar <code>collapse</code> za spajanje elemenata znakovnog vektora u jedinstveni niz uz vrijednost parametra kao separator.</p>
+<hr />
+<p><strong>Zadatak 10.2 - spajanje znakovnih nizova</strong></p>
+<div class="sourceCode" id="cb483"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb483-1"><a href="nizovi.html#cb483-1" tabindex="-1"></a>niz1 <span class="ot">&lt;-</span> <span class="st">&quot;Za spajanje&quot;</span></span>
+<span id="cb483-2"><a href="nizovi.html#cb483-2" tabindex="-1"></a>niz2 <span class="ot">&lt;-</span> <span class="st">&quot;ovih nizova&quot;</span></span>
+<span id="cb483-3"><a href="nizovi.html#cb483-3" tabindex="-1"></a>niz3 <span class="ot">&lt;-</span> <span class="st">&quot;potreban je razmak!&quot;</span></span>
+<span id="cb483-4"><a href="nizovi.html#cb483-4" tabindex="-1"></a></span>
+<span id="cb483-5"><a href="nizovi.html#cb483-5" tabindex="-1"></a><span class="co"># spojite gornje nizove u jedinstveni niz i ispišite rezultat</span></span>
+<span id="cb483-6"><a href="nizovi.html#cb483-6" tabindex="-1"></a></span>
+<span id="cb483-7"><a href="nizovi.html#cb483-7" tabindex="-1"></a>nizovi <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;ovi&quot;</span>, <span class="st">&quot;nizovi&quot;</span>, <span class="st">&quot;su&quot;</span>, <span class="st">&quot;elementi&quot;</span>, <span class="st">&quot;vektora...&quot;</span>)</span>
+<span id="cb483-8"><a href="nizovi.html#cb483-8" tabindex="-1"></a></span>
+<span id="cb483-9"><a href="nizovi.html#cb483-9" tabindex="-1"></a><span class="co"># spojite elemente gornjeg vektora u jedan niz i ispišite rezultat</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb484-1"><a href="nizovi.html#cb484-1" tabindex="-1"></a>niz1 <span class="ot">&lt;-</span> <span class="st">&quot;Za spajanje&quot;</span></span>
+<span id="cb484-2"><a href="nizovi.html#cb484-2" tabindex="-1"></a>niz2 <span class="ot">&lt;-</span> <span class="st">&quot;ovih nizova&quot;</span></span>
+<span id="cb484-3"><a href="nizovi.html#cb484-3" tabindex="-1"></a>niz3 <span class="ot">&lt;-</span> <span class="st">&quot;potreban je razmak!&quot;</span></span>
+<span id="cb484-4"><a href="nizovi.html#cb484-4" tabindex="-1"></a></span>
+<span id="cb484-5"><a href="nizovi.html#cb484-5" tabindex="-1"></a><span class="co"># spojite gornje nizove u jedinstveni niz i ispišite rezultat</span></span>
+<span id="cb484-6"><a href="nizovi.html#cb484-6" tabindex="-1"></a><span class="fu">str_c</span>(niz1, niz2, niz3, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>)</span>
+<span id="cb484-7"><a href="nizovi.html#cb484-7" tabindex="-1"></a></span>
+<span id="cb484-8"><a href="nizovi.html#cb484-8" tabindex="-1"></a>nizovi <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;ovi&quot;</span>, <span class="st">&quot;nizovi&quot;</span>, <span class="st">&quot;su&quot;</span>, <span class="st">&quot;elementi&quot;</span>, <span class="st">&quot;vektora...&quot;</span>)</span>
+<span id="cb484-9"><a href="nizovi.html#cb484-9" tabindex="-1"></a></span>
+<span id="cb484-10"><a href="nizovi.html#cb484-10" tabindex="-1"></a><span class="co"># spojite elemente gornjeg vektora u jedan niz i ispišite rezultat</span></span>
+<span id="cb484-11"><a href="nizovi.html#cb484-11" tabindex="-1"></a><span class="fu">str_c</span>(nizovi, <span class="at">collapse =</span> <span class="st">&quot; &quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;Za spajanje ovih nizova potreban je razmak!&quot;
+## [1] &quot;A ovi nizovi su elementi vektora...&quot;</code></pre>
+</div>
+<hr />
+<p>Pogledajmo sada neke funkcije koje rade sa regularnim izrazima:</p>
+<ul>
+<li><code>str_detect(string, pattern)</code> - vraća <code>TRUE</code> ako niz sadrži uzorak, inače <code>FALSE</code></li>
+<li><code>str_extract(string, pattern)</code> - vraća niz znakova koji odgovara prvoj pojavi uzorka</li>
+<li><code>str_extract_all(string, pattern)</code> - vraća listu sa svim pojavama koje odgovaraju uzorku</li>
+<li><code>str_replace(string, pattern, replacement)</code> - mijenja prvu pojavu uzorka sa zadanim novim nizom</li>
+<li><code>str_replace_all(string, pattern, replacement)</code> - mijenja sve pojave uzorka sa zadanim novim nizom</li>
+</ul>
+<p>Sve ove funkcije su vektorizirane, tj. ponašaju se logično (tj. “paralelizirano”) kad im kao određeni parametar pošaljemo vektor - npr. ako funkciji <code>str_replace</code> pošaljemo vektor znakovnih nizova i vektor “zamjena”, svaka prva pojava uzorka biti će zamijenjena odgovarajućim elementom u poretku zamjena. Za detalje oko ovakvog proširenog korištenja uputno je pogledati dokumentaciju.</p>
+<hr />
+<p><strong>Zadatak 10.3 - funkcije i regularni izrazi</strong></p>
+<div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb486-1"><a href="nizovi.html#cb486-1" tabindex="-1"></a>adrese <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;pero.peric@fer.hr&quot;</span>, <span class="st">&quot;iva.ivic@etfos.hr&quot;</span>, <span class="st">&quot;ppetrovic@gmail.com&quot;</span>, </span>
+<span id="cb486-2"><a href="nizovi.html#cb486-2" tabindex="-1"></a>            <span class="st">&quot;branko1987@yahoo.com&quot;</span>, <span class="st">&quot;jaRULZ4EVR@gmail.nz&quot;</span>, <span class="st">&quot;dperkovic@efzg.hr&quot;</span>, </span>
+<span id="cb486-3"><a href="nizovi.html#cb486-3" tabindex="-1"></a>            <span class="st">&quot;lalaic1998@gmail.co.uk&quot;</span>, <span class="st">&quot;perica.markic@fer.hr&quot;</span>)</span>
+<span id="cb486-4"><a href="nizovi.html#cb486-4" tabindex="-1"></a></span>
+<span id="cb486-5"><a href="nizovi.html#cb486-5" tabindex="-1"></a><span class="co"># prebrojite i ispišite koliko u gornjem popisu ima mail adresa iz domene `fer.hr`</span></span>
+<span id="cb486-6"><a href="nizovi.html#cb486-6" tabindex="-1"></a></span>
+<span id="cb486-7"><a href="nizovi.html#cb486-7" tabindex="-1"></a><span class="co"># ispišite sve adrese koje sadrže bar jednu znamenku</span></span>
+<span id="cb486-8"><a href="nizovi.html#cb486-8" tabindex="-1"></a></span>
+<span id="cb486-9"><a href="nizovi.html#cb486-9" tabindex="-1"></a><span class="co"># ispišite sve adrese koje na drugom mjestu imaju samoglasnik</span></span>
+<span id="cb486-10"><a href="nizovi.html#cb486-10" tabindex="-1"></a></span>
+<span id="cb486-11"><a href="nizovi.html#cb486-11" tabindex="-1"></a><span class="co"># ispišite sve jedinstvene domene adresa elektroničke pošte iz gornjeg niza adresa</span></span>
+<span id="cb486-12"><a href="nizovi.html#cb486-12" tabindex="-1"></a><span class="co"># (domenom smatramo dio adrese iza znaka `@`)</span></span>
+<span id="cb486-13"><a href="nizovi.html#cb486-13" tabindex="-1"></a></span>
+<span id="cb486-14"><a href="nizovi.html#cb486-14" tabindex="-1"></a><span class="co"># anonimizirajte gornje adrese: niz znakova ispred znaka &#39;@&#39;</span></span>
+<span id="cb486-15"><a href="nizovi.html#cb486-15" tabindex="-1"></a><span class="co"># zamijenite nasumičnim šesteroznamenkastim prirodnim brojem </span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb487"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb487-1"><a href="nizovi.html#cb487-1" tabindex="-1"></a><span class="co"># prebrojite i ispišite koliko u gornjem popisu ima mail adresa iz domene `fer.hr`</span></span>
+<span id="cb487-2"><a href="nizovi.html#cb487-2" tabindex="-1"></a><span class="fu">str_detect</span>(adrese, <span class="st">&quot;fer</span><span class="sc">\\</span><span class="st">.hr&quot;</span>) <span class="sc">%&gt;%</span> sum</span>
+<span id="cb487-3"><a href="nizovi.html#cb487-3" tabindex="-1"></a></span>
+<span id="cb487-4"><a href="nizovi.html#cb487-4" tabindex="-1"></a><span class="co"># ispišite sve adrese koje sadrže bar jednu znamenku</span></span>
+<span id="cb487-5"><a href="nizovi.html#cb487-5" tabindex="-1"></a>adrese[<span class="fu">str_detect</span>(adrese, <span class="st">&#39;[:digit:]&#39;</span>)]</span>
+<span id="cb487-6"><a href="nizovi.html#cb487-6" tabindex="-1"></a></span>
+<span id="cb487-7"><a href="nizovi.html#cb487-7" tabindex="-1"></a><span class="co"># ispišite sve adrese koje na drugom mjestu imaju samoglasnik</span></span>
+<span id="cb487-8"><a href="nizovi.html#cb487-8" tabindex="-1"></a><span class="fu">str_detect</span>(adrese, <span class="st">&quot;^.[aeiouAEIOU]&quot;</span>) <span class="sc">%&gt;%</span> adrese[.]  <span class="co">#ili `]`(adrese, .)</span></span>
+<span id="cb487-9"><a href="nizovi.html#cb487-9" tabindex="-1"></a><span class="co"># moze i str_detect(adrese, &quot;^.(a|e|i|o|u|A|E|I|O|U)&quot;) %&gt;% adrese[.]</span></span>
+<span id="cb487-10"><a href="nizovi.html#cb487-10" tabindex="-1"></a></span>
+<span id="cb487-11"><a href="nizovi.html#cb487-11" tabindex="-1"></a><span class="co"># ispišite sve jedinstvene domene adresa elektroničke pošte iz gornjeg niza adresa</span></span>
+<span id="cb487-12"><a href="nizovi.html#cb487-12" tabindex="-1"></a><span class="co"># (domenom smatramo dio adrese iza znaka `@`)</span></span>
+<span id="cb487-13"><a href="nizovi.html#cb487-13" tabindex="-1"></a><span class="fu">str_extract</span>(adrese, <span class="st">&#39;@(.*)&#39;</span>) <span class="sc">%&gt;%</span> <span class="fu">str_sub</span>(<span class="dv">2</span>) <span class="sc">%&gt;%</span> unique</span>
+<span id="cb487-14"><a href="nizovi.html#cb487-14" tabindex="-1"></a></span>
+<span id="cb487-15"><a href="nizovi.html#cb487-15" tabindex="-1"></a><span class="co"># anonimizirajte gornje adrese: niz znakova ispred znaka &#39;@&#39;</span></span>
+<span id="cb487-16"><a href="nizovi.html#cb487-16" tabindex="-1"></a><span class="co"># zamijenite nasumičnim šesteroznamenkastim prirodnim brojem </span></span>
+<span id="cb487-17"><a href="nizovi.html#cb487-17" tabindex="-1"></a><span class="fu">sample</span>(<span class="dv">100000</span><span class="sc">:</span><span class="dv">999999</span>, <span class="fu">length</span>(adrese)) <span class="sc">%&gt;%</span> as.character <span class="sc">%&gt;%</span> <span class="fu">str_replace</span>(adrese, <span class="st">&#39;^[^@]*&#39;</span>, .)</span></code></pre></div>
+<pre><code>## [1] 2
+## [1] &quot;branko1987@yahoo.com&quot;   &quot;jaRULZ4EVR@gmail.nz&quot;    &quot;lalaic1998@gmail.co.uk&quot;
+## [1] &quot;pero.peric@fer.hr&quot;      &quot;jaRULZ4EVR@gmail.nz&quot;    &quot;lalaic1998@gmail.co.uk&quot;
+## [4] &quot;perica.markic@fer.hr&quot;  
+## [1] &quot;fer.hr&quot;      &quot;etfos.hr&quot;    &quot;gmail.com&quot;   &quot;yahoo.com&quot;   &quot;gmail.nz&quot;   
+## [6] &quot;efzg.hr&quot;     &quot;gmail.co.uk&quot;
+## [1] &quot;715037@fer.hr&quot;      &quot;206896@etfos.hr&quot;    &quot;861759@gmail.com&quot;  
+## [4] &quot;278787@yahoo.com&quot;   &quot;581691@gmail.nz&quot;    &quot;258345@efzg.hr&quot;    
+## [7] &quot;618764@gmail.co.uk&quot; &quot;112453@fer.hr&quot;</code></pre>
+</div>
+<hr />
+<p>Konačno, naučimo jednu relativno korisnu funkciju nazvanu <code>str_split</code>. Ova funkcija rastavlja znakovni niz na vektor znakovnih nizova, ovisno o danom separatoru (koji može biti razmak, neki odabrani znak ali i regularni izraz), a često se koristi kao “primitivnija” alternativa funkcijama <code>read.csv</code> i <code>read.table</code> kada ulazne podatke želimo “ručno” rastaviti i parsirati, ili za analizu teksta kada paragrafe teksta “razbijamo” na pojedinačne riječi. Ova funkcija pretpostavlja da ćemo joj proslijediti niz znakovnih nizova za rastavljanje te nam kao rezultat vraća listu; ukoliko rastavljamo samo jedan niz, lako rezultat pretvaramo u vektor korištenjem funkcije <code>unlist</code>.</p>
+<div class="sourceCode" id="cb489"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb489-1"><a href="nizovi.html#cb489-1" tabindex="-1"></a><span class="fu">str_split</span>(<span class="st">&quot;Primjer funkcije str_split&quot;</span>, <span class="at">pattern =</span> <span class="st">&quot;[:space:]&quot;</span>) <span class="sc">%&gt;%</span> unlist</span></code></pre></div>
+<pre><code>## [1] &quot;Primjer&quot;   &quot;funkcije&quot;  &quot;str_split&quot;</code></pre>
+<p>Pokažimo sada jedan vrlo jednostavni primjer analize teksta - pronalazak najčešće pojavljivanih riječi u odabranom tekstu. Za potrebe ovog zadatka morati ćemo pročitati podatke iz tekstualne datoteke. Jedan od najjednostavnijih načina kako ovo možemo učiniti jest kombinacija funkcija <code>file</code> (koja otvara konekciju prema tekstualnoj datoteci, slično načinu upravljanja datotekama u C-u) i <code>readLines</code> koja čita određeni broj redaka iz datoteke i sprema ih u znakovni vektor. Ako je datoteka dovoljno mala da sve retke možemo čitati odjednom, onda ove dvije funkcije možemo pozvati ovako:</p>
+<div class="sourceCode" id="cb491"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb491-1"><a href="nizovi.html#cb491-1" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">file</span>(<span class="st">&quot;datoteka.txt&quot;</span>, <span class="st">&quot;r&quot;</span>)    <span class="co"># r = &quot;read&quot;</span></span>
+<span id="cb491-2"><a href="nizovi.html#cb491-2" tabindex="-1"></a>rows <span class="ot">&lt;-</span> <span class="fu">readLines</span>(con)   <span class="co"># ili readLines(con, n = 100) za čitanje samo određenog broja redaka</span></span>
+<span id="cb491-3"><a href="nizovi.html#cb491-3" tabindex="-1"></a><span class="fu">close</span>(con)   <span class="co"># zatvaranje toka</span></span></code></pre></div>
+<p>Sljedeći zadatak koristiti će dvije tekstualne datoteke</p>
+<ul>
+<li><code>HobbitChapterOne.txt</code> - datoteka čiji tekst analiziramo i</li>
+<li><code>stopwords.txt</code> - datoteka sa čestim riječima koje “nisu vrijedne” za analizu koju ćemo izvesti</li>
+</ul>
+<hr />
+<p><strong>Zadatak 10.4 - jednostavna analiza teksta</strong></p>
+<div class="sourceCode" id="cb492"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb492-1"><a href="nizovi.html#cb492-1" tabindex="-1"></a><span class="co"># u varijablu `hobbit` učitajte tekst iz datoteke `HobbitChapterOne.txt`</span></span>
+<span id="cb492-2"><a href="nizovi.html#cb492-2" tabindex="-1"></a><span class="co"># a u varijablu `stopwords` stop riječi iz datoteke `stopwords.txt`</span></span>
+<span id="cb492-3"><a href="nizovi.html#cb492-3" tabindex="-1"></a></span>
+<span id="cb492-4"><a href="nizovi.html#cb492-4" tabindex="-1"></a><span class="co"># provedite sljedeće korake:</span></span>
+<span id="cb492-5"><a href="nizovi.html#cb492-5" tabindex="-1"></a><span class="co"># - spojite sve elemente iz varijable `hobbit` u jedan jedinstveni znakovni niz</span></span>
+<span id="cb492-6"><a href="nizovi.html#cb492-6" tabindex="-1"></a><span class="co"># - uklonite interpunkcijske znakove iz teksta</span></span>
+<span id="cb492-7"><a href="nizovi.html#cb492-7" tabindex="-1"></a><span class="co"># - prebacite tekst u &quot;lowercase&quot; (funkcija `tolower`)</span></span>
+<span id="cb492-8"><a href="nizovi.html#cb492-8" tabindex="-1"></a><span class="co"># - rastavite tekst na riječi po prazninama</span></span>
+<span id="cb492-9"><a href="nizovi.html#cb492-9" tabindex="-1"></a><span class="co"># - izbacite &quot;prazne&quot; riječi (riječi duljine 0) ako ih ima</span></span>
+<span id="cb492-10"><a href="nizovi.html#cb492-10" tabindex="-1"></a><span class="co"># - izbacite sve riječi koje se nalaze u vektoru `stopwords` </span></span>
+<span id="cb492-11"><a href="nizovi.html#cb492-11" tabindex="-1"></a><span class="co"># - izračunajte frekvencije riječi</span></span>
+<span id="cb492-12"><a href="nizovi.html#cb492-12" tabindex="-1"></a><span class="co"># - ispišite na zaslon 20 najčešće korištenih riječi</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb493"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb493-1"><a href="nizovi.html#cb493-1" tabindex="-1"></a><span class="co"># u varijablu `hobbit` učitajte tekst iz datoteke `HobbitChapterOne.txt`</span></span>
+<span id="cb493-2"><a href="nizovi.html#cb493-2" tabindex="-1"></a><span class="co"># a u varijablu `stopwords` stop riječi iz datoteke `stopwords.txt`</span></span>
+<span id="cb493-3"><a href="nizovi.html#cb493-3" tabindex="-1"></a></span>
+<span id="cb493-4"><a href="nizovi.html#cb493-4" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">file</span>(<span class="st">&quot;HobbitChapterOne.txt&quot;</span>)</span>
+<span id="cb493-5"><a href="nizovi.html#cb493-5" tabindex="-1"></a>hobbit <span class="ot">&lt;-</span> <span class="fu">readLines</span>(con)</span>
+<span id="cb493-6"><a href="nizovi.html#cb493-6" tabindex="-1"></a><span class="fu">close</span>(con)</span>
+<span id="cb493-7"><a href="nizovi.html#cb493-7" tabindex="-1"></a></span>
+<span id="cb493-8"><a href="nizovi.html#cb493-8" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">file</span>(<span class="st">&quot;stopwords.txt&quot;</span>)</span>
+<span id="cb493-9"><a href="nizovi.html#cb493-9" tabindex="-1"></a>stopwords <span class="ot">&lt;-</span> <span class="fu">readLines</span>(con)</span>
+<span id="cb493-10"><a href="nizovi.html#cb493-10" tabindex="-1"></a><span class="fu">close</span>(con)</span></code></pre></div>
+</div>
+<div class="fold s o">
+<div class="sourceCode" id="cb494"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb494-1"><a href="nizovi.html#cb494-1" tabindex="-1"></a><span class="co"># provedite sljedeće korake:</span></span>
+<span id="cb494-2"><a href="nizovi.html#cb494-2" tabindex="-1"></a><span class="co"># - spojite sve elemente iz varijable `hobbit` u jedan jedinstveni znakovni niz</span></span>
+<span id="cb494-3"><a href="nizovi.html#cb494-3" tabindex="-1"></a><span class="co"># - uklonite interpunkcijske znakove iz teksta</span></span>
+<span id="cb494-4"><a href="nizovi.html#cb494-4" tabindex="-1"></a><span class="co"># - prebacite tekst u &quot;lowercase&quot; (funkcija `tolower`)</span></span>
+<span id="cb494-5"><a href="nizovi.html#cb494-5" tabindex="-1"></a><span class="co"># - rastavite tekst na riječi po prazninama</span></span>
+<span id="cb494-6"><a href="nizovi.html#cb494-6" tabindex="-1"></a><span class="co"># - izbacite &quot;prazne&quot; riječi (riječi duljine 0) ako ih ima</span></span>
+<span id="cb494-7"><a href="nizovi.html#cb494-7" tabindex="-1"></a><span class="co"># - izbacite sve riječi koje se nalaze u vektoru `stopwords` </span></span>
+<span id="cb494-8"><a href="nizovi.html#cb494-8" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb494-9"><a href="nizovi.html#cb494-9" tabindex="-1"></a><span class="co"># - izračunajte frekvencije riječi</span></span>
+<span id="cb494-10"><a href="nizovi.html#cb494-10" tabindex="-1"></a><span class="co"># - ispišite na zaslon 20 najčešće korištenih riječi</span></span>
+<span id="cb494-11"><a href="nizovi.html#cb494-11" tabindex="-1"></a></span>
+<span id="cb494-12"><a href="nizovi.html#cb494-12" tabindex="-1"></a>hobbit  <span class="sc">%&gt;%</span> <span class="fu">str_c</span>(<span class="at">collapse =</span> <span class="st">&quot; &quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb494-13"><a href="nizovi.html#cb494-13" tabindex="-1"></a><span class="fu">str_replace_all</span>(<span class="st">&#39;[:punct:]&#39;</span>, <span class="st">&#39;&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb494-14"><a href="nizovi.html#cb494-14" tabindex="-1"></a>  tolower <span class="sc">%&gt;%</span> <span class="fu">str_split</span>(<span class="st">&#39;[:space:]&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb494-15"><a href="nizovi.html#cb494-15" tabindex="-1"></a>  unlist <span class="ot">-&gt;</span> hobbit2</span>
+<span id="cb494-16"><a href="nizovi.html#cb494-16" tabindex="-1"></a></span>
+<span id="cb494-17"><a href="nizovi.html#cb494-17" tabindex="-1"></a>hobbit3 <span class="ot">&lt;-</span> hobbit2[<span class="sc">!</span>(hobbit2 <span class="sc">%in%</span> stopwords <span class="sc">|</span> <span class="fu">nchar</span>(hobbit2) <span class="sc">==</span> <span class="dv">0</span>)]</span>
+<span id="cb494-18"><a href="nizovi.html#cb494-18" tabindex="-1"></a></span>
+<span id="cb494-19"><a href="nizovi.html#cb494-19" tabindex="-1"></a>freq <span class="ot">&lt;-</span> <span class="fu">table</span>(hobbit3) <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing =</span> T)</span>
+<span id="cb494-20"><a href="nizovi.html#cb494-20" tabindex="-1"></a></span>
+<span id="cb494-21"><a href="nizovi.html#cb494-21" tabindex="-1"></a>freq[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>]</span></code></pre></div>
+<pre><code>## hobbit3
+##   bilbo gandalf     one  thorin dwarves    door baggins    good  hobbit  little 
+##      39      36      36      34      31      27      25      25      25      24 
+##    long    went    know    time    away      go     old  things    come morning 
+##      24      23      20      19      17      17      17      17      16      16</code></pre>
+</div>
+<hr />
+</div>
+</div>
+<div id="zadaci-za-vježbu-8" class="section level2 unnumbered hasAnchor">
+<h2>Zadaci za vježbu<a href="nizovi.html#zadaci-za-vježbu-8" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Sljedeći zadaci odnose se na podatkovni skup pohranjen u CSV datoteci <code>crimeSample.csv</code> a koji predstavlja uzorak iz evidencije kriminalnih incidenata u gradu Philadelphiji (originalni podatkovni skup može se naći na <a href = "https://www.opendataphilly.org/dataset/crime-incidents">ovoj poveznici</a>). Originalni skup stupaca je reduciran a iz skupa svih obzervacija slučajnim odabirom uzorkovano je 1000 incidenata.</p>
+<p>Prije rješavanja zadataka učitajte podatke u podatkovni okvir crimes i upoznajte se s podatkovnim skupom (<code>str</code>, <code>head</code>, itd.)</p>
+<ol style="list-style-type: decimal">
+<li><p>Odgovorite na pitanje: koliki je postotak incidenata gdje opis incidenta sadrži riječ <code>"burglary"</code> ili <code>"robbery"</code>? (savjet: pretvorite cijeli stupac sa opisom zločina u mala slova uz pomoć funkcije <code>tolower()</code>).</p></li>
+<li><p>Ispišite na zaslon sve jedinstvene četveroznamenkaste brojeve koje možete naći u nazivima ulica u kojima je evidentiran kriminalni incident.</p></li>
+</ol>
+<hr />
+<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Programirajmo u R-u</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.fer.unizg.hr/en/damir.pintar" property="cc:attributionName" rel="cc:attributionURL">Damir Pintar</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://ratnip.github.io/FER_OPJR/" rel="dct:source">https://ratnip.github.io/FER_OPJR/</a></p>
+
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div class="csl-entry">
+Bache, Stefan Milton, and Hadley Wickham. 2014. <em>Magrittr: A Forward-Pipe Operator for r</em>. <a href="https://CRAN.R-project.org/package=magrittr">https://CRAN.R-project.org/package=magrittr</a>.
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="datumi.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "google", "twitter", "weibo", "instapaper"],
+    "google": false,
+    "instapper": false
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": true
+  },
+  "toolbar": {
+    "position": "fixed",
+    "edit": null,
+    "download": null,
+    "search": true
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

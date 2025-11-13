@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Programirajmo u R-u</title>
   <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
-  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Programirajmo u R-u" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Damir Pintar" />
 
 
-<meta name="date" content="2025-11-03" />
+<meta name="date" content="2025-11-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -189,6 +189,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 </style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -316,6 +339,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.3.1" data-path="objekti.html"><a href="objekti.html#konstruktorska-funkcija"><i class="fa fa-check"></i><b>7.3.1</b> Konstruktorska funkcija</a></li>
 <li class="chapter" data-level="7.3.2" data-path="objekti.html"><a href="objekti.html#generičke-funkcije-1"><i class="fa fa-check"></i><b>7.3.2</b> Generičke funkcije</a></li>
 </ul></li>
+<li class="chapter" data-level="7.4" data-path="objekti.html"><a href="objekti.html#implementacija-generičke-funkcije"><i class="fa fa-check"></i><b>7.4</b> Implementacija generičke funkcije</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="objekti.html"><a href="objekti.html#funkcija-methods"><i class="fa fa-check"></i><b>7.4.1</b> Funkcija <code>methods</code></a></li>
+<li class="chapter" data-level="7.4.2" data-path="objekti.html"><a href="objekti.html#zaključci-o-s3-objektima"><i class="fa fa-check"></i><b>7.4.2</b> Zaključci o S3 objektima</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="objekti.html"><a href="objekti.html#kratki-pregled-s4-objekata"><i class="fa fa-check"></i><b>7.5</b> Kratki pregled S4 objekata</a></li>
+<li class="chapter" data-level="" data-path="objekti.html"><a href="objekti.html#zadaci-za-vježbu-5"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="part"><span><b>II Upravljanje podacima i vizualizacije</b></span></li>
+<li class="chapter" data-level="8" data-path="cijev.html"><a href="cijev.html"><i class="fa fa-check"></i><b>8</b> Koncept urednih podataka</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="cijev.html"><a href="cijev.html#operator-cjevovoda"><i class="fa fa-check"></i><b>8.1</b> Operator cjevovoda</a></li>
+<li class="chapter" data-level="8.2" data-path="cijev.html"><a href="cijev.html#uredni-podaci"><i class="fa fa-check"></i><b>8.2</b> Uredni podaci</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="cijev.html"><a href="cijev.html#funkcije-pivot_longer-i-pivot_wider"><i class="fa fa-check"></i><b>8.2.1</b> Funkcije <code>pivot_longer</code> i <code>pivot_wider</code></a></li>
+<li class="chapter" data-level="8.2.2" data-path="cijev.html"><a href="cijev.html#funkcije-separate-i-unite"><i class="fa fa-check"></i><b>8.2.2</b> Funkcije <code>separate</code> i <code>unite</code></a></li>
+<li class="chapter" data-level="8.2.3" data-path="cijev.html"><a href="cijev.html#funkcije-drop_na-i-replace_na"><i class="fa fa-check"></i><b>8.2.3</b> Funkcije <code>drop_NA</code> i <code>replace_NA</code></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="cijev.html"><a href="cijev.html#zadaci-za-vježbu-6"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="datumi.html"><a href="datumi.html"><i class="fa fa-check"></i><b>9</b> Rad sa vremenskim podacima</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="datumi.html"><a href="datumi.html#rad-sa-datumima"><i class="fa fa-check"></i><b>9.1</b> Rad sa datumima</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="datumi.html"><a href="datumi.html#klasa-date"><i class="fa fa-check"></i><b>9.1.1</b> Klasa <code>Date</code></a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="datumi.html"><a href="datumi.html#klase-posixct-i-posixlt"><i class="fa fa-check"></i><b>9.2</b> Klase <code>POSIXct</code> i <code>POSIXlt</code></a></li>
+<li class="chapter" data-level="9.3" data-path="datumi.html"><a href="datumi.html#paket-lubridate"><i class="fa fa-check"></i><b>9.3</b> Paket <code>lubridate</code></a></li>
+<li class="chapter" data-level="" data-path="datumi.html"><a href="datumi.html#zadaci-za-vježbu-7"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="nizovi.html"><a href="nizovi.html"><i class="fa fa-check"></i><b>10</b> Obrada znakovnih nizova</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="nizovi.html"><a href="nizovi.html#rad-sa-znakovnim-nizovima"><i class="fa fa-check"></i><b>10.1</b> Rad sa znakovnim nizovima</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="nizovi.html"><a href="nizovi.html#analiza-teksta-i-regularni-izrazi"><i class="fa fa-check"></i><b>10.1.1</b> Analiza teksta i regularni izrazi</a></li>
+<li class="chapter" data-level="10.1.2" data-path="nizovi.html"><a href="nizovi.html#paket-stringr"><i class="fa fa-check"></i><b>10.1.2</b> Paket <code>stringr</code></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="nizovi.html"><a href="nizovi.html#zadaci-za-vježbu-8"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
 </ul></li>
 </ul>
 
@@ -337,7 +398,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">Programirajmo u R-u</h1>
 <p class="author"><em>Damir Pintar</em></p>
-<p class="date"><em>2025-11-03</em></p>
+<p class="date"><em>2025-11-13</em></p>
 </div>
 <div id="udžbenik-za-predmet-osnove-statističkog-programiranja" class="section level1 unnumbered hasAnchor">
 <h1>(Udžbenik za predmet “Osnove statističkog programiranja”)<a href="index.html#udžbenik-za-predmet-osnove-statističkog-programiranja" class="anchor-section" aria-label="Anchor link to header"></a></h1>
