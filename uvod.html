@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>1 Uvod | Programirajmo u R-u</title>
   <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
-  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
   <meta property="og:title" content="1 Uvod | Programirajmo u R-u" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Damir Pintar" />
 
 
-<meta name="date" content="2025-11-13" />
+<meta name="date" content="2025-12-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -189,29 +189,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 </style>
-<style type="text/css">
-/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}
-</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -347,36 +324,21 @@ div.csl-indent {
 <li class="chapter" data-level="7.5" data-path="objekti.html"><a href="objekti.html#kratki-pregled-s4-objekata"><i class="fa fa-check"></i><b>7.5</b> Kratki pregled S4 objekata</a></li>
 <li class="chapter" data-level="" data-path="objekti.html"><a href="objekti.html#zadaci-za-vježbu-5"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
 </ul></li>
-<li class="part"><span><b>II Upravljanje podacima i vizualizacije</b></span></li>
-<li class="chapter" data-level="8" data-path="cijev.html"><a href="cijev.html"><i class="fa fa-check"></i><b>8</b> Koncept urednih podataka</a>
+<li class="chapter" data-level="8" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><i class="fa fa-check"></i><b>8</b> Upravljanje podatkovnim skupovima uz paket <code>dplyr</code></a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="cijev.html"><a href="cijev.html#operator-cjevovoda"><i class="fa fa-check"></i><b>8.1</b> Operator cjevovoda</a></li>
-<li class="chapter" data-level="8.2" data-path="cijev.html"><a href="cijev.html#uredni-podaci"><i class="fa fa-check"></i><b>8.2</b> Uredni podaci</a>
+<li class="chapter" data-level="8.1" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#ogledni-podatkovni-skup-titanic"><i class="fa fa-check"></i><b>8.1</b> Ogledni podatkovni skup: <em>Titanic</em></a></li>
+<li class="chapter" data-level="8.2" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#stvaranje-podskupa-obzervacija-uz-filter-i-slice"><i class="fa fa-check"></i><b>8.2</b> Stvaranje podskupa obzervacija uz <code>filter</code> i <code>slice</code></a></li>
+<li class="chapter" data-level="8.3" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#stvaranje-podskupa-varijabli-uz-select"><i class="fa fa-check"></i><b>8.3</b> Stvaranje podskupa varijabli uz <code>select</code></a></li>
+<li class="chapter" data-level="8.4" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#stvaranje-novih-stupaca-uz-mutate"><i class="fa fa-check"></i><b>8.4</b> Stvaranje novih stupaca uz <code>mutate</code></a></li>
+<li class="chapter" data-level="8.5" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#ogledni-podatkovni-skup-houston-flights"><i class="fa fa-check"></i><b>8.5</b> Ogledni podatkovni skup: <em>Houston flights</em></a></li>
+<li class="chapter" data-level="8.6" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#grupiranje-i-agregacija-uz-group_by-i-summarise"><i class="fa fa-check"></i><b>8.6</b> Grupiranje i agregacija uz <code>group_by</code> i <code>summarise</code></a></li>
+<li class="chapter" data-level="8.7" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#spajanje-podatkovnih-okvira-uz-join-funkcije"><i class="fa fa-check"></i><b>8.7</b> Spajanje podatkovnih okvira uz join funkcije</a></li>
+<li class="chapter" data-level="8.8" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#integracija-sa-vanjskim-izvorima-podataka"><i class="fa fa-check"></i><b>8.8</b> Integracija sa vanjskim izvorima podataka</a>
 <ul>
-<li class="chapter" data-level="8.2.1" data-path="cijev.html"><a href="cijev.html#funkcije-pivot_longer-i-pivot_wider"><i class="fa fa-check"></i><b>8.2.1</b> Funkcije <code>pivot_longer</code> i <code>pivot_wider</code></a></li>
-<li class="chapter" data-level="8.2.2" data-path="cijev.html"><a href="cijev.html#funkcije-separate-i-unite"><i class="fa fa-check"></i><b>8.2.2</b> Funkcije <code>separate</code> i <code>unite</code></a></li>
-<li class="chapter" data-level="8.2.3" data-path="cijev.html"><a href="cijev.html#funkcije-drop_na-i-replace_na"><i class="fa fa-check"></i><b>8.2.3</b> Funkcije <code>drop_NA</code> i <code>replace_NA</code></a></li>
+<li class="chapter" data-level="8.8.1" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#excel-datoteka-kao-izvorodredište-podataka"><i class="fa fa-check"></i><b>8.8.1</b> Excel datoteka kao izvor/odredište podataka</a></li>
+<li class="chapter" data-level="8.8.2" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#rad-sa-relacijskim-bazama"><i class="fa fa-check"></i><b>8.8.2</b> Rad sa relacijskim bazama</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="cijev.html"><a href="cijev.html#zadaci-za-vježbu-6"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
-</ul></li>
-<li class="chapter" data-level="9" data-path="datumi.html"><a href="datumi.html"><i class="fa fa-check"></i><b>9</b> Rad sa vremenskim podacima</a>
-<ul>
-<li class="chapter" data-level="9.1" data-path="datumi.html"><a href="datumi.html#rad-sa-datumima"><i class="fa fa-check"></i><b>9.1</b> Rad sa datumima</a>
-<ul>
-<li class="chapter" data-level="9.1.1" data-path="datumi.html"><a href="datumi.html#klasa-date"><i class="fa fa-check"></i><b>9.1.1</b> Klasa <code>Date</code></a></li>
-</ul></li>
-<li class="chapter" data-level="9.2" data-path="datumi.html"><a href="datumi.html#klase-posixct-i-posixlt"><i class="fa fa-check"></i><b>9.2</b> Klase <code>POSIXct</code> i <code>POSIXlt</code></a></li>
-<li class="chapter" data-level="9.3" data-path="datumi.html"><a href="datumi.html#paket-lubridate"><i class="fa fa-check"></i><b>9.3</b> Paket <code>lubridate</code></a></li>
-<li class="chapter" data-level="" data-path="datumi.html"><a href="datumi.html#zadaci-za-vježbu-7"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
-</ul></li>
-<li class="chapter" data-level="10" data-path="nizovi.html"><a href="nizovi.html"><i class="fa fa-check"></i><b>10</b> Obrada znakovnih nizova</a>
-<ul>
-<li class="chapter" data-level="10.1" data-path="nizovi.html"><a href="nizovi.html#rad-sa-znakovnim-nizovima"><i class="fa fa-check"></i><b>10.1</b> Rad sa znakovnim nizovima</a>
-<ul>
-<li class="chapter" data-level="10.1.1" data-path="nizovi.html"><a href="nizovi.html#analiza-teksta-i-regularni-izrazi"><i class="fa fa-check"></i><b>10.1.1</b> Analiza teksta i regularni izrazi</a></li>
-<li class="chapter" data-level="10.1.2" data-path="nizovi.html"><a href="nizovi.html#paket-stringr"><i class="fa fa-check"></i><b>10.1.2</b> Paket <code>stringr</code></a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="nizovi.html"><a href="nizovi.html#zadaci-za-vježbu-8"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+<li class="chapter" data-level="" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#zadaci-za-vježbu-6"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
 </ul></li>
 </ul>
 
