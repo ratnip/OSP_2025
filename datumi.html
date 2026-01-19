@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>9 Rad sa vremenskim podacima | Programirajmo u R-u</title>
   <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
-  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
   <meta property="og:title" content="9 Rad sa vremenskim podacima | Programirajmo u R-u" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Damir Pintar" />
 
 
-<meta name="date" content="2026-01-03" />
+<meta name="date" content="2026-01-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -410,6 +410,17 @@ div.csl-indent {
 <li class="chapter" data-level="12.4" data-path="ggplot2.html"><a href="ggplot2.html#grafovi-u-eksploratornoj-analizi-i-izvještavanju"><i class="fa fa-check"></i><b>12.4</b> Grafovi u eksploratornoj analizi i izvještavanju</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#zadaci-za-vježbu-10"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
 </ul></li>
+<li class="part"><span><b>III Statistika i strojno učenje u jeziku R</b></span></li>
+<li class="chapter" data-level="13" data-path="razdiobe.html"><a href="razdiobe.html"><i class="fa fa-check"></i><b>13</b> Razdiobe i simulacije</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="razdiobe.html"><a href="razdiobe.html#generiranje-slučajnih-brojeva"><i class="fa fa-check"></i><b>13.1</b> Generiranje slučajnih brojeva</a></li>
+<li class="chapter" data-level="13.2" data-path="razdiobe.html"><a href="razdiobe.html#rad-sa-razdiobama-vjerojatnosti-u-jeziku-r"><i class="fa fa-check"></i><b>13.2</b> Rad sa razdiobama vjerojatnosti u jeziku R</a></li>
+<li class="chapter" data-level="13.3" data-path="razdiobe.html"><a href="razdiobe.html#binomna-razdioba"><i class="fa fa-check"></i><b>13.3</b> Binomna razdioba</a></li>
+<li class="chapter" data-level="13.4" data-path="razdiobe.html"><a href="razdiobe.html#normalna-razdioba"><i class="fa fa-check"></i><b>13.4</b> Normalna razdioba</a></li>
+<li class="chapter" data-level="13.5" data-path="razdiobe.html"><a href="razdiobe.html#procjena-funkcije-gustoće-razdiobe-i-kvantil-kvantil-graf"><i class="fa fa-check"></i><b>13.5</b> Procjena funkcije gustoće razdiobe i kvantil-kvantil graf</a></li>
+<li class="chapter" data-level="13.6" data-path="razdiobe.html"><a href="razdiobe.html#monte-carlo-simulacije"><i class="fa fa-check"></i><b>13.6</b> Monte Carlo Simulacije</a></li>
+<li class="chapter" data-level="" data-path="razdiobe.html"><a href="razdiobe.html#zadaci-za-vježbu-11"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -470,7 +481,7 @@ div.csl-indent {
 <span id="cb430-7"><a href="datumi.html#cb430-7" tabindex="-1"></a><span class="fu">as.Date</span>(<span class="st">&#39;2016-31-05&#39;</span>, <span class="at">format =</span> <span class="st">&#39;%Y-%d-%m&#39;</span>)</span>
 <span id="cb430-8"><a href="datumi.html#cb430-8" tabindex="-1"></a><span class="fu">as.Date</span>(<span class="st">&#39;17. 10. 2015.&#39;</span>,  <span class="at">format =</span> <span class="st">&#39;%d. %m. %Y&#39;</span>)</span>
 <span id="cb430-9"><a href="datumi.html#cb430-9" tabindex="-1"></a><span class="fu">as.Date</span>(<span class="st">&#39;01#01#2001&#39;</span>, <span class="at">format =</span> <span class="st">&#39;%d#%m#%Y&#39;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;2026-01-03&quot;
+<pre><code>## [1] &quot;2026-01-19&quot;
 ## [1] &quot;1986-12-27&quot;
 ## [1] &quot;2016-05-31&quot;
 ## [1] &quot;2015-10-17&quot;
@@ -495,10 +506,10 @@ div.csl-indent {
 <span id="cb433-7"><a href="datumi.html#cb433-7" tabindex="-1"></a></span>
 <span id="cb433-8"><a href="datumi.html#cb433-8" tabindex="-1"></a><span class="co"># ispišite koliko je dana prošlo od 1.1.2000. do danas</span></span>
 <span id="cb433-9"><a href="datumi.html#cb433-9" tabindex="-1"></a><span class="fu">Sys.Date</span>() <span class="sc">-</span> <span class="fu">as.Date</span>(<span class="st">&#39;2000-01-01&#39;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;2023-04-09&quot;
+<pre><code>## [1] &quot;2023-04-25&quot;
 ## [1] &quot;2015-03-01&quot;
 ## [1] &quot;2016-02-29&quot;
-## Time difference of 9499 days</code></pre>
+## Time difference of 9515 days</code></pre>
 </div>
 <hr />
 <p>Zadnji izraz će zapravo rezultirati objektom klase <code>difftime</code> koja označava vremenski interval. Ispis koristi tzv. “automatski” odabir jedinice (konkretno, parametar <code>units</code> postavljen na <code>"auto"</code>) koji će pokušati odabrati najprikladniju vremensku jedinicu za ispis. Ukoliko želimo eksplicitno odabrati koju vremensku jedinicu želimo (sekunde, minute, sate, dane ili tjedne) onda možemo umjesto operatora <code>-</code> koristiti funkciju <code>difftime</code> uz parametar <code>units</code> postavljen na znakovni niz odabrane vremenski jedinice (<code>"seconds"</code>, <code>"minutes"</code>, itd.).</p>
@@ -520,7 +531,7 @@ div.csl-indent {
 <span id="cb436-7"><a href="datumi.html#cb436-7" tabindex="-1"></a><span class="co"># koliko je prošlo sati od 1.3.2015. do danas?</span></span>
 <span id="cb436-8"><a href="datumi.html#cb436-8" tabindex="-1"></a><span class="fu">difftime</span>(<span class="fu">Sys.Date</span>(), <span class="st">&#39;2015-03-01&#39;</span>, <span class="at">units =</span> <span class="st">&quot;hours&quot;</span>)</span></code></pre></div>
 <pre><code>## Time difference of 52.28571 weeks
-## Time difference of 95065 hours</code></pre>
+## Time difference of 95449 hours</code></pre>
 </div>
 <hr />
 <p>Funkcija <code>difftime</code> zapravo radi i sa vremenskim oznakama, tj. ne moramo nužno raditi na razini datuma, već se možemo spustiti do razine sekunde. Ovo ćemo isprobati kada naučimo klasu <code>POSIXct</code> u nastavku. Isto tako, ako nam treba samo broj (sekundi, sati, dana i sl.), lako transformiramo izlaz u cijeli broj uz pomoć funkcije <code>as.numeric</code>.</p>
@@ -577,16 +588,16 @@ div.csl-indent {
 ## [36] &quot;2027-07-01&quot; &quot;2028-01-01&quot; &quot;2028-07-01&quot; &quot;2029-01-01&quot; &quot;2029-07-01&quot;
 ## [41] &quot;2030-01-01&quot;
 ##    broj_stana prezime   ciscenje
-## 1           1   Ebert 2026-01-03
-## 2           2 Ladovac 2026-01-24
-## 3           3   Cerić 2026-02-14
-## 4           4   Dikla 2026-03-07
-## 5           5    Anić 2026-03-28
-## 6           6   Perić 2026-04-18
-## 7           7   Žužić 2026-05-09
-## 8           8   Babić 2026-05-30
-## 9           9    Ibiz 2026-06-20
-## 10         10  Radler 2026-07-11</code></pre>
+## 1           1   Ebert 2026-01-19
+## 2           2 Ladovac 2026-02-09
+## 3           3   Cerić 2026-03-02
+## 4           4   Dikla 2026-03-23
+## 5           5    Anić 2026-04-13
+## 6           6   Perić 2026-05-04
+## 7           7   Žužić 2026-05-25
+## 8           8   Babić 2026-06-15
+## 9           9    Ibiz 2026-07-06
+## 10         10  Radler 2026-07-27</code></pre>
 </div>
 <div class="fold s o">
 <div class="sourceCode" id="cb442"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb442-1"><a href="datumi.html#cb442-1" tabindex="-1"></a><span class="co"># (za ambiciozne: dodajte 5 takvih stupaca koji će pokrivati 50</span></span>
@@ -609,16 +620,16 @@ div.csl-indent {
 <pre><code>## # A tibble: 10 × 7
 ##    broj_stana prezime ciklus_1   ciklus_2   ciklus_3   ciklus_4   ciklus_5  
 ##         &lt;int&gt; &lt;chr&gt;   &lt;date&gt;     &lt;date&gt;     &lt;date&gt;     &lt;date&gt;     &lt;date&gt;    
-##  1          1 Ebert   2026-01-03 2026-08-01 2027-02-27 2027-09-25 2028-04-22
-##  2          2 Ladovac 2026-01-24 2026-08-22 2027-03-20 2027-10-16 2028-05-13
-##  3          3 Cerić   2026-02-14 2026-09-12 2027-04-10 2027-11-06 2028-06-03
-##  4          4 Dikla   2026-03-07 2026-10-03 2027-05-01 2027-11-27 2028-06-24
-##  5          5 Anić    2026-03-28 2026-10-24 2027-05-22 2027-12-18 2028-07-15
-##  6          6 Perić   2026-04-18 2026-11-14 2027-06-12 2028-01-08 2028-08-05
-##  7          7 Žužić   2026-05-09 2026-12-05 2027-07-03 2028-01-29 2028-08-26
-##  8          8 Babić   2026-05-30 2026-12-26 2027-07-24 2028-02-19 2028-09-16
-##  9          9 Ibiz    2026-06-20 2027-01-16 2027-08-14 2028-03-11 2028-10-07
-## 10         10 Radler  2026-07-11 2027-02-06 2027-09-04 2028-04-01 2028-10-28</code></pre>
+##  1          1 Ebert   2026-01-19 2026-08-17 2027-03-15 2027-10-11 2028-05-08
+##  2          2 Ladovac 2026-02-09 2026-09-07 2027-04-05 2027-11-01 2028-05-29
+##  3          3 Cerić   2026-03-02 2026-09-28 2027-04-26 2027-11-22 2028-06-19
+##  4          4 Dikla   2026-03-23 2026-10-19 2027-05-17 2027-12-13 2028-07-10
+##  5          5 Anić    2026-04-13 2026-11-09 2027-06-07 2028-01-03 2028-07-31
+##  6          6 Perić   2026-05-04 2026-11-30 2027-06-28 2028-01-24 2028-08-21
+##  7          7 Žužić   2026-05-25 2026-12-21 2027-07-19 2028-02-14 2028-09-11
+##  8          8 Babić   2026-06-15 2027-01-11 2027-08-09 2028-03-06 2028-10-02
+##  9          9 Ibiz    2026-07-06 2027-02-01 2027-08-30 2028-03-27 2028-10-23
+## 10         10 Radler  2026-07-27 2027-02-22 2027-09-20 2028-04-17 2028-11-13</code></pre>
 </div>
 <hr />
 </div>
@@ -647,7 +658,7 @@ div.csl-indent {
 <span id="cb445-6"><a href="datumi.html#cb445-6" tabindex="-1"></a><span class="co"># &quot;01-12-2001 14:30&quot;   &lt;-- oznaka očitana u New York-u, SAD, vremenska zona EST</span></span>
 <span id="cb445-7"><a href="datumi.html#cb445-7" tabindex="-1"></a><span class="fu">as.POSIXct</span>(<span class="st">&quot;2015-10-28 15:30:42&quot;</span>)</span>
 <span id="cb445-8"><a href="datumi.html#cb445-8" tabindex="-1"></a><span class="fu">as.POSIXct</span>(<span class="st">&quot;01-12-2001 14:30&quot;</span>, <span class="at">tz =</span> <span class="st">&quot;EST&quot;</span>, <span class="at">format =</span> <span class="st">&quot;%d-%m-%Y %H:%M&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;2026-01-03 10:56:36 CET&quot;
+<pre><code>## [1] &quot;2026-01-19 14:33:38 CET&quot;
 ## [1] &quot;2015-10-28 15:30:42 CET&quot;
 ## [1] &quot;2001-12-01 14:30:00 EST&quot;</code></pre>
 </div>
@@ -683,8 +694,8 @@ div.csl-indent {
 <span id="cb451-3"><a href="datumi.html#cb451-3" tabindex="-1"></a></span>
 <span id="cb451-4"><a href="datumi.html#cb451-4" tabindex="-1"></a><span class="co"># ispišite koliko je prošlo sati od ponoći 1.1.2015. do sad</span></span>
 <span id="cb451-5"><a href="datumi.html#cb451-5" tabindex="-1"></a><span class="fu">difftime</span>(<span class="fu">Sys.time</span>(), <span class="st">&quot;2015-01-01 00:00:00&quot;</span>, <span class="at">units =</span> <span class="st">&quot;hours&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;2026-01-03 11:13:16 CET&quot;
-## Time difference of 96490.94 hours</code></pre>
+<pre><code>## [1] &quot;2026-01-19 14:50:18 CET&quot;
+## Time difference of 96878.56 hours</code></pre>
 </div>
 <hr />
 <p>Klasa <code>POSIXlt</code> se ponaša isto kao i <code>POSIXct</code> (za stvaranje se koristimo funkcijom <code>as.POSIXlt</code>), no zapravo se radi o listi koja nam omogućuje jednostavno izvlačenje određenih parametara iz vremenske oznake, kao što su broj sekundi, broj minuta, dan u tjednu i sl. Sve elemente liste lako možemo vidjeti ako napravimo <code>POSIXlt</code> objekt i onda pozovemo funkciju <code>unclass</code> nad njim, pri čemu će se on pretvoriti u “običnu” listu. Možemo ići i korak dalje - ako listu ubacimo u funkciju <code>unlist</code>, kao rezultat dobivamo obični znakovni vektor.</p>
@@ -824,8 +835,8 @@ div.csl-indent {
 <span id="cb468-3"><a href="datumi.html#cb468-3" tabindex="-1"></a></span>
 <span id="cb468-4"><a href="datumi.html#cb468-4" tabindex="-1"></a><span class="co"># ispišite koliko je bilo sati, minuta i sekundi prije točno sat vremena</span></span>
 <span id="cb468-5"><a href="datumi.html#cb468-5" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">-</span> <span class="dv">60</span><span class="sc">*</span><span class="dv">60</span></span></code></pre></div>
-<pre><code>## [1] &quot;2026-01-04&quot;
-## [1] &quot;2026-01-03 09:56:37 CET&quot;</code></pre>
+<pre><code>## [1] &quot;2026-01-20&quot;
+## [1] &quot;2026-01-19 13:33:39 CET&quot;</code></pre>
 </div>
 <hr />
 <p>Već smo rekli da upravljanje vremenskom komponentom u podacima može postati vrlo kompleksno, pogotovo ako uzmemo u obzir da vremenski intervali mogu biti zadani generički (npr. “2 godine”) ili konkretno (raspon između dva datuma) te da se matematički i kalendarski način računanja vremena često ne poklapaju (npr. “za godinu dana” može značiti točan matematički izračun sekundi u 365 dana, ili kalendarski “isti datum iduće godine”).</p>
@@ -856,7 +867,7 @@ div.csl-indent {
 <span id="cb471-9"><a href="datumi.html#cb471-9" tabindex="-1"></a><span class="fu">today</span>() <span class="sc">+</span> v</span></code></pre></div>
 <pre><code>## [1] &quot;21d 0H 0M 0S&quot;
 ## [1] &quot;1814400s (~3 weeks)&quot;
-## [1] &quot;2031-04-05&quot;</code></pre>
+## [1] &quot;2031-04-21&quot;</code></pre>
 </div>
 <hr />
 <p>Uočite da gornji izraz nismo lako mogli dobiti “matematički”.</p>
@@ -892,8 +903,8 @@ div.csl-indent {
 <span id="cb474-15"><a href="datumi.html#cb474-15" tabindex="-1"></a>interval1</span>
 <span id="cb474-16"><a href="datumi.html#cb474-16" tabindex="-1"></a>interval2</span>
 <span id="cb474-17"><a href="datumi.html#cb474-17" tabindex="-1"></a>interval3</span></code></pre></div>
-<pre><code>## [1] 2025-07-03 UTC--2026-07-03 UTC
-## [1] 2026-01-03 UTC--2026-05-26 UTC
+<pre><code>## [1] 2025-07-19 UTC--2026-07-19 UTC
+## [1] 2026-01-19 UTC--2026-06-11 UTC
 ## [1] 2002-05-01 UTC--2002-07-01 UTC</code></pre>
 </div>
 <hr />
@@ -920,7 +931,7 @@ div.csl-indent {
 <span id="cb477-6"><a href="datumi.html#cb477-6" tabindex="-1"></a><span class="co"># ispišite njihov presjek</span></span>
 <span id="cb477-7"><a href="datumi.html#cb477-7" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">int_overlaps</span>(interval1, interval1)) <span class="fu">intersect</span>(interval1, interval2)</span></code></pre></div>
 <pre><code>## [1] TRUE
-## [1] 2026-01-03 UTC--2026-05-26 UTC</code></pre>
+## [1] 2026-01-19 UTC--2026-06-11 UTC</code></pre>
 </div>
 <hr />
 <p>U ovom dijelu upoznali smo se sa jednim dijelom funkcionalnosti koje nude klase za upravljanje datumima i vremenskim oznakama jezika R te paket <code>lubridate</code>. Za dodatne informacije pogledajte službenu dokumentaciju jezika R i paketa <code>lubridate</code>, a dobar izvor je i članak <em>“Dates and Times Made Easy with lubridate”</em> kojeg je napisao sam autor paketa Hadley Wickham a koji je dostupan na <a href = "https://www.jstatsoft.org/article/view/v040i03/v40i03.pdf">ovoj poveznici</a>.</p>

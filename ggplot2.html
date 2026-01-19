@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>12 Vizualizacija podataka uz paket ggplot2 | Programirajmo u R-u</title>
   <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
-  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
   <meta property="og:title" content="12 Vizualizacija podataka uz paket ggplot2 | Programirajmo u R-u" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Damir Pintar" />
 
 
-<meta name="date" content="2026-01-03" />
+<meta name="date" content="2026-01-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"/>
-
+<link rel="next" href="razdiobe.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -410,6 +410,17 @@ div.csl-indent {
 <li class="chapter" data-level="12.4" data-path="ggplot2.html"><a href="ggplot2.html#grafovi-u-eksploratornoj-analizi-i-izvještavanju"><i class="fa fa-check"></i><b>12.4</b> Grafovi u eksploratornoj analizi i izvještavanju</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#zadaci-za-vježbu-10"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
 </ul></li>
+<li class="part"><span><b>III Statistika i strojno učenje u jeziku R</b></span></li>
+<li class="chapter" data-level="13" data-path="razdiobe.html"><a href="razdiobe.html"><i class="fa fa-check"></i><b>13</b> Razdiobe i simulacije</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="razdiobe.html"><a href="razdiobe.html#generiranje-slučajnih-brojeva"><i class="fa fa-check"></i><b>13.1</b> Generiranje slučajnih brojeva</a></li>
+<li class="chapter" data-level="13.2" data-path="razdiobe.html"><a href="razdiobe.html#rad-sa-razdiobama-vjerojatnosti-u-jeziku-r"><i class="fa fa-check"></i><b>13.2</b> Rad sa razdiobama vjerojatnosti u jeziku R</a></li>
+<li class="chapter" data-level="13.3" data-path="razdiobe.html"><a href="razdiobe.html#binomna-razdioba"><i class="fa fa-check"></i><b>13.3</b> Binomna razdioba</a></li>
+<li class="chapter" data-level="13.4" data-path="razdiobe.html"><a href="razdiobe.html#normalna-razdioba"><i class="fa fa-check"></i><b>13.4</b> Normalna razdioba</a></li>
+<li class="chapter" data-level="13.5" data-path="razdiobe.html"><a href="razdiobe.html#procjena-funkcije-gustoće-razdiobe-i-kvantil-kvantil-graf"><i class="fa fa-check"></i><b>13.5</b> Procjena funkcije gustoće razdiobe i kvantil-kvantil graf</a></li>
+<li class="chapter" data-level="13.6" data-path="razdiobe.html"><a href="razdiobe.html#monte-carlo-simulacije"><i class="fa fa-check"></i><b>13.6</b> Monte Carlo Simulacije</a></li>
+<li class="chapter" data-level="" data-path="razdiobe.html"><a href="razdiobe.html#zadaci-za-vježbu-11"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -558,9 +569,14 @@ div.csl-indent {
 <div class="fold o">
 <div class="sourceCode" id="cb599"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb599-1"><a href="ggplot2.html#cb599-1" tabindex="-1"></a><span class="co"># prvi `ggplot2` graf, funkcija `qplot`</span></span>
 <span id="cb599-2"><a href="ggplot2.html#cb599-2" tabindex="-1"></a><span class="fu">qplot</span>(<span class="at">x =</span> wt, <span class="at">y =</span> mpg, <span class="at">data =</span> mtcars)</span></code></pre></div>
-<pre><code>## Warning: `qplot()` was deprecated in ggplot2 3.4.0.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
+<pre><code>## Warning: `qplot()` was deprecated in
+## ggplot2 3.4.0.
+## This warning is displayed once
+## every 8 hours.
+## Call
+## `lifecycle::last_lifecycle_warnings()`
+## to see where this warning was
+## generated.</code></pre>
 <p><img src="osnoveR_files/figure-html/unnamed-chunk-441-1.png" width="672" /></p>
 </div>
 <p>Glavni razlog postojanja ove funkcije jest orijentiranost korisnicima koji traže brzu i učinkovitu alternativu <code>plot</code> funkciji bez potrebe za učenjem novih koncepata. Iako se možda ovakav način stvaranja grafova možda čini zgodan i jednostavan, dugoročno se ipak isplati naučiti “pravu” <em>ggplot2</em> sintaksu budući da je <code>qplot</code> funkcija dosta limitirana i - poput funkcije <code>plot</code> - inicijalna jednostavnost se sve više gubi što više prilagodbi vizualizacije želimo provesti.</p>
@@ -913,8 +929,10 @@ Primjer sintakse:
 <span id="cb649-4"><a href="ggplot2.html#cb649-4" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">&quot;cijena u $&quot;</span>, </span>
 <span id="cb649-5"><a href="ggplot2.html#cb649-5" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">1000</span>, <span class="dv">5000</span>, <span class="dv">10000</span>, <span class="dv">15000</span>)) <span class="sc">+</span></span>
 <span id="cb649-6"><a href="ggplot2.html#cb649-6" tabindex="-1"></a>  <span class="fu">scale_color_ordinal</span>(<span class="at">name =</span> <span class="st">&quot;kvaliteta boje&quot;</span>, <span class="at">labels =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>)</span></code></pre></div>
-<pre><code>## Warning: Removed 3 rows containing missing values or values outside the scale
-## range (`geom_point()`).</code></pre>
+<pre><code>## Warning: Removed 3 rows containing
+## missing values or values
+## outside the scale range
+## (`geom_point()`).</code></pre>
 <p><img src="osnoveR_files/figure-html/unnamed-chunk-489-1.png" width="672" /></p>
 </div>
 <hr />
@@ -1244,20 +1262,18 @@ Slika 12.1: Diagram of the causes of mortality in the army in the East by Floren
 <hr />
 <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Programirajmo u R-u</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.fer.unizg.hr/en/damir.pintar" property="cc:attributionName" rel="cc:attributionURL">Damir Pintar</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://ratnip.github.io/FER_OPJR/" rel="dct:source">https://ratnip.github.io/FER_OPJR/</a></p>
 
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
-<div class="csl-entry">
-Bache, Stefan Milton, and Hadley Wickham. 2014. <em>Magrittr: A Forward-Pipe Operator for r</em>. <a href="https://CRAN.R-project.org/package=magrittr">https://CRAN.R-project.org/package=magrittr</a>.
 </div>
 </div>
-</div>
-</div>
+
+
+
             </section>
 
           </div>
         </div>
       </div>
-<a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="razdiobe.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

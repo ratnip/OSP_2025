@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>7 Objektni modeli | Programirajmo u R-u</title>
   <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
-  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
   <meta property="og:title" content="7 Objektni modeli | Programirajmo u R-u" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Damir Pintar" />
 
 
-<meta name="date" content="2026-01-03" />
+<meta name="date" content="2026-01-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -410,6 +410,17 @@ div.csl-indent {
 <li class="chapter" data-level="12.4" data-path="ggplot2.html"><a href="ggplot2.html#grafovi-u-eksploratornoj-analizi-i-izvještavanju"><i class="fa fa-check"></i><b>12.4</b> Grafovi u eksploratornoj analizi i izvještavanju</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#zadaci-za-vježbu-10"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
 </ul></li>
+<li class="part"><span><b>III Statistika i strojno učenje u jeziku R</b></span></li>
+<li class="chapter" data-level="13" data-path="razdiobe.html"><a href="razdiobe.html"><i class="fa fa-check"></i><b>13</b> Razdiobe i simulacije</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="razdiobe.html"><a href="razdiobe.html#generiranje-slučajnih-brojeva"><i class="fa fa-check"></i><b>13.1</b> Generiranje slučajnih brojeva</a></li>
+<li class="chapter" data-level="13.2" data-path="razdiobe.html"><a href="razdiobe.html#rad-sa-razdiobama-vjerojatnosti-u-jeziku-r"><i class="fa fa-check"></i><b>13.2</b> Rad sa razdiobama vjerojatnosti u jeziku R</a></li>
+<li class="chapter" data-level="13.3" data-path="razdiobe.html"><a href="razdiobe.html#binomna-razdioba"><i class="fa fa-check"></i><b>13.3</b> Binomna razdioba</a></li>
+<li class="chapter" data-level="13.4" data-path="razdiobe.html"><a href="razdiobe.html#normalna-razdioba"><i class="fa fa-check"></i><b>13.4</b> Normalna razdioba</a></li>
+<li class="chapter" data-level="13.5" data-path="razdiobe.html"><a href="razdiobe.html#procjena-funkcije-gustoće-razdiobe-i-kvantil-kvantil-graf"><i class="fa fa-check"></i><b>13.5</b> Procjena funkcije gustoće razdiobe i kvantil-kvantil graf</a></li>
+<li class="chapter" data-level="13.6" data-path="razdiobe.html"><a href="razdiobe.html#monte-carlo-simulacije"><i class="fa fa-check"></i><b>13.6</b> Monte Carlo Simulacije</a></li>
+<li class="chapter" data-level="" data-path="razdiobe.html"><a href="razdiobe.html#zadaci-za-vježbu-11"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -570,7 +581,7 @@ div.csl-indent {
 ## 
 ## function (object, ...) 
 ## standardGeneric(&quot;summary&quot;)
-## &lt;environment: 0x000002c58b49eff0&gt;
+## &lt;environment: 0x000001aa85b067a0&gt;
 ## Methods may be defined for arguments: object
 ## Use  showMethods(summary)  for currently available ones.
 ## function (object, maxsum = 100L, ...) 
@@ -591,7 +602,7 @@ div.csl-indent {
 ##         c(tt, `NA&#39;s` = sum(nas))
 ##     else tt
 ## }
-## &lt;bytecode: 0x000002c599a44858&gt;
+## &lt;bytecode: 0x000001aa94db5778&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <p>Razumijevanjem principa rada generičkih funkcija upotpunili smo sliku o S3 objektima. Najvažnija stvar koju moramo usvojiti jest da kod ovog modela funkcije nisu dio samog objekta, već se definiraju zasebno, a poveznica između objekta i “njegove” metode jest samo u nazivu funkcije pomoću kojeg će R “povezati” generičku funkciju i taj objekt. Iako je ovaj princip primitivan i podložan greškama u rukama nepažljivog programera, on je neumitno jednostavan za uporabu i vrlo učinkovit. Konačno, uočimo da ovaj pristup nije u potpunosti svojstven isključivo jeziku R - slične principe nalazimo i u drugim programskim jezicima (npr. <em>Python</em> povezuje <em>print</em> funkciju i objekt preko posebne metode objekta <code>__str__</code>). R je samo specifičan po tome što taj princip koristi otvoreno i gotovo isključivo.</p>

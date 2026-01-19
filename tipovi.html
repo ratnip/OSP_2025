@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 Osnovni elementi, vektori i matrice | Programirajmo u R-u</title>
   <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
-  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 Osnovni elementi, vektori i matrice | Programirajmo u R-u" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Damir Pintar" />
 
 
-<meta name="date" content="2026-01-03" />
+<meta name="date" content="2026-01-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -409,6 +409,17 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="12.4" data-path="ggplot2.html"><a href="ggplot2.html#grafovi-u-eksploratornoj-analizi-i-izvještavanju"><i class="fa fa-check"></i><b>12.4</b> Grafovi u eksploratornoj analizi i izvještavanju</a></li>
 <li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#zadaci-za-vježbu-10"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="part"><span><b>III Statistika i strojno učenje u jeziku R</b></span></li>
+<li class="chapter" data-level="13" data-path="razdiobe.html"><a href="razdiobe.html"><i class="fa fa-check"></i><b>13</b> Razdiobe i simulacije</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="razdiobe.html"><a href="razdiobe.html#generiranje-slučajnih-brojeva"><i class="fa fa-check"></i><b>13.1</b> Generiranje slučajnih brojeva</a></li>
+<li class="chapter" data-level="13.2" data-path="razdiobe.html"><a href="razdiobe.html#rad-sa-razdiobama-vjerojatnosti-u-jeziku-r"><i class="fa fa-check"></i><b>13.2</b> Rad sa razdiobama vjerojatnosti u jeziku R</a></li>
+<li class="chapter" data-level="13.3" data-path="razdiobe.html"><a href="razdiobe.html#binomna-razdioba"><i class="fa fa-check"></i><b>13.3</b> Binomna razdioba</a></li>
+<li class="chapter" data-level="13.4" data-path="razdiobe.html"><a href="razdiobe.html#normalna-razdioba"><i class="fa fa-check"></i><b>13.4</b> Normalna razdioba</a></li>
+<li class="chapter" data-level="13.5" data-path="razdiobe.html"><a href="razdiobe.html#procjena-funkcije-gustoće-razdiobe-i-kvantil-kvantil-graf"><i class="fa fa-check"></i><b>13.5</b> Procjena funkcije gustoće razdiobe i kvantil-kvantil graf</a></li>
+<li class="chapter" data-level="13.6" data-path="razdiobe.html"><a href="razdiobe.html#monte-carlo-simulacije"><i class="fa fa-check"></i><b>13.6</b> Monte Carlo Simulacije</a></li>
+<li class="chapter" data-level="" data-path="razdiobe.html"><a href="razdiobe.html#zadaci-za-vježbu-11"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
 </ul></li>
 </ul>
 
@@ -1576,20 +1587,20 @@ div.csl-indent {
 <span id="cb103-5"><a href="tipovi.html#cb103-5" tabindex="-1"></a><span class="co"># dijagonalu matrice `m` zamijeni brojevima od 1 do 5</span></span>
 <span id="cb103-6"><a href="tipovi.html#cb103-6" tabindex="-1"></a><span class="co"># pomnoži matricu `m` jediničnom matricom dimenzija 5 x 5 i ispiši rezultat</span></span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5]
-## [1,]  615  767  634  628  544
-## [2,]  792  996  673  497  334
-## [3,]  220  438  449  575  578
-## [4,]  878  538  360  259  188
-## [5,]  224  427  835  213  535</code></pre>
+## [1,]  184  623  557  469  804
+## [2,]  406  794  526  632  774
+## [3,]  202  831  790  267  864
+## [4,]  351  427  921  732  606
+## [5,]  509  246  791  241  827</code></pre>
 <div class="fold s o">
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="tipovi.html#cb105-1" tabindex="-1"></a><span class="fu">diag</span>(m) <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
 <span id="cb105-2"><a href="tipovi.html#cb105-2" tabindex="-1"></a>m <span class="sc">%*%</span> <span class="fu">diag</span>(<span class="at">nrow =</span> <span class="dv">5</span>)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5]
-## [1,]    1  767  634  628  544
-## [2,]  792    2  673  497  334
-## [3,]  220  438    3  575  578
-## [4,]  878  538  360    4  188
-## [5,]  224  427  835  213    5</code></pre>
+## [1,]    1  623  557  469  804
+## [2,]  406    2  526  632  774
+## [3,]  202  831    3  267  864
+## [4,]  351  427  921    4  606
+## [5,]  509  246  791  241    5</code></pre>
 </div>
 <p>Funkcije <code>upper.tri</code> i <code>lower.tri</code> referenciraju elemente ispod tj. iznad dijagonale matrice, pri čemu dijagonala nije uključena u rezultat osim ako ne postavimo parametar <code>diag = TRUE</code>. Poziv funkcije nad matricom zapravo stvara logičku indeksnu matricu odgovarajućih dimenzija, što možemo vidjeti u sljedećem zadatku.</p>
 <p><strong>Zadatak 2.26 - Funkcija <code>upper.tri</code> i <code>lower.tri</code></strong></p>
@@ -1605,12 +1616,12 @@ div.csl-indent {
 <span id="cb107-10"><a href="tipovi.html#cb107-10" tabindex="-1"></a><span class="co"># - broj -1 ispod glavne dijagonale</span></span>
 <span id="cb107-11"><a href="tipovi.html#cb107-11" tabindex="-1"></a><span class="co"># - broj 0 na dijagonali</span></span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
-## [1,]   70   97   23   34   59   27
-## [2,]   41   32   47   83   84   64
-## [3,]   51   49   72   37   91   31
-## [4,]   43   28   94   55   56   75
-## [5,]   45   69   36   22   50   80
-## [6,]   38   44   79   48   71   58</code></pre>
+## [1,]   54   47   46   99   66   45
+## [2,]   26   37   48   30   23   16
+## [3,]   73   25   92   14   42   34
+## [4,]   33   80   67   28   76   35
+## [5,]   58   11   36   83   74   94
+## [6,]   72   32   71   64   65   79</code></pre>
 <div class="fold s o">
 <div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="tipovi.html#cb109-1" tabindex="-1"></a><span class="fu">upper.tri</span>(m)</span>
 <span id="cb109-2"><a href="tipovi.html#cb109-2" tabindex="-1"></a></span>
