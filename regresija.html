@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>13 Odabrane metode strojnog učenja: regresijska analiza | Programirajmo u R-u</title>
+  <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="13 Odabrane metode strojnog učenja: regresijska analiza | Programirajmo u R-u" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="13 Odabrane metode strojnog učenja: regresijska analiza | Programirajmo u R-u" />
+  
+  <meta name="twitter:description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
+  
+
+<meta name="author" content="Damir Pintar" />
+
+
+<meta name="date" content="2026-01-26" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ggplot2.html"/>
+<link rel="next" href="prediktivno_modeliranje.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+<style type="text/css">
+.showopt {
+  background-color: #004c93;
+  color: #FFFFFF; 
+  width: 140px;
+  height: 4	0px;
+  text-align: center;
+  vertical-align: middle !important;
+  float: right;
+  font-family: sans-serif;
+  font-size:10 pt;
+  border-radius: 8px;
+}
+
+.showopt:hover {
+    background-color: #dfe4f2;
+    color: #004c93;
+}
+
+pre.plot {
+  background-color: white !important;
+}
+</style>
+
+<script>
+ $(document).ready(function() {
+
+  $chunks = $('.fold');
+
+  $chunks.each(function () {
+
+    // add button to source code chunks
+    if ( $(this).hasClass('s') ) {
+      $('pre.r', this).prepend("<div class=\"showopt\">Prikaži rješenje</div><br style=\"line-height:22px;\"/>");
+      $('pre.r', this).children('code').attr('class', 'folded');
+    }
+
+    // add button to output chunks
+    if ( $(this).hasClass('o') ) {
+      $('pre:not(.r)', this).has('code').prepend("<div class=\"showopt\">Prikaži ispis</div><br style=\"line-height:22px;\"/>");
+      $('pre:not(.r)', this).children('code:not(r)').addClass('folded');
+
+      // add button to plots
+      $(this).find('img').wrap('<pre class=\"plot\"></pre>');
+      $('pre.plot', this).prepend("<div class=\"showopt\">Prikaži sliku</div><br style=\"line-height:22px;\"/>");
+      $('pre.plot', this).children('img').addClass('folded');
+
+    }
+  });
+
+  // hide all chunks when document is loaded
+  $('.folded').css('display', 'none')
+
+  // function to toggle the visibility
+  $('.showopt').click(function() {
+    var label = $(this).html();
+    if (label.indexOf("Prikaži") >= 0) {
+      $(this).html(label.replace("Prikaži", "Sakrij"));
+    } else {
+      $(this).html(label.replace("Sakrij", "Prikaži"));
+    }
+    $(this).siblings('code, img').slideToggle('fast', 'swing');
+  });
+});
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>(Udžbenik za predmet “Osnove statističkog programiranja”)</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#predgovor"><i class="fa fa-check"></i>Predgovor</a></li>
+</ul></li>
+<li class="part"><span><b>I Osnovni elementi jezika R</b></span></li>
+<li class="chapter" data-level="1" data-path="uvod.html"><a href="uvod.html"><i class="fa fa-check"></i><b>1</b> Uvod</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="uvod.html"><a href="uvod.html#što-je-programski-jezik-r"><i class="fa fa-check"></i><b>1.1</b> Što je programski jezik R?</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="uvod.html"><a href="uvod.html#općenito-o-r-u"><i class="fa fa-check"></i><b>1.1.1</b> Općenito o R-u</a></li>
+<li class="chapter" data-level="1.1.2" data-path="uvod.html"><a href="uvod.html#alternative-jeziku-r"><i class="fa fa-check"></i><b>1.1.2</b> Alternative jeziku R</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="uvod.html"><a href="uvod.html#instalacija-programske-podrške"><i class="fa fa-check"></i><b>1.2</b> Instalacija programske podrške</a></li>
+<li class="chapter" data-level="1.3" data-path="uvod.html"><a href="uvod.html#pregled-razvojnog-sučelja-rstudio"><i class="fa fa-check"></i><b>1.3</b> Pregled razvojnog sučelja <em>RStudio</em></a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="uvod.html"><a href="uvod.html#interaktivna-konzola"><i class="fa fa-check"></i><b>1.3.1</b> Interaktivna konzola</a></li>
+<li class="chapter" data-level="1.3.2" data-path="uvod.html"><a href="uvod.html#pisanje-r-skripti"><i class="fa fa-check"></i><b>1.3.2</b> Pisanje R skripti</a></li>
+<li class="chapter" data-level="1.3.3" data-path="uvod.html"><a href="uvod.html#instalacija-dodatnih-paketa"><i class="fa fa-check"></i><b>1.3.3</b> Instalacija dodatnih paketa</a></li>
+<li class="chapter" data-level="1.3.4" data-path="uvod.html"><a href="uvod.html#r-markdown"><i class="fa fa-check"></i><b>1.3.4</b> <em>R Markdown</em></a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="uvod.html"><a href="uvod.html#organizacija-procesa-podatkovne-analize-uz-r-i-rstudio"><i class="fa fa-check"></i><b>1.4</b> Organizacija procesa podatkovne analize uz R i RStudio</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="uvod.html"><a href="uvod.html#poželjne-karakteristike-procesa-analize-podataka"><i class="fa fa-check"></i><b>1.4.1</b> Poželjne karakteristike procesa analize podataka</a></li>
+<li class="chapter" data-level="1.4.2" data-path="uvod.html"><a href="uvod.html#organizacija-mapa-za-potrebe-analize-podataka"><i class="fa fa-check"></i><b>1.4.2</b> Organizacija mapa za potrebe analize podataka</a></li>
+<li class="chapter" data-level="1.4.3" data-path="uvod.html"><a href="uvod.html#pojam-projekta"><i class="fa fa-check"></i><b>1.4.3</b> Pojam projekta</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="uvod.html"><a href="uvod.html#kako-koristiti-ovaj-udžbenik"><i class="fa fa-check"></i><b>1.5</b> Kako koristiti ovaj udžbenik?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="tipovi.html"><a href="tipovi.html"><i class="fa fa-check"></i><b>2</b> Osnovni elementi, vektori i matrice</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="tipovi.html"><a href="tipovi.html#osnovni-tipovi-podataka"><i class="fa fa-check"></i><b>2.1</b> Osnovni tipovi podataka</a></li>
+<li class="chapter" data-level="2.2" data-path="tipovi.html"><a href="tipovi.html#operatori"><i class="fa fa-check"></i><b>2.2</b> Operatori</a></li>
+<li class="chapter" data-level="2.3" data-path="tipovi.html"><a href="tipovi.html#nedostajuće-nepoznate-i-nemoguće-vrijednosti"><i class="fa fa-check"></i><b>2.3</b> Nedostajuće, nepoznate i nemoguće vrijednosti</a></li>
+<li class="chapter" data-level="2.4" data-path="tipovi.html"><a href="tipovi.html#vektori"><i class="fa fa-check"></i><b>2.4</b> Vektori</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="tipovi.html"><a href="tipovi.html#stvaranje-vektora"><i class="fa fa-check"></i><b>2.4.1</b> Stvaranje vektora</a></li>
+<li class="chapter" data-level="2.4.2" data-path="tipovi.html"><a href="tipovi.html#operator"><i class="fa fa-check"></i><b>2.4.2</b> Operator <code>[</code></a></li>
+<li class="chapter" data-level="2.4.3" data-path="tipovi.html"><a href="tipovi.html#principi-vektorizacije-i-recikliranja"><i class="fa fa-check"></i><b>2.4.3</b> Principi vektorizacije i recikliranja</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="tipovi.html"><a href="tipovi.html#indeksni-vektori"><i class="fa fa-check"></i><b>2.5</b> Indeksni vektori</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="tipovi.html"><a href="tipovi.html#lokacijsko-referenciranje"><i class="fa fa-check"></i><b>2.5.1</b> Lokacijsko referenciranje</a></li>
+<li class="chapter" data-level="2.5.2" data-path="tipovi.html"><a href="tipovi.html#uvjetno-referenciranje"><i class="fa fa-check"></i><b>2.5.2</b> Uvjetno referenciranje</a></li>
+<li class="chapter" data-level="2.5.3" data-path="tipovi.html"><a href="tipovi.html#imensko-referenciranje"><i class="fa fa-check"></i><b>2.5.3</b> Imensko referenciranje</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="tipovi.html"><a href="tipovi.html#matrice-i-polja"><i class="fa fa-check"></i><b>2.6</b> Matrice i polja</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="tipovi.html"><a href="tipovi.html#rezanje-matrica"><i class="fa fa-check"></i><b>2.6.1</b> Rezanje matrica</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="tipovi.html"><a href="tipovi.html#osnovne-operacije-matrične-algebre"><i class="fa fa-check"></i><b>2.7</b> Osnovne operacije matrične algebre</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="tipovi.html"><a href="tipovi.html#skalarni-produkt"><i class="fa fa-check"></i><b>2.7.1</b> Skalarni produkt</a></li>
+<li class="chapter" data-level="2.7.2" data-path="tipovi.html"><a href="tipovi.html#matrično-množenje"><i class="fa fa-check"></i><b>2.7.2</b> Matrično množenje</a></li>
+<li class="chapter" data-level="2.7.3" data-path="tipovi.html"><a href="tipovi.html#množenje-po-elementima"><i class="fa fa-check"></i><b>2.7.3</b> Množenje po elementima</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="tipovi.html"><a href="tipovi.html#funkcije-diag-upper.tri-lower.tri-i-solve"><i class="fa fa-check"></i><b>2.8</b> Funkcije <code>diag</code>, <code>upper.tri</code>, <code>lower.tri</code> i <code>solve</code></a></li>
+<li class="chapter" data-level="" data-path="tipovi.html"><a href="tipovi.html#zadaci-za-vježbu"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="okviri.html"><a href="okviri.html"><i class="fa fa-check"></i><b>3</b> Liste, podatkovni okviri i faktori</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="okviri.html"><a href="okviri.html#liste"><i class="fa fa-check"></i><b>3.1</b> Liste</a></li>
+<li class="chapter" data-level="3.2" data-path="okviri.html"><a href="okviri.html#podatkovni-okviri"><i class="fa fa-check"></i><b>3.2</b> Podatkovni okviri</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="okviri.html"><a href="okviri.html#odabir-redaka-i-stupaca-podatkovnih-okvira"><i class="fa fa-check"></i><b>3.2.1</b> Odabir redaka i stupaca podatkovnih okvira</a></li>
+<li class="chapter" data-level="3.2.2" data-path="okviri.html"><a href="okviri.html#dodavanje-i-brisanje-redaka-i-stupaca"><i class="fa fa-check"></i><b>3.2.2</b> Dodavanje i brisanje redaka i stupaca</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="okviri.html"><a href="okviri.html#faktori"><i class="fa fa-check"></i><b>3.3</b> Faktori</a></li>
+<li class="chapter" data-level="" data-path="okviri.html"><a href="okviri.html#zadaci-za-vježbu-1"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="uvjet.html"><a href="uvjet.html"><i class="fa fa-check"></i><b>4</b> Uvjetne naredbe i petlje</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="uvjet.html"><a href="uvjet.html#naredbe-kontrole-toka"><i class="fa fa-check"></i><b>4.1</b> Naredbe kontrole toka</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="uvjet.html"><a href="uvjet.html#uvjetno-izvođenje-naredbi"><i class="fa fa-check"></i><b>4.1.1</b> Uvjetno izvođenje naredbi</a></li>
+<li class="chapter" data-level="4.1.2" data-path="uvjet.html"><a href="uvjet.html#programske-petlje"><i class="fa fa-check"></i><b>4.1.2</b> Programske petlje</a></li>
+<li class="chapter" data-level="4.1.3" data-path="uvjet.html"><a href="uvjet.html#petlja-repeat"><i class="fa fa-check"></i><b>4.1.3</b> Petlja <code>repeat</code></a></li>
+<li class="chapter" data-level="4.1.4" data-path="uvjet.html"><a href="uvjet.html#petlja-while"><i class="fa fa-check"></i><b>4.1.4</b> Petlja <code>while</code></a></li>
+<li class="chapter" data-level="4.1.5" data-path="uvjet.html"><a href="uvjet.html#petlja-for"><i class="fa fa-check"></i><b>4.1.5</b> Petlja <code>for</code></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="uvjet.html"><a href="uvjet.html#zadaci-za-vježbu-2"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="paketi.html"><a href="paketi.html"><i class="fa fa-check"></i><b>5</b> Paketi, ugrađene funkcije i okoline</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="paketi.html"><a href="paketi.html#rad-s-paketima"><i class="fa fa-check"></i><b>5.1</b> Rad s paketima</a></li>
+<li class="chapter" data-level="5.2" data-path="paketi.html"><a href="paketi.html#ugrađene-funkcije"><i class="fa fa-check"></i><b>5.2</b> Ugrađene funkcije</a></li>
+<li class="chapter" data-level="5.3" data-path="paketi.html"><a href="paketi.html#okoline"><i class="fa fa-check"></i><b>5.3</b> Okoline</a></li>
+<li class="chapter" data-level="" data-path="paketi.html"><a href="paketi.html#zadaci-za-vježbu-3"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="korisnik.html"><a href="korisnik.html"><i class="fa fa-check"></i><b>6</b> Korisnički definirane funkcije</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="korisnik.html"><a href="korisnik.html#kako-definirati-funkciju"><i class="fa fa-check"></i><b>6.1</b> Kako definirati funkciju</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="korisnik.html"><a href="korisnik.html#princip-kopiranja-kod-izmjene-copy-on-modify"><i class="fa fa-check"></i><b>6.1.1</b> Princip “kopiranja kod izmjene” (copy-on-modify)</a></li>
+<li class="chapter" data-level="6.1.2" data-path="korisnik.html"><a href="korisnik.html#funkcija-kao-objekt"><i class="fa fa-check"></i><b>6.1.2</b> Funkcija kao objekt</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="korisnik.html"><a href="korisnik.html#generičke-funkcije"><i class="fa fa-check"></i><b>6.2</b> Generičke funkcije</a></li>
+<li class="chapter" data-level="6.3" data-path="korisnik.html"><a href="korisnik.html#što-su-apply-funkcije"><i class="fa fa-check"></i><b>6.3</b> Što su <code>apply</code> funkcije?</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="korisnik.html"><a href="korisnik.html#funkcija-apply"><i class="fa fa-check"></i><b>6.3.1</b> Funkcija <code>apply</code></a></li>
+<li class="chapter" data-level="6.3.2" data-path="korisnik.html"><a href="korisnik.html#funkcije-lapply-sapply-i-vapply"><i class="fa fa-check"></i><b>6.3.2</b> Funkcije <code>lapply</code>, <code>sapply</code> i <code>vapply</code></a></li>
+<li class="chapter" data-level="6.3.3" data-path="korisnik.html"><a href="korisnik.html#ostale-funkcije-iz-porodice-apply-i-dostupne-alternative"><i class="fa fa-check"></i><b>6.3.3</b> Ostale funkcije iz porodice <code>apply</code> i dostupne alternative</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="korisnik.html"><a href="korisnik.html#zadaci-za-vježbu-4"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="objekti.html"><a href="objekti.html"><i class="fa fa-check"></i><b>7</b> Objektni modeli</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="objekti.html"><a href="objekti.html#objektni-modeli-u-jeziku-r"><i class="fa fa-check"></i><b>7.1</b> Objektni modeli u jeziku R</a></li>
+<li class="chapter" data-level="7.2" data-path="objekti.html"><a href="objekti.html#pomoćni-paket-sloop"><i class="fa fa-check"></i><b>7.2</b> Pomoćni paket <code>sloop</code></a></li>
+<li class="chapter" data-level="7.3" data-path="objekti.html"><a href="objekti.html#pregled-objektnog-modela-s3"><i class="fa fa-check"></i><b>7.3</b> Pregled objektnog modela S3</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="objekti.html"><a href="objekti.html#konstruktorska-funkcija"><i class="fa fa-check"></i><b>7.3.1</b> Konstruktorska funkcija</a></li>
+<li class="chapter" data-level="7.3.2" data-path="objekti.html"><a href="objekti.html#generičke-funkcije-1"><i class="fa fa-check"></i><b>7.3.2</b> Generičke funkcije</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="objekti.html"><a href="objekti.html#implementacija-generičke-funkcije"><i class="fa fa-check"></i><b>7.4</b> Implementacija generičke funkcije</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="objekti.html"><a href="objekti.html#funkcija-methods"><i class="fa fa-check"></i><b>7.4.1</b> Funkcija <code>methods</code></a></li>
+<li class="chapter" data-level="7.4.2" data-path="objekti.html"><a href="objekti.html#zaključci-o-s3-objektima"><i class="fa fa-check"></i><b>7.4.2</b> Zaključci o S3 objektima</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="objekti.html"><a href="objekti.html#kratki-pregled-s4-objekata"><i class="fa fa-check"></i><b>7.5</b> Kratki pregled S4 objekata</a></li>
+<li class="chapter" data-level="" data-path="objekti.html"><a href="objekti.html#zadaci-za-vježbu-5"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="part"><span><b>II Upravljanje podacima i vizualizacije</b></span></li>
+<li class="chapter" data-level="8" data-path="cijev.html"><a href="cijev.html"><i class="fa fa-check"></i><b>8</b> Koncept urednih podataka</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="cijev.html"><a href="cijev.html#operator-cjevovoda"><i class="fa fa-check"></i><b>8.1</b> Operator cjevovoda</a></li>
+<li class="chapter" data-level="8.2" data-path="cijev.html"><a href="cijev.html#uredni-podaci"><i class="fa fa-check"></i><b>8.2</b> Uredni podaci</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="cijev.html"><a href="cijev.html#funkcije-pivot_longer-i-pivot_wider"><i class="fa fa-check"></i><b>8.2.1</b> Funkcije <code>pivot_longer</code> i <code>pivot_wider</code></a></li>
+<li class="chapter" data-level="8.2.2" data-path="cijev.html"><a href="cijev.html#funkcije-separate-i-unite"><i class="fa fa-check"></i><b>8.2.2</b> Funkcije <code>separate</code> i <code>unite</code></a></li>
+<li class="chapter" data-level="8.2.3" data-path="cijev.html"><a href="cijev.html#funkcije-drop_na-i-replace_na"><i class="fa fa-check"></i><b>8.2.3</b> Funkcije <code>drop_NA</code> i <code>replace_NA</code></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="cijev.html"><a href="cijev.html#zadaci-za-vježbu-6"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="datumi.html"><a href="datumi.html"><i class="fa fa-check"></i><b>9</b> Rad sa vremenskim podacima</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="datumi.html"><a href="datumi.html#rad-sa-datumima"><i class="fa fa-check"></i><b>9.1</b> Rad sa datumima</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="datumi.html"><a href="datumi.html#klasa-date"><i class="fa fa-check"></i><b>9.1.1</b> Klasa <code>Date</code></a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="datumi.html"><a href="datumi.html#klase-posixct-i-posixlt"><i class="fa fa-check"></i><b>9.2</b> Klase <code>POSIXct</code> i <code>POSIXlt</code></a></li>
+<li class="chapter" data-level="9.3" data-path="datumi.html"><a href="datumi.html#paket-lubridate"><i class="fa fa-check"></i><b>9.3</b> Paket <code>lubridate</code></a></li>
+<li class="chapter" data-level="" data-path="datumi.html"><a href="datumi.html#zadaci-za-vježbu-7"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="nizovi.html"><a href="nizovi.html"><i class="fa fa-check"></i><b>10</b> Obrada znakovnih nizova</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="nizovi.html"><a href="nizovi.html#rad-sa-znakovnim-nizovima"><i class="fa fa-check"></i><b>10.1</b> Rad sa znakovnim nizovima</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="nizovi.html"><a href="nizovi.html#analiza-teksta-i-regularni-izrazi"><i class="fa fa-check"></i><b>10.1.1</b> Analiza teksta i regularni izrazi</a></li>
+<li class="chapter" data-level="10.1.2" data-path="nizovi.html"><a href="nizovi.html#paket-stringr"><i class="fa fa-check"></i><b>10.1.2</b> Paket <code>stringr</code></a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="nizovi.html"><a href="nizovi.html#zadaci-za-vježbu-8"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><i class="fa fa-check"></i><b>11</b> Upravljanje podatkovnim skupovima uz paket <code>dplyr</code></a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#ogledni-podatkovni-skup-titanic"><i class="fa fa-check"></i><b>11.1</b> Ogledni podatkovni skup: <em>Titanic</em></a></li>
+<li class="chapter" data-level="11.2" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#stvaranje-podskupa-obzervacija-uz-filter-i-slice"><i class="fa fa-check"></i><b>11.2</b> Stvaranje podskupa obzervacija uz <code>filter</code> i <code>slice</code></a></li>
+<li class="chapter" data-level="11.3" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#stvaranje-podskupa-varijabli-uz-select"><i class="fa fa-check"></i><b>11.3</b> Stvaranje podskupa varijabli uz <code>select</code></a></li>
+<li class="chapter" data-level="11.4" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#stvaranje-novih-stupaca-uz-mutate"><i class="fa fa-check"></i><b>11.4</b> Stvaranje novih stupaca uz <code>mutate</code></a></li>
+<li class="chapter" data-level="11.5" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#ogledni-podatkovni-skup-houston-flights"><i class="fa fa-check"></i><b>11.5</b> Ogledni podatkovni skup: <em>Houston flights</em></a></li>
+<li class="chapter" data-level="11.6" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#grupiranje-i-agregacija-uz-group_by-i-summarise"><i class="fa fa-check"></i><b>11.6</b> Grupiranje i agregacija uz <code>group_by</code> i <code>summarise</code></a></li>
+<li class="chapter" data-level="11.7" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#spajanje-podatkovnih-okvira-uz-join-funkcije"><i class="fa fa-check"></i><b>11.7</b> Spajanje podatkovnih okvira uz join funkcije</a></li>
+<li class="chapter" data-level="11.8" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#integracija-sa-vanjskim-izvorima-podataka"><i class="fa fa-check"></i><b>11.8</b> Integracija sa vanjskim izvorima podataka</a>
+<ul>
+<li class="chapter" data-level="11.8.1" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#excel-datoteka-kao-izvorodredište-podataka"><i class="fa fa-check"></i><b>11.8.1</b> Excel datoteka kao izvor/odredište podataka</a></li>
+<li class="chapter" data-level="11.8.2" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#rad-sa-relacijskim-bazama"><i class="fa fa-check"></i><b>11.8.2</b> Rad sa relacijskim bazama</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html"><a href="upravljanje-podatkovnim-skupovima-uz-paket-dplyr.html#zadaci-za-vježbu-9"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>12</b> Vizualizacija podataka uz paket <code>ggplot2</code></a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="ggplot2.html"><a href="ggplot2.html#eksploratorna-analiza-podataka"><i class="fa fa-check"></i><b>12.1</b> Eksploratorna analiza podataka</a></li>
+<li class="chapter" data-level="12.2" data-path="ggplot2.html"><a href="ggplot2.html#vizualizacija-podataka-uz-pomoć-jezika-r"><i class="fa fa-check"></i><b>12.2</b> Vizualizacija podataka uz pomoć jezika R</a></li>
+<li class="chapter" data-level="12.3" data-path="ggplot2.html"><a href="ggplot2.html#grafička-gramatika-i-paket-ggplot2"><i class="fa fa-check"></i><b>12.3</b> Grafička gramatika i paket <code>ggplot2</code></a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="ggplot2.html"><a href="ggplot2.html#aspekti-podataka-estetike-i-geometrije"><i class="fa fa-check"></i><b>12.3.1</b> Aspekti podataka, estetike i geometrije</a></li>
+<li class="chapter" data-level="12.3.2" data-path="ggplot2.html"><a href="ggplot2.html#fiksni-parametri-geometrije"><i class="fa fa-check"></i><b>12.3.2</b> Fiksni parametri geometrije</a></li>
+<li class="chapter" data-level="12.3.3" data-path="ggplot2.html"><a href="ggplot2.html#aspekti-statistike-i-pozicije"><i class="fa fa-check"></i><b>12.3.3</b> Aspekti statistike i pozicije</a></li>
+<li class="chapter" data-level="12.3.4" data-path="ggplot2.html"><a href="ggplot2.html#povezanost-geometrije-i-statistike"><i class="fa fa-check"></i><b>12.3.4</b> Povezanost geometrije i statistike</a></li>
+<li class="chapter" data-level="12.3.5" data-path="ggplot2.html"><a href="ggplot2.html#aspekti-skale-koordinatnog-sustava-i-teme"><i class="fa fa-check"></i><b>12.3.5</b> Aspekti skale, koordinatnog sustava i teme</a></li>
+<li class="chapter" data-level="12.3.6" data-path="ggplot2.html"><a href="ggplot2.html#uvjetni-facetirani-grafovi"><i class="fa fa-check"></i><b>12.3.6</b> Uvjetni (facetirani) grafovi</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="ggplot2.html"><a href="ggplot2.html#grafovi-u-eksploratornoj-analizi-i-izvještavanju"><i class="fa fa-check"></i><b>12.4</b> Grafovi u eksploratornoj analizi i izvještavanju</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#zadaci-za-vježbu-10"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="regresija.html"><a href="regresija.html"><i class="fa fa-check"></i><b>13</b> Odabrane metode strojnog učenja: regresijska analiza</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="regresija.html"><a href="regresija.html#strojno-učenje"><i class="fa fa-check"></i><b>13.1</b> Strojno učenje</a>
+<ul>
+<li class="chapter" data-level="13.1.1" data-path="regresija.html"><a href="regresija.html#jednostavna-linearna-regresija"><i class="fa fa-check"></i><b>13.1.1</b> Jednostavna linearna regresija</a></li>
+<li class="chapter" data-level="13.1.2" data-path="regresija.html"><a href="regresija.html#funkcija-lm"><i class="fa fa-check"></i><b>13.1.2</b> Funkcija <code>lm</code></a></li>
+<li class="chapter" data-level="13.1.3" data-path="regresija.html"><a href="regresija.html#linearna-regresija-i-kategorijske-varijable"><i class="fa fa-check"></i><b>13.1.3</b> Linearna regresija i kategorijske varijable</a></li>
+</ul></li>
+<li class="chapter" data-level="13.2" data-path="regresija.html"><a href="regresija.html#višestruka-multipla-linearna-regresija"><i class="fa fa-check"></i><b>13.2</b> Višestruka (multipla) linearna regresija</a></li>
+<li class="chapter" data-level="" data-path="regresija.html"><a href="regresija.html#zadaci-za-vježbu-11"><i class="fa fa-check"></i>Zadaci za vježbu</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="prediktivno_modeliranje.html"><a href="prediktivno_modeliranje.html"><i class="fa fa-check"></i><b>14</b> Uvod u prediktivno modeliranje</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="prediktivno_modeliranje.html"><a href="prediktivno_modeliranje.html#što-je-prediktivno-modeliranje"><i class="fa fa-check"></i><b>14.1</b> Što je prediktivno modeliranje?</a></li>
+<li class="chapter" data-level="14.2" data-path="prediktivno_modeliranje.html"><a href="prediktivno_modeliranje.html#podaci-za-treniranje-i-testiranje-modela"><i class="fa fa-check"></i><b>14.2</b> Podaci za treniranje i testiranje modela</a></li>
+<li class="chapter" data-level="14.3" data-path="prediktivno_modeliranje.html"><a href="prediktivno_modeliranje.html#klasifikacijski-prediktivni-modeli---knn-klasifikacija"><i class="fa fa-check"></i><b>14.3</b> Klasifikacijski prediktivni modeli - kNN klasifikacija</a></li>
+<li class="chapter" data-level="14.4" data-path="prediktivno_modeliranje.html"><a href="prediktivno_modeliranje.html#paket-caret-i-prediktivno-modeliranje"><i class="fa fa-check"></i><b>14.4</b> Paket <code>caret</code> i prediktivno modeliranje</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Programirajmo u R-u</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="regresija" class="section level1 hasAnchor" number="13">
+<h1><span class="header-section-number">13</span> Odabrane metode strojnog učenja: regresijska analiza<a href="regresija.html#regresija" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<hr />
+<div id="strojno-učenje" class="section level2 hasAnchor" number="13.1">
+<h2><span class="header-section-number">13.1</span> Strojno učenje<a href="regresija.html#strojno-učenje" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><em>Strojno učenje</em> je polje računalne znanosti koje se bavi specifičnim načinom programiranja u kojem računalu ne dajemo eksplicitne instrukcije, već očekujemo da računalo samostalno dođe do određenih spoznaja na osnovu odabranih podatkovnih skupova i određene metode “učenja”. Strojno učenje se često dijeli na tzv. “nadzirano učenje” (engl. <em>supervised learning</em>), gdje imamo jasno definirane ulaze i izlaze tj. ciljeve, te “nenadzirano učenje” (engl. <em>unsupervised learning</em>), gdje nemamo unaprijed definirane izlaze već očekujemo da će računalo analizirajući samo ulaze doći do nekih korisnih spoznaja o samim podacima. Postoje i dodatne discipline strojnog učenja kao što su “poticano učenje” (engl. <em>reinforced learning</em>), detekcija anomalija (engl. <em>anomaly detection</em>) itd. koje nećemo dodatno objašnjavati budući da izlaze iz okvira ovog udžbenika.</p>
+<p>Pojam strojnog učenja često se povezuje sa pojmom “dubinske analize podataka” (engl. <em>data mining</em>) i “otjrivanja znanja iz podatkovnih skupova” (engl. <em>KDD - knowledge discovery from data</em>). Teško je odrediti u kojoj mjeri se ovi pojmovi preklapaju i koje su njihove točne definicije, budući da se u literaturi često nailazi na različite konvencije koje nisu međusobno konzistentne. Za potrebe ovog udžbenika možemo smatrati da strojno učenje daje svojevrsni “alat” kojeg možemo koristiti za otkrivanje (rudarenje) korisnih informacija iz skupova podataka. Rezultat ovog procesa daje nam izvjesno znanje o domenu kojeg možemo koristiti za donošenje određenih odluka.</p>
+<p>U ovoj lekciji mi ćemo se usredotočiti na prikaz jedne vrlo često korištene metode strojnog učenja - <strong>linearne regresije</strong> - pri čemu ćemo naglasak dati na njezino korištenje u sklopu programskog jezika R.</p>
+<p>Linearna regresija je iznimno popularna metoda strojnog učenja koja uz pomoć matematičkih i statističkih temelja opisuje potencijalnu linearnu povezanost varijabli podatkovnog skupa. Ukoliko se pronađe dovoljno dokaza da linearna povezanost postoji, onda smo dobili potencijalno koristan uvid u stvarni odnos dvaju varijabli skupa. Isto tako, dobivena “formula” se može koristiti da se na osnovu poznate vrijednosti jedne varijable (prediktora) s određenom sigurnosti procijeni vrijednost druge (ciljne) varijable.</p>
+<p>Iako danas postoje puno naprednije prediktivne metode, linearna regresija se i dalje često koristi kako zbog svoje jednostavnosti, tako i zbog činjenice razumijevanje linearne regresije postavlja čvrste temelje za učenje i razumijevanje naprednijih metoda. Zbog svega toga, linearna regresija predstavlja logičan i vrlo važan prvi korak za ulazak u svijet prediktivne analize.</p>
+<hr />
+<div id="jednostavna-linearna-regresija" class="section level3 hasAnchor" number="13.1.1">
+<h3><span class="header-section-number">13.1.1</span> Jednostavna linearna regresija<a href="regresija.html#jednostavna-linearna-regresija" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Jednostavna linearna regresija je metoda nadziranog strojnog učenja za predviđanje ciljne numeričke varijable uz pomoć linearne funkcije ulazne varijable. Na ovaj način stvaranje prediktivnog modela svodi se na postupak određivanja koeficijenta smjera i odsječka koji će tvoriti jednostavnu formulu za izračun ciljne varijable uz pomoć ulaznog parametra. Budući da se ova metoda svodi na pogađanje navedenih parametara, metoda linearne regresije spada u tzv. “parametarske metode” strojnog učenja, tj. prediktivne analize.</p>
+<p>Jednostavna linearna regresija počiva na matematičkim temeljima. Najčešće korištena metoda određivanja koeficijenta smjera i odsječka jest <strong>metoda najmanjih kvadrata</strong>, koja povlači pravac između točaka grafa tako da je suma kvadrata udaljenosti točaka od pravca (tzv. reziduali) minimalna. Matematičkim postupkom možemo izvesti formulu koja će egzaktno izračunati navedene parametre, pod uvjetom da imamo dovoljno obzervacija.</p>
+<p>Motivaciju za provođenje jednostavne linearne regresije često nalazimo tijekom procesa eksploratorne analize podataka, poglavito tijekom vizualizacije dvije numeričke varijable točkastim grafovima. Ukoliko je jedna od tih varijabli nama interesantna kao ciljna varijabla prediktivnog modela, a na grafu povijesnih podataka vidimo kako u međuodnosu s nekom drugom varijablu točke tvore približni oblik pravca, onda se tu radi o očitom kandidatu za metodu jednostavne linearne regresije.</p>
+<hr />
+<p>Pogledajmo sljedeći zadatak. U njemu ćemo koristiti “umjetni” podatkovni okvir u kojem imamo ulaznu varijablu <code>x</code> i četiri moguće ciljne varijable <code>y1</code>, <code>y2</code>, <code>y3</code> i <code>y4</code>. Svaka od tih varijabli nastala je određenom transformacijom ulaza uz dodavanje određene količine šuma. Ideja zadatka jest proučiti odnos između ulazne i mogućih izlaznih varijabli te uočiti koji od tih odnosa je dobar kandidat za jednostavnu linearnu regresiju.</p>
+<hr />
+<p><strong>Zadatak 14.1 - uočavanje linearne povezanosti varijabli</strong></p>
+<div class="sourceCode" id="cb680"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb680-1"><a href="regresija.html#cb680-1" tabindex="-1"></a><span class="co"># u varijablu `df` učitajte podatke iz datoteke `podaci1.csv`</span></span>
+<span id="cb680-2"><a href="regresija.html#cb680-2" tabindex="-1"></a><span class="co"># proučite učitani podatkovni okvir</span></span>
+<span id="cb680-3"><a href="regresija.html#cb680-3" tabindex="-1"></a></span>
+<span id="cb680-4"><a href="regresija.html#cb680-4" tabindex="-1"></a></span>
+<span id="cb680-5"><a href="regresija.html#cb680-5" tabindex="-1"></a><span class="co"># nacrtajte točkaste grafove odnosa varijable </span></span>
+<span id="cb680-6"><a href="regresija.html#cb680-6" tabindex="-1"></a><span class="co"># x sa svakom pojedinom varijablom y iz gornjeg podatkovnog okvira</span></span>
+<span id="cb680-7"><a href="regresija.html#cb680-7" tabindex="-1"></a><span class="co"># svakom grafu dodajte i geometriju zaglađivanja, metoda `lm`</span></span>
+<span id="cb680-8"><a href="regresija.html#cb680-8" tabindex="-1"></a></span>
+<span id="cb680-9"><a href="regresija.html#cb680-9" tabindex="-1"></a><span class="co"># odgovorite na pitanja:</span></span>
+<span id="cb680-10"><a href="regresija.html#cb680-10" tabindex="-1"></a><span class="co"># na kojim grafovima uočavate moguću linearnu povezanost varijabli?</span></span>
+<span id="cb680-11"><a href="regresija.html#cb680-11" tabindex="-1"></a><span class="co"># koji graf predočava nelinearnu povezanost?</span></span>
+<span id="cb680-12"><a href="regresija.html#cb680-12" tabindex="-1"></a><span class="co"># za koji graf biste mogli reći da su varijable nezavisne?</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb681"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb681-1"><a href="regresija.html#cb681-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;podaci1.csv&quot;</span>, <span class="at">stringsAsFactors =</span> F, <span class="at">encoding =</span> <span class="st">&quot;UTF-8&quot;</span>)</span>
+<span id="cb681-2"><a href="regresija.html#cb681-2" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(x, y1)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&#39;lm&#39;</span>) </span>
+<span id="cb681-3"><a href="regresija.html#cb681-3" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(x, y2)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&#39;lm&#39;</span>) </span>
+<span id="cb681-4"><a href="regresija.html#cb681-4" tabindex="-1"></a>g3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(x, y3)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&#39;lm&#39;</span>) </span>
+<span id="cb681-5"><a href="regresija.html#cb681-5" tabindex="-1"></a>g4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(x, y4)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&#39;lm&#39;</span>) </span>
+<span id="cb681-6"><a href="regresija.html#cb681-6" tabindex="-1"></a></span>
+<span id="cb681-7"><a href="regresija.html#cb681-7" tabindex="-1"></a></span>
+<span id="cb681-8"><a href="regresija.html#cb681-8" tabindex="-1"></a><span class="fu">grid.arrange</span>(g1, g2, g3, g4)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula =
+## &#39;y ~ x&#39;
+## `geom_smooth()` using formula =
+## &#39;y ~ x&#39;
+## `geom_smooth()` using formula =
+## &#39;y ~ x&#39;
+## `geom_smooth()` using formula =
+## &#39;y ~ x&#39;</code></pre>
+<p><img src="osnoveR_files/figure-html/unnamed-chunk-527-1.png" width="672" /></p>
+</div>
+<hr />
+<p>Vizualizacija odnosa dvaju varijabli nam obično daje relativno dobru intuiciju kada možemo očekivati dobro funkcioniranje linearnog modela. Ukoliko želimo numerički opisati snagu linearnog odnosa dvaju varijabli, možemo se koristiti tzv. “Pearson-ovim koeficijentom korelacije” koji poprima vrijednost iz intervala [-1,1] i kod kojeg -1 znači potpunu “negativnu” korelaciju, 1 potpunu pozitivnu, a 0 da korelacije nema. U R-u ovaj koeficijent možemo dobiti uz pomoć funkcije <code>cor</code>.</p>
+<p>Izračunajmo koeficijent korelacije za parove ulazne i izlaznih varijabli prikazane na grafovima iz prethodnog zadatka.</p>
+<hr />
+<p><strong>Zadatak 14.2 - izračun koeficijenta korelacije</strong></p>
+<div class="sourceCode" id="cb683"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb683-1"><a href="regresija.html#cb683-1" tabindex="-1"></a><span class="co"># za svaki graf iz prethodnog zadatka izračunajte i ispišite</span></span>
+<span id="cb683-2"><a href="regresija.html#cb683-2" tabindex="-1"></a><span class="co"># koeficijent korelacije između prikazanih varijabl (funkcija `cor`)</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb684"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb684-1"><a href="regresija.html#cb684-1" tabindex="-1"></a><span class="fu">cor</span>(df<span class="sc">$</span>x, df<span class="sc">$</span>y1)</span>
+<span id="cb684-2"><a href="regresija.html#cb684-2" tabindex="-1"></a><span class="fu">cor</span>(df<span class="sc">$</span>x, df<span class="sc">$</span>y2)</span>
+<span id="cb684-3"><a href="regresija.html#cb684-3" tabindex="-1"></a><span class="fu">cor</span>(df<span class="sc">$</span>x, df<span class="sc">$</span>y3)</span>
+<span id="cb684-4"><a href="regresija.html#cb684-4" tabindex="-1"></a><span class="fu">cor</span>(df<span class="sc">$</span>x, df<span class="sc">$</span>y4)</span></code></pre></div>
+<pre><code>## [1] 0.9758326
+## [1] 0.6765991
+## [1] -0.04977038
+## [1] 0.1783745</code></pre>
+</div>
+<hr />
+<p>Pored ove mjere za opisivanje snage linearnog odnosa često koristimo i varijablu nazvanu “koeficijent determinacije” ili - poznatije - “R kvadrat” (engl. <em>R squared</em>). Naziv ove varijable potječe od činjenice da se koeficijent korelacije kod jednostavnog linearnog modela (kojeg smo računali u prethodnom zadatku) često naziva <code>R</code>, a veličina <code>R kvadrat</code> je kod jednostavnog linearnog modela točno jednaka njezinom kvadratu. Ova veličina može poprimiti vrijednosti od 0 do 1, gdje vrijednost bliska 1 označava gotovo savršenu linearnu vezu dok vrijednost bliska 0 njezino nepostojanje.</p>
+<p>Interpretacija mjere “R kvadrat” je dosta bitna te ju nije naodmet naučiti - ona se definira kao “količina varijabilnosti koja je objašnjena modelom”. Ovo možemo jednostavno objasniti na sljedeći način - gledamo omjer koliko su točke na grafu “raspršene” oko zamišljenog pravca s obzirom na njihovu “općenitu raspršenost” oko horizontalnog pravca koji bi prolazio njihovom aritmetičkom sredinom.</p>
+<p>Važno je napomenuti da je “R kvadrat” jedna od važnijih kriterija za ocjenu kvalitete linearnog modela te je kao takva često sadržana u opisu rezultata modela. Usprkos tome, nema jasne granice što predstavlja “dobar” iznos ove mjere - čak i model sa malim iznosom “R kvadrata” se može pokazati korisnim, ovisno o ostalim kriterijima i konkretnom scenariju primjene.</p>
+<p>Prikažimo sada kako stvaramo linearne modele u jeziku R.</p>
+<hr />
+</div>
+<div id="funkcija-lm" class="section level3 hasAnchor" number="13.1.2">
+<h3><span class="header-section-number">13.1.2</span> Funkcija <code>lm</code><a href="regresija.html#funkcija-lm" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>U jeziku R jednostavne linearne modele stvaramo uz pomoć funkcije <code>lm</code>, što je skraćeno od <em>linear model</em>. Ova funkcija ima niz parametara, a mi ćemo koristiti najvažnije - statističku formulu i podatkovni skup na kojem treniramo:</p>
+<div class="sourceCode" id="cb686"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb686-1"><a href="regresija.html#cb686-1" tabindex="-1"></a><span class="fu">lm</span>(formula, data)</span></code></pre></div>
+<p>Pojam formule već smo objasnili u poglavlju o vizualizaciji, budući da su istu kao parametar koristili uvjetni (facetirani) grafovi. Podsjetimo se o čemu se radi - “formula” je zapravo skraćeni zapis notacije gdje želimo reći da lijeva strana formule “ovisi” o desnoj strani formule. Ako želimo trenirati linearnu regresiju ciljne varijable <code>y</code> u ovisnosti o varijabli <code>x</code> za podatkovni okvir <code>df</code> i konačni model spremiti u varijablu <code>linMod</code>, onda to u programskom kodu izgleda ovako:</p>
+<div class="sourceCode" id="cb687"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb687-1"><a href="regresija.html#cb687-1" tabindex="-1"></a>linMod <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> df)</span></code></pre></div>
+<p>Pokušajmo ovo izvesti samostalno u sljedećem zadatku.</p>
+<hr />
+<p><strong>Zadatak 14.3 - stvaranje jednostavnog linearnog modela</strong></p>
+<div class="sourceCode" id="cb688"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb688-1"><a href="regresija.html#cb688-1" tabindex="-1"></a><span class="co"># uz pomoć funkcije `lm` stvorite linearni model podataka iz tablice `df`</span></span>
+<span id="cb688-2"><a href="regresija.html#cb688-2" tabindex="-1"></a><span class="co"># gdje je `x` ulazna a `y1` izlazna varijabla</span></span>
+<span id="cb688-3"><a href="regresija.html#cb688-3" tabindex="-1"></a><span class="co"># rezultat spremite u varijablu `linMod`</span></span>
+<span id="cb688-4"><a href="regresija.html#cb688-4" tabindex="-1"></a></span>
+<span id="cb688-5"><a href="regresija.html#cb688-5" tabindex="-1"></a></span>
+<span id="cb688-6"><a href="regresija.html#cb688-6" tabindex="-1"></a><span class="co"># ispišite varijablu `linMod`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb689"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb689-1"><a href="regresija.html#cb689-1" tabindex="-1"></a><span class="co"># uz pomoć funkcije `lm` stvorite linearni model podataka iz tablice `df`</span></span>
+<span id="cb689-2"><a href="regresija.html#cb689-2" tabindex="-1"></a><span class="co"># gdje je `x` ulazna a `y1` izlazna varijabla</span></span>
+<span id="cb689-3"><a href="regresija.html#cb689-3" tabindex="-1"></a><span class="co"># rezultat spremite u varijablu `linMod`</span></span>
+<span id="cb689-4"><a href="regresija.html#cb689-4" tabindex="-1"></a>linMod <span class="ot">&lt;-</span> <span class="fu">lm</span>(y1 <span class="sc">~</span> x, <span class="at">data =</span> df)</span>
+<span id="cb689-5"><a href="regresija.html#cb689-5" tabindex="-1"></a></span>
+<span id="cb689-6"><a href="regresija.html#cb689-6" tabindex="-1"></a><span class="co"># ispišite varijablu `linMod`</span></span>
+<span id="cb689-7"><a href="regresija.html#cb689-7" tabindex="-1"></a>linMod</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = y1 ~ x, data = df)
+## 
+## Coefficients:
+## (Intercept)            x  
+##      46.733        3.999</code></pre>
+</div>
+<hr />
+<p>Ispis varijable <code>linMod</code> nam ispisuje formulu koja je korištena za stvaranje modela te izračunate parametre - koeficijent smjera i odsječak (koji nam u pravilu nije interesantan). Koeficijent interpretiramo na sljedeći način - <em>za pomak od jedne jedinice ulazne varijable, izlazna se mijenja za iznos koeficijenta</em>.</p>
+<p>Varijabla <code>linMod</code> iz prethodnog primjera je objekt klase <code>lm</code>. Ovo je relativno složen objekt, iako je to teško naslutiti samim ispisivanjem modela, pri čemu dobivamo samo izračunate koeficijent. Ovaj objekt zapravo sadržava ne samo koeficijente, već i bogati skup informacija vezanih uz stvoreni linearni model, što uključuje čak i sam podatkovni skup pomoću kojeg je model stvoren.</p>
+<hr />
+<p>Nad ovim objektom možemo izvesti sljedeće funkcije:</p>
+<ul>
+<li><code>coef</code> - vraća koeficijente u obliku vektora</li>
+<li><code>fitted.values</code> - vraća vektor predikcija dobiven primjenom modela na skup pomoću kojeg je model stvoren</li>
+<li><code>residuals</code> - vraća vektor grešaka dobiven primjenom modela na skup pomoću kojeg je model stvoren</li>
+<li><code>summary</code> - daje sažetak najvažnijih informacija o modelu</li>
+</ul>
+<p>Isprobajmo funkciju sažetka - <code>summary</code> - nad našim linearnim modelom.</p>
+<hr />
+<p><strong>Zadatak 14.4 - sažetak linearnog modela</strong></p>
+<div class="sourceCode" id="cb691"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb691-1"><a href="regresija.html#cb691-1" tabindex="-1"></a><span class="co"># izvršite funkciju `summary` nad linearnim modelom `linMod`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb692"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb692-1"><a href="regresija.html#cb692-1" tabindex="-1"></a><span class="fu">summary</span>(linMod)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = y1 ~ x, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -74.010 -15.492  -1.021  15.613  77.371 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 46.73328    5.26089   8.883  3.2e-14 ***
+## x            3.99851    0.09045  44.208  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 26.35 on 98 degrees of freedom
+## Multiple R-squared:  0.9522, Adjusted R-squared:  0.9518 
+## F-statistic:  1954 on 1 and 98 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<hr />
+<p>Vidimo da smo dobili niz informacija vezanih uz naš prediktivni model. U nastavku ćemo pokušati jednostavnim jezikom, bez previše oslanjanja na znanje statistike, objasniti što nam govori veći dio dobivenih informacija.</p>
+<p>Za početak uočimo da kod stvaranja linearnog modela iz nekih podataka imamo nekoliko različitih “nesigurnosti” u rezultat:</p>
+<ol style="list-style-type: decimal">
+<li>Da li linearni trend uopće postoji, ili se uočena kolinearnost mogla pojaviti slučajno?</li>
+<li>Ako trend postoji, koliko smo sigurni da izračunati koeficijent smjera odgovara “stvarnom”?</li>
+<li>Konačno, ako trend postoji a mi smo uspjeli dovoljno dobro pogoditi “pravi” koeficijent, koliko nam dodatni “šum” utječe na točnost predikcija?</li>
+</ol>
+<p>Prikazani sažetak nam pruža odgovor na neka od ovih pitanja.</p>
+<hr />
+<p>Pogledajmo prvo stupce <code>t value</code> i <code>Pr(&gt;|t|)</code>, tj. njihove vrijednosti koje se tiču naše ulazne varijable <code>x</code>. Oni odgovaraju na pitanje - da li uopće imamo dovoljno dokaza za to da postoji linearna veza između ulaza i izlaza?</p>
+<p>Odgovor na ovo pitanje daje tzv. statistički <em>t - test</em>, tj. mjera jačine dokaza protiv nul-hipoteze koja tvrdi da linearna međuzavisnost ne postoji te da je koeficijent smjera pravca zapravo nula. Vrijednost pod <code>Pr(&gt;|t|)</code> je tzv. “p-vrijednost”, tj. procjena vjerojatnosti da je kolinearnost uočena slučajno, a ovdje vidimo da je ona iznimno mala. U interpretaciji nam pomaži i zvjezdice pored, čiji značaj je objašnjen u retku ispod, a koje pomažu da vizualno identificiramo koeficijente za koje smo relativno sigurni da imaju linearnu povezanost sa ciljnom varijablom.</p>
+<p>Ako smo zadovoljni dokazom da koeficijent smjera nije nula, onda možemo pogledati i stupac <code>Std. Error</code> koji nam opisuje koliko smo “sigurni” u dobiveni koeficijent smjera. Statistički, uz pomoć tzv. centralnog teorema, smatramo da sa 95% sigurnošću možemo reći da je “stvarni” koeficijent u intervalu dvije standardne greške od dobivenog koeficijenta. Standardna greška ovisi o broju obzervacija u našem skupu - jednostavnim riječnikom, što više podataka imamo, to ćemo biti “sigurniji” u izračunati koeficijent.</p>
+<hr />
+<p>Potencijalno najzanimljivije informacije iz dobivenog sažetka su stavke <code>Residual standard error</code> i <code>Adjusted R-squared</code>.</p>
+<p>Prva mjera je tzv. “standardna greška <strong>reziduala</strong>”. “Rezidual” je zapravo razlika između predikcije koju daje model i stvarne uočene vrijednosti. Standardna greška reziduala je zapravo procjena koliko (u prosjeku!) model “promašuje” kod svojih predviđanja ciljne varijable. Obzirom da je standardna greška reziduala izražena u mjernim jedinicama ciljne varijable, ona je često vrlo informativna kada pokušavamo procijeniti kvalitetu modela. naravno, procjena što uistinu smatramo “prihatljivom” pogreškom ovisi o konkretnom scenariju uporabe tj. prirodi ciljne varijable, mjernim jedinicima koje koristimo i željama tj. zahtjevima krajnjeg korisnika prediktivnog modela. Npr. ako pokušavamo procijeniti vrijednost nekretnine u milijunima kuna, pogreška od nekoliko tisuća kuna nam vjerojatno ne bi predstavljala preveliki problem; s druge strane ako pokušavamo predvidjeti koliku cijenu možemo postići prodajom starog automobila, greška u istom apsolutnom iznosu bi vjerojatno bila neprihvatljiva.</p>
+<p>Razlog zašto naš model “promašuje” je tzv. “neobjašnjena varijabilnost” - sve ono što nismo mjerili a što je na neki način potencijalno utjecalo na konačni iznos ciljne varjable. Ovaj “šum”, tj. utjecaj neobjašnjene varijabilnosti nam opisuje već otprije objašnjena mjera <code>R-squared</code> (za sada nećemo previše obraćati pažnju na prefiks <code>Adjusted</code> o kojem će biti više riječi u nastavku lekcije). U idealnom slučaju naš model će imati malu standardnu grešku reziduala i visok “R kvadrat” - tj. model će i dobro pogađati i sadržavati malu količinu neobjašnjene varijabilnosti. U praksi naravno nećemo često susretati ovako idealan scenarij tako da ćemo morati za svaki pojedini slučaj uporabe često - samostalno ili u suradnji sa domenskim stručnjacima - procijeniti što smatramo “dovoljno dobrim”, budući da statistika na to pitanje nije u mogućnosti dati egzaktan odgovor.</p>
+<hr />
+<p>Konačno, još neki detalji koji su dobiveni u sažetku su:</p>
+<ul>
+<li>“sažetak 5 brojeva” (minimum, maksimum i prosjeci) reziduala koji nam pomaže u procjeni razdiobe dobivenih grešaka</li>
+<li>“F-statistika” koja nam govori kolike su šanse da nijedna od ulaznih varijabli ne utječe na izlaz (ova statistika će imati više smisla kada budemo uključili više prediktorskih varijabli)</li>
+</ul>
+<hr />
+<p>Rekli smo da linearnom regresijom dobivamo “prediktivni model”, kojeg možemo koristiti nad novim podacima kako bismo stvorili nove predikcije. Kako upotrijebiti model za stvaranje novih predikcija?</p>
+<p>R nam nudi generičku metodu <code>predict</code> kojoj u općenitom slučaju kao parametre šaljemo stvoreni prediktivni model i <strong>podatkovni okvir</strong> sa novim podacima, pri čemu moramo voditi računa da podatkovni okvir ima stupce koji odgovaraju očekivanim ulazima modela. Budući da prediktivni modeli često u sebi sadrže i skup korišten za stvaranje modela, ovoj funkciji možemo proslijediti i model bez dodatnih podataka - u tom slučaju ona će nam jednostavno vratiti skup predikacija dobivenih nad originalnim skupom (tj. isti rezultat koji bi nam dala funkcija <code>fitted.values</code>).</p>
+<hr />
+<p><strong>Zadatak 14.5 - stvaranje novih predikcija</strong></p>
+<div class="sourceCode" id="cb694"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb694-1"><a href="regresija.html#cb694-1" tabindex="-1"></a><span class="co"># sljedeći vektor prikazuje &quot;nove&quot; vrijednosti ulazne varijable `x`</span></span>
+<span id="cb694-2"><a href="regresija.html#cb694-2" tabindex="-1"></a>novi_x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">102</span>)</span>
+<span id="cb694-3"><a href="regresija.html#cb694-3" tabindex="-1"></a></span>
+<span id="cb694-4"><a href="regresija.html#cb694-4" tabindex="-1"></a><span class="co"># stvorite i ispišite predikcije za gornji vektor pomoću </span></span>
+<span id="cb694-5"><a href="regresija.html#cb694-5" tabindex="-1"></a><span class="co"># funkcije `predict` i linearnog modela `linMod` linearnog modela `linMod`</span></span>
+<span id="cb694-6"><a href="regresija.html#cb694-6" tabindex="-1"></a><span class="co"># pripazite da nove podatke šaljete u obliku podatkovnog okvira</span></span>
+<span id="cb694-7"><a href="regresija.html#cb694-7" tabindex="-1"></a></span>
+<span id="cb694-8"><a href="regresija.html#cb694-8" tabindex="-1"></a></span>
+<span id="cb694-9"><a href="regresija.html#cb694-9" tabindex="-1"></a><span class="co"># izračunajte predikcije &quot;ručno&quot;, korištenjem jednadžbe pravca</span></span>
+<span id="cb694-10"><a href="regresija.html#cb694-10" tabindex="-1"></a><span class="co"># i dobivenih koeficijenata linearnog modela</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb695"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb695-1"><a href="regresija.html#cb695-1" tabindex="-1"></a><span class="co"># stvorite i ispišite predikcije za gornji vektor pomoću </span></span>
+<span id="cb695-2"><a href="regresija.html#cb695-2" tabindex="-1"></a><span class="co"># funkcije `predict` i linearnog modela `linMod`</span></span>
+<span id="cb695-3"><a href="regresija.html#cb695-3" tabindex="-1"></a><span class="co"># pripazite da nove podatke šaljete u obliku podatkovnog okvira</span></span>
+<span id="cb695-4"><a href="regresija.html#cb695-4" tabindex="-1"></a><span class="fu">predict</span>(linMod, <span class="fu">data.frame</span>(<span class="at">x =</span> novi_x))</span>
+<span id="cb695-5"><a href="regresija.html#cb695-5" tabindex="-1"></a></span>
+<span id="cb695-6"><a href="regresija.html#cb695-6" tabindex="-1"></a><span class="co"># izračunajte predikcije &quot;ručno&quot;, korištenjem jednadžbe pravca</span></span>
+<span id="cb695-7"><a href="regresija.html#cb695-7" tabindex="-1"></a><span class="co"># i dobivenih koeficijenata linearnog modela</span></span>
+<span id="cb695-8"><a href="regresija.html#cb695-8" tabindex="-1"></a><span class="fu">coef</span>(linMod)[<span class="dv">1</span>] <span class="sc">+</span> novi_x <span class="sc">*</span> <span class="fu">coef</span>(linMod)[<span class="dv">2</span>] </span></code></pre></div>
+<pre><code>##         1         2         3         4 
+##  26.74074  86.71835 246.65864 454.58101 
+## [1]  26.74074  86.71835 246.65864 454.58101</code></pre>
+</div>
+<hr />
+<p>Analitičari se često ne žele osloniti samo na sažete rezultate koji opisuju dobiveni model, već žele dodatno procijeniti kvalitetu modela kroz različite vizualizacije. Analitičara često zanima ponašanje grešaka, tj. reziduala. Naime, ako je linearni model dobro opisao podatke, onda nakon povlačenja pravca kroz obzervacije očekujemo da se točke jednoliko raspršuju oko pravca, bez nekih očitih uzoraka. Npr. ako pogledamo ovisnost varijable <code>y3</code> o varijabli <code>x</code> u grafu na početku ove lekcije, vidimo jasan uzorak grešaka gdje parabolična priroda odnosa rezulitra jasno uočljivom uzorkom gdje pravac prvo prolazi iznad skupa obzervacija, potom ispod i konačno opet iznad - što nam jasno govori da linearni model loše objašnjava odnos ovih dvaju varijabli.</p>
+<p>Dakle, dva pitanja koje analitičar potencijalno može postaviti vezano uz reziduale su:</p>
+<ul>
+<li>da li postoje očiti uzorci u ponašanju reziduala obzirom na slijed originalnih obzervacija i</li>
+<li>da li reziduali imaju normalnu razdiobu</li>
+</ul>
+<p>Na prvo pitanje nam odgovor mogu dati vizualizacije koje koriste sljedeće geometrije paketa <code>ggplot2</code>:</p>
+<ul>
+<li><code>geom_point</code> - “običan” točkasti graf sa prediktorima na osi x i rezidualima na osi y
+<ul>
+<li>očekujemo “oblak” reziduala bez očitih uzoraka</li>
+</ul></li>
+<li><code>geom_density</code> - geometrija koja crta procijenjenu funkciju gustoće varijable
+<ul>
+<li>normalna razdioba reziduala imati će zvonasti oblik, bez uočljivih “repova”</li>
+</ul></li>
+<li><code>geom_qq</code> - geometrija koja crta tzv. QQ (<em>quantile-quantile</em> graf)
+<ul>
+<li>normalna razdioba na ovom grafu ima oblik pravca</li>
+</ul></li>
+</ul>
+<p>Prije stvaranja ovih vizualizacija nailazimo na nezgodan problem - paket <code>ggplot2</code> podrazumijeva postojanje podatkovnog okvira sa varijablama koje želimo prikazati, no mi nemamo podatkovni okvir sa rezidualima! Naime, već smo rekli da su originalni podaci, predikcije i reziduali sadržani u linearnom modelu, no jezik R nam ne daje jednostavan način da te informacije i dobijemo u obliku podatkovnog okvira - možemo im pristupiti preko funkcija kao što su <code>fitted.values</code> za predikcije, <code>residuals</code> za reziduale, no onda moramo “ručno” slagati podatkovni okvir prije nego ga možemo vizualizirati, što predstavlja dodatan posao kojeg bismo radije izbjegli.</p>
+<p>U pomoć nam stiže paket <code>broom</code>, čiji je jedan od autora i Hadley Wickham, kojeg smo već upoznali kao programera paketa <code>dplyr</code> i <code>ggplot2</code>. Paket <code>broom</code> nudi niz funkcija za uređivanje dobivenih prediktivnih modela i lako izvlačenje informacija iz istih - npr. funkcija <code>tidy</code> nam daje rezultate modela (tj. koeficijente) složene u lako čitljiv podatkovni okvir, dok nam funkcija <code>glance</code> radi isto ali nad parametrima koji opisuju kvalitetu modela.</p>
+<p>Mi ćemo se u nastavku poslužiti metodom <code>augment</code> koja na osnovu prosljeđenog prediktivnog modela vraća originalni podatkovni okvir korišten za stvaranje modela, ali proširen sa nizom korisnih stupaca kao što su:</p>
+<table>
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stupac</th>
+<th>Značenje</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>.fitted</code></td>
+<td>predikcija</td>
+</tr>
+<tr class="even">
+<td><code>.resid</code></td>
+<td>iznos reziduala, tj. greške</td>
+</tr>
+<tr class="odd">
+<td><code>.std.resid</code></td>
+<td>iznos <strong>standardiziranog</strong> reziduala (tj. svedenog na normalnu razdiobu sredine 0 i st. dev. 1)</td>
+</tr>
+<tr class="even">
+<td><code>.sigma</code></td>
+<td>iznos <strong>ukupne greške modela</strong> ako izbacimo ovu opservaciju</td>
+</tr>
+<tr class="odd">
+<td><code>.hat</code></td>
+<td>mjera “ekstremnosti” <strong>ulazne</strong> varijable ove opservacije (engl. <em>leverage</em>)</td>
+</tr>
+<tr class="even">
+<td><code>.cooksd</code></td>
+<td>mjera “utjecajnosti” opservacije (engl. <em>influential point</em>); pojednostavljeno: ima visok “<em>leverage</em>” i visoki rezidual</td>
+</tr>
+</tbody>
+</table>
+<p>Obzervacije sa visokom <em>leverage</em> mjerom su potencijalne iskočnice (engl. <em>outlier</em>-i) te kao takve zaslužuju dodatnu pažnju. Posebno su nam problematične obzervacije sa visokom “utjecajnosti” na model - to su obzervacije koje imaju i visoku mjeru <em>leverage</em> i veliku grešku (rezidual). Ovakve obzervacije mogu snažno “odvući” pravac prema sebi i time pokvariti kvalitetu modela.</p>
+<p>Primjenimo funkciju <code>augment</code> nad našim prediktivnim modelom.</p>
+<hr />
+<p><strong>Zadatak 14.6 - funkcija <code>augment</code> paketa <code>broom</code></strong></p>
+<div class="sourceCode" id="cb697"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb697-1"><a href="regresija.html#cb697-1" tabindex="-1"></a><span class="co"># primjenite funkciju `augment` nad linearnim modelom `linMod`</span></span>
+<span id="cb697-2"><a href="regresija.html#cb697-2" tabindex="-1"></a><span class="co"># rezultantni podatkovni okvir pohranite u varijablu `predikcijeDetaljno`</span></span>
+<span id="cb697-3"><a href="regresija.html#cb697-3" tabindex="-1"></a></span>
+<span id="cb697-4"><a href="regresija.html#cb697-4" tabindex="-1"></a><span class="co"># proučite prvih nekoliko redaka okvira `predikcijeDetaljno`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb698"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb698-1"><a href="regresija.html#cb698-1" tabindex="-1"></a><span class="co">#library(broom)   # ako je potrebno</span></span>
+<span id="cb698-2"><a href="regresija.html#cb698-2" tabindex="-1"></a>predikcijeDetaljno <span class="ot">&lt;-</span> <span class="fu">augment</span>(linMod)</span>
+<span id="cb698-3"><a href="regresija.html#cb698-3" tabindex="-1"></a><span class="fu">head</span>(predikcijeDetaljno)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 8
+##      y1     x .fitted .resid   .hat .sigma  .cooksd .std.resid
+##   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
+## 1 391.   83.8   382.    9.43 0.0232   26.5 0.00156       0.362
+## 2 254.   48.5   241.   13.1  0.0100   26.5 0.00126       0.499
+## 3  84.1  10.5    88.8  -4.71 0.0287   26.5 0.000485     -0.181
+## 4 144.   33.4   180.  -36.4  0.0134   26.2 0.0131       -1.39 
+## 5 295.   74.6   345.  -49.8  0.0170   26.0 0.0313       -1.91 
+## 6 148.   36.7   193.  -45.0  0.0122   26.1 0.0183       -1.72</code></pre>
+</div>
+<p>(NAPOMENA: metodu <code>augment</code> možemo koristiti i kao alternativu generičkoj metodi <code>predict</code> - samo joj moramo proslijediti nove podatke uz pomoć parametra <code>newdata</code>)</p>
+<hr />
+<p>Sada kada imamo podatkovni okvir koji sadrži podatke o rezidualima, možemo stvoriti spomenute vizualizacije. Konkretno, stvoriti ćemo</p>
+<ul>
+<li>točkasti graf sa predikcijama na osi <code>x</code> i (standardiziranim) rezidualima na osi <code>y</code></li>
+<li>graf funkcije gustoće razdiobe standardiziranih reziduala</li>
+<li>kvantil-kvantil graf standardiziranih reziduala</li>
+</ul>
+<p>Razlog zašto radimo sa standardiziranim umesto “pravim” rezidualima jest samo lakša interpretacija, tj. jednostavnija usporedba rezultata sa “standardnom” normalnom razdiobom koja ima sredinu 0 i standardnu devijaciju 1.</p>
+<hr />
+<p><strong>Zadatak 14.7 - provjera ‘normalnosti’ reziduala</strong></p>
+<div class="sourceCode" id="cb700"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb700-1"><a href="regresija.html#cb700-1" tabindex="-1"></a><span class="co"># uz pomoć podatkovnog okvira `predikcijeDetaljno`</span></span>
+<span id="cb700-2"><a href="regresija.html#cb700-2" tabindex="-1"></a><span class="co"># stvorite točkasti graf predikcija i std. reziduala</span></span>
+<span id="cb700-3"><a href="regresija.html#cb700-3" tabindex="-1"></a><span class="co"># na grafu nacrtajte i horizontalnu liniju koja prolazi kroz nulu</span></span>
+<span id="cb700-4"><a href="regresija.html#cb700-4" tabindex="-1"></a></span>
+<span id="cb700-5"><a href="regresija.html#cb700-5" tabindex="-1"></a><span class="co"># stvorite graf gustoće razdiobe standardnih reziduala</span></span>
+<span id="cb700-6"><a href="regresija.html#cb700-6" tabindex="-1"></a><span class="co"># koristite geometriju `geom_density`</span></span>
+<span id="cb700-7"><a href="regresija.html#cb700-7" tabindex="-1"></a></span>
+<span id="cb700-8"><a href="regresija.html#cb700-8" tabindex="-1"></a><span class="co"># stvorite kvantil-kvantil graf std. reziduala</span></span>
+<span id="cb700-9"><a href="regresija.html#cb700-9" tabindex="-1"></a><span class="co"># koristite geometriju `geom_qq`</span></span>
+<span id="cb700-10"><a href="regresija.html#cb700-10" tabindex="-1"></a><span class="co"># reziduale postavite na estetiku `sample` (ne `x`!)</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb701"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb701-1"><a href="regresija.html#cb701-1" tabindex="-1"></a><span class="co">#library(gridExtras)  # ako je potrebno</span></span>
+<span id="cb701-2"><a href="regresija.html#cb701-2" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(predikcijeDetaljno, <span class="fu">aes</span>(.fitted, .std.resid)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb701-3"><a href="regresija.html#cb701-3" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb701-4"><a href="regresija.html#cb701-4" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(predikcijeDetaljno, <span class="fu">aes</span>(<span class="at">x =</span> .std.resid)) <span class="sc">+</span> <span class="fu">geom_density</span>()</span>
+<span id="cb701-5"><a href="regresija.html#cb701-5" tabindex="-1"></a>g3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(predikcijeDetaljno, <span class="fu">aes</span>(<span class="at">sample =</span> .std.resid)) <span class="sc">+</span> <span class="fu">geom_qq</span>()</span>
+<span id="cb701-6"><a href="regresija.html#cb701-6" tabindex="-1"></a><span class="fu">grid.arrange</span>(g1, g2, g3, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="osnoveR_files/figure-html/unnamed-chunk-541-1.png" width="672" /></p>
+</div>
+<hr />
+<p>U našem (umjetno stvorenom) primjeru dobili smo vrlo uvjerljive argumente da linearni model koji smo dobili vrlo dobro opisuje odnos varijabli te je kao takav vjerojatno dobar izbor za stvaranje predikcija. U realnoj praksi često nećemo dobiti ovako “čiste” rezultate te ćemo morati dobro procijeniti da li je model dovoljno dobar, da li je potreban dodatni rad nad podacima ili procesu izgradnje modela, ili je potrebno odabrati potpuno novi pristup. Za primjer, neki od mogućih zaključaka nakon stvaranja vizualizacija reziduala mogu biti sljedeći:</p>
+<ul>
+<li>ako točkasti graf sa predikcijama i rezidualima pokazuje očite uzorke, moguće da linearni model nije dobar za opis odnosa prediktora i cilja te treba posegnuti za modelom koji može opisati složeniju prirodu odnosa</li>
+<li>ako graf reziduala ima oblik “lijevka”, tj. ako reziduali rastu sa povećanjem vrijednosti predikcija, možda je potrebno transformirati ulazne i/ili izlazne varijable, npr. uz pomoć funkcije korijena ili logaritma</li>
+<li>ako uočavamo neke vrijednosti koje izrazito “iskaču” u grafu reziduala trebamo ih pažljivije pogledati i potencijalno ukloniti iz skupa za stvaranje modela</li>
+</ul>
+<p>Još jedna od stvari koje analitičar može isprobati jest nacrtati graf reziduala redoslijedom kako su obzervacije dobivene u originalnom skupu (točkasti graf gdje je na osi x redni broj obzervacije a na y rezidual). Ukoliko se uoči visoka razina međuovisnosti reziduala koji su blizu jedan drugom, moguće je da naši podaci zapravo predstavljaju “vremenski niz” (engl. <em>time series data</em>). Za ovakve podatke ne bismo smjeli koristiti linearnu regresiju, već koristiti naprednije, specijalizirane metode namjenjene baš vremenskim nizovima, kao što je npr. ARIMA (engl. <em>autoregressive integrated moving average</em>).</p>
+<hr />
+</div>
+<div id="linearna-regresija-i-kategorijske-varijable" class="section level3 hasAnchor" number="13.1.3">
+<h3><span class="header-section-number">13.1.3</span> Linearna regresija i kategorijske varijable<a href="regresija.html#linearna-regresija-i-kategorijske-varijable" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<hr />
+<p>U prethodnom poglavlju prikazali smo razvoj prediktivnog modela linearne regresije gdje je ulazna varijabla bila numeričkog tipa. Opravdano je zapitati se - može li kategorijska varijabla biti ulaz u prediktivni model?</p>
+<p>Odgovor je - može, uz određenu prilagodbu. Prikažimo kako na jednostavnom primjeru dvorazinske kategorijske varijable, što kasnije lako proširujemo na varijable sa više od dvije kategorije.</p>
+<p>Kategorijska varijabla prema svojoj prirodi ne može biti dio jednadžbe pravca, budući da kategorija sama po sebi nema numerički ekvivalent koji bi se mogao smisleno koristiti za izračun ciljne varijable. No ono što možemo učiniti jest pretvoriti kategorijsku varijablu u binarnu (indikatorsku) varijablu koja opisuje pripada li određena obzervacija odabranoj kategoriji (ako ne pripada, onda logično pripada onoj drugoj, referentnoj ili <em>baseline</em> kategoriji). Linearna regresija će potom odrediti koeficijent koji će definirati pravac na način da se koeficijent pribraja ako je indikatorska varijabla <code>1</code>, ili se ne uzima u obzir ako je indikatorska varijabla <code>0</code>.</p>
+<hr />
+<p>Za dvorazinsku kategorijsku varijablu dovoljna nam je jedna indikatorska varijabla - druga bi bila komplement prve i ne bi nosila nikakvu dodatnu informaciju. Koliko nam treba indikatorskih varijabli za kategorijsku varijablu sa više od dvije kategorije? Odgovor je logičan - jedna manje od broja kategorija, budući da “nepripadanje” svim kategorijama osim jedne nužno označava pripadanje toj jednoj, preostaloj kategoriji. Ovdje možemo napomenuti da ponekad možemo napraviti po jednu indikatorsku varijabli za svaku kategoriju, ukoliko želimo, no onda moramo biti sigurni da postojanjem jednog redundantnog stupca neće negativno utjecati na model. Linearna regresija je jedna od metoda koja je osjetljiva na ovakve redundantne stupce, zbog čega ćemo ih ovdje izbjegavati.</p>
+<p>U nastavku ćemo prikazati linearnu regresiju sa dvorazinskom kategorijskom varijablom, budući da se tu zapravo radi o inačici jednostavne linearne regresije. Za veći broj kategorija problem se svodi na višestruku linearnu regresiju koju ćemo obrađivati nakon ovog poglavlja.</p>
+<p>Učitajmo sada novi, također umjetno stvoreni podatkovni okvir, sa jednom dvorazinskom kategorijskom varijablom <code>x</code> koja predstavlja ulaz te ciljnom numeričkom varijablom <code>y</code>.</p>
+<hr />
+<p><strong>Zadatak 14.8 - podatkovni okvir sa kategorijskim prediktorom</strong></p>
+<div class="sourceCode" id="cb702"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb702-1"><a href="regresija.html#cb702-1" tabindex="-1"></a><span class="co"># u varijablu `df` učitajte podatke iz datoteke `podaci2.csv`</span></span>
+<span id="cb702-2"><a href="regresija.html#cb702-2" tabindex="-1"></a><span class="co"># proučite učitani podatkovni okvir</span></span>
+<span id="cb702-3"><a href="regresija.html#cb702-3" tabindex="-1"></a></span>
+<span id="cb702-4"><a href="regresija.html#cb702-4" tabindex="-1"></a><span class="co"># nacrtajte točkasti graf ovisnosti varijable `y` o varijabli `x`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb703"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb703-1"><a href="regresija.html#cb703-1" tabindex="-1"></a><span class="co"># u varijablu `df` učitajte podatke iz datoteke `podaci2.csv`</span></span>
+<span id="cb703-2"><a href="regresija.html#cb703-2" tabindex="-1"></a><span class="co"># proučite učitani podatkovni okvir</span></span>
+<span id="cb703-3"><a href="regresija.html#cb703-3" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;podaci2.csv&quot;</span>)</span>
+<span id="cb703-4"><a href="regresija.html#cb703-4" tabindex="-1"></a><span class="fu">glimpse</span>(df)</span>
+<span id="cb703-5"><a href="regresija.html#cb703-5" tabindex="-1"></a>df<span class="sc">$</span>x <span class="ot">&lt;-</span> <span class="fu">factor</span>(df<span class="sc">$</span>x)</span></code></pre></div>
+<pre><code>## Rows: 100
+## Columns: 2
+## $ x &lt;chr&gt; &quot;B&quot;, &quot;B&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;, &quot;B&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;, &quot;A&quot;, &quot;A&quot;, &quot;B&quot;…
+## $ y &lt;dbl&gt; 63.61392, 63.91110, 20.24407, 95.70271, 56.93969, 78.36473, 24.84862…</code></pre>
+</div>
+<div class="fold s o">
+<div class="sourceCode" id="cb705"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb705-1"><a href="regresija.html#cb705-1" tabindex="-1"></a><span class="co"># nacrtajte točkasti graf ovisnosti varijable `y` o varijabli `x`</span></span>
+<span id="cb705-2"><a href="regresija.html#cb705-2" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(x, y)) <span class="sc">+</span> <span class="fu">geom_point</span>() </span></code></pre></div>
+<p><img src="osnoveR_files/figure-html/unnamed-chunk-546-1.png" width="672" /></p>
+</div>
+<hr />
+<p>Vidimo da je razdioba ciljne varijable različita za različite kategorije ulazne varijable. Ovaj porast možemo modelirati linearnom regresijom, iako će interpretacija modela biti nešto drugačija s obzirom na intepretaciju numeričkih ulaza, kako ćemo vidjeti nakon izgradnje samog modela.</p>
+<p>Jedna od prednosti korištenja faktorskih varijabli u jeziku R jest ta što kod treniranja linearnih modela ne moramo “ručno” stvarati indikatorske varijable. Mi samo trebamo staviti faktore kao ulazne varijable u formulu za treniranje modela, a R će automatski stvoriti indikatorske varijable za nas (ovo vrijedi i za stvaranje predikcija jednom kad je model stvoren - pod uvjetom da faktori u novim podacima ne sadržavaju “nepoznate” kategorije).</p>
+<hr />
+<p><strong>Zadatak 14.9 - stvaranje linearnog modela sa kategorijskim ulazom</strong></p>
+<div class="sourceCode" id="cb706"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb706-1"><a href="regresija.html#cb706-1" tabindex="-1"></a><span class="co"># uz pomoć funkcije `lm` stvorite linearni model podataka iz tablice `df`</span></span>
+<span id="cb706-2"><a href="regresija.html#cb706-2" tabindex="-1"></a><span class="co"># gdje je `x` ulazna a `y` izlazna varijabla</span></span>
+<span id="cb706-3"><a href="regresija.html#cb706-3" tabindex="-1"></a><span class="co"># rezultat spremite u varijablu `linMod`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb707"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb707-1"><a href="regresija.html#cb707-1" tabindex="-1"></a>linMod <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> df)</span>
+<span id="cb707-2"><a href="regresija.html#cb707-2" tabindex="-1"></a><span class="fu">summary</span>(linMod)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ x, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -19.206  -6.104  -1.367   5.523  28.665 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   20.493      1.398   14.66   &lt;2e-16 ***
+## xB            55.652      1.938   28.71   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 9.684 on 98 degrees of freedom
+## Multiple R-squared:  0.8938, Adjusted R-squared:  0.8927 
+## F-statistic: 824.4 on 1 and 98 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<p>Vidimo da je sažetak linearnog modela vrlo sličan već prikazanom sažetku gdje je ulazna varijabla bila numeričkog tipa. Razlika u interpretaciji je sljedeća - koeficijent smjera veže se uz konkretnu kategoriju (navedenu uz ime varijable), a tiče se <strong>očekivane razlike u iznosu ciljne varijable kad opservacija ima navedenu kategoriju, u odnosu na referentnu kategoriju</strong>. Nadalje, regresijski pravac je <strong>objasnio varijabilnost</strong> ciljne varijable na način da poznavanje kategorije smanjuje varijancu ciljne varijable budući da možemo kao predikciju koristiti središnju vrijednost kategorije, umjesto ukupne srednje vrijednosti.</p>
+<p><img src="osnoveR_files/figure-html/unnamed-chunk-549-1.png" width="672" /></p>
+<p>Za kraj ovog dijela naglasimo samo da je kod korištenja kategorijskih varijabli kao ulaze u linearni model bitno voditi računa o zastupljenosti kategorija, tj. da nemamo kategorije koje su vrlo slabo zastupljene u podatkovnom skupu za treniranje. Razlog je taj što ovakve obzervacije vrlo često imaju veliki utjecaj na regresijski pravac, a što može imati nepovoljne posljedice na kvalitetu linearnog modela.</p>
+<hr />
+</div>
+</div>
+<div id="višestruka-multipla-linearna-regresija" class="section level2 hasAnchor" number="13.2">
+<h2><span class="header-section-number">13.2</span> Višestruka (multipla) linearna regresija<a href="regresija.html#višestruka-multipla-linearna-regresija" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<hr />
+<p>Princip jednostavne linearne regresije lako se proširuje na scenarij kada imamo više ulaznih varijabli - jednostavno rečeno, tražimo funkciju koja će ciljnu varijablu izraziti kao linearnu kombinaciju ulaznih varijabli. Problem izgradnje modela opet se svodi na traženje “dobrih” koeficijenata smjera koji će ići uz svaku ulaznu varijablu (plus odsječak), iako formalno sada ne možemo pričati o “pravcu” regresije već se radi o nešto kompleksnijem pojmu “hiper-ravnine”.</p>
+<p>Kod višestruke linearne regresije pojavljuje se niz dodatnih izazova s kojima se moramo suočiti, no za samo treniranje modela koristimo već upoznatu funkciju <code>lm</code>, kojoj je dovoljno proslijediti željenu formulu, npr:</p>
+<div class="sourceCode" id="cb709"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb709-1"><a href="regresija.html#cb709-1" tabindex="-1"></a>y <span class="sc">~</span> x1 <span class="sc">+</span> x2              <span class="co"># `y` kao linearna kombinacija `x1` i `x2`</span></span>
+<span id="cb709-2"><a href="regresija.html#cb709-2" tabindex="-1"></a>y <span class="sc">~</span> .                    <span class="co"># `y` kao linearna kombinacija svih ostalih varijabli</span></span>
+<span id="cb709-3"><a href="regresija.html#cb709-3" tabindex="-1"></a>y <span class="sc">~</span> . <span class="sc">-</span> x1 <span class="sc">-</span> x2          <span class="co"># `y` kao linearna kombinacija svih ostalih varijabli OSIM x1 i x2</span></span>
+<span id="cb709-4"><a href="regresija.html#cb709-4" tabindex="-1"></a><span class="fu">log</span>(y)  <span class="sc">~</span> x1 <span class="sc">+</span> <span class="fu">log</span>(x2)   <span class="co">#  prirodni logaritam od `y` kao linearna kombinacija `x1` i</span></span>
+<span id="cb709-5"><a href="regresija.html#cb709-5" tabindex="-1"></a>                              <span class="co"># prirodnog logaritma od `x2`</span></span>
+<span id="cb709-6"><a href="regresija.html#cb709-6" tabindex="-1"></a>y <span class="sc">~</span> x1 <span class="sc">+</span> <span class="fu">I</span>(x2<span class="sc">^</span><span class="dv">2</span>)         <span class="co"># `y` kao linearna kombinacija `x1` i kvadrata od `x2`</span></span></code></pre></div>
+<p>Uočimo da formula može sadržavati i transformirane ulaze (i izlaze!). Ovdje moramo biti u izvjesnoj mjeri oprezni jer se ponekad matematička notacija “sukobljava” sa notacijom formule (npr. vidimo da <code>-</code> zapravo nije aritmetičko oduzimanje već metoda određivanja nepoželjne varijable). Zbog toga smo u zadnjem primjeru koristili funkciju <code>I</code>, koja jednostavno označava da se izraz između zagrada treba tretirati “onakav kakav je”.</p>
+<p>Prikazanim transformacijama ulaza i izlaza udaljavamo se od jednostavnijih modela linearne regresije sa više ulaza tako da ih u nastavku nećemo koristiti. Ovdje ih navodimo samo iz razloga potpunosti te kao motivaciju za isprobavanje složenijih regresijskih formula u situacijama kada se ukaže potreba za takvim pristupom.</p>
+<p>Pokušajmo sada stvoriti prediktivni model sa više ulaznih varijabli. U zadatku ćemo koristiti otprije upoznati podatkovni skup <code>mtcars</code> (ako je potrebno podsjetite se dodatnih detalja o ovom skupu uz pomoć dokumentacije).</p>
+<hr />
+<div class="sourceCode" id="cb710"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb710-1"><a href="regresija.html#cb710-1" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
+<span id="cb710-2"><a href="regresija.html#cb710-2" tabindex="-1"></a><span class="co"># faktoriziramo stupce  `vs` i `am`</span></span>
+<span id="cb710-3"><a href="regresija.html#cb710-3" tabindex="-1"></a>mtcars<span class="sc">$</span>am <span class="ot">&lt;-</span> <span class="fu">factor</span>(mtcars<span class="sc">$</span>am, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;automatic&quot;</span>, <span class="st">&quot;manual&quot;</span>))</span>
+<span id="cb710-4"><a href="regresija.html#cb710-4" tabindex="-1"></a>mtcars<span class="sc">$</span>vs <span class="ot">&lt;-</span> <span class="fu">factor</span>(mtcars<span class="sc">$</span>vs, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;V&quot;</span>, <span class="st">&quot;S&quot;</span>))</span>
+<span id="cb710-5"><a href="regresija.html#cb710-5" tabindex="-1"></a></span>
+<span id="cb710-6"><a href="regresija.html#cb710-6" tabindex="-1"></a><span class="fu">glimpse</span>(mtcars)</span></code></pre></div>
+<pre><code>## Rows: 32
+## Columns: 11
+## $ mpg  &lt;dbl&gt; 21.0, 21.0, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 22.8, 19.2, 17.8,…
+## $ cyl  &lt;dbl&gt; 6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, 8, 8, 8, 8, 8, 8, 4, 4, 4, 4, 8,…
+## $ disp &lt;dbl&gt; 160.0, 160.0, 108.0, 258.0, 360.0, 225.0, 360.0, 146.7, 140.8, 16…
+## $ hp   &lt;dbl&gt; 110, 110, 93, 110, 175, 105, 245, 62, 95, 123, 123, 180, 180, 180…
+## $ drat &lt;dbl&gt; 3.90, 3.90, 3.85, 3.08, 3.15, 2.76, 3.21, 3.69, 3.92, 3.92, 3.92,…
+## $ wt   &lt;dbl&gt; 2.620, 2.875, 2.320, 3.215, 3.440, 3.460, 3.570, 3.190, 3.150, 3.…
+## $ qsec &lt;dbl&gt; 16.46, 17.02, 18.61, 19.44, 17.02, 20.22, 15.84, 20.00, 22.90, 18…
+## $ vs   &lt;fct&gt; V, V, S, S, V, S, V, S, S, S, S, V, V, V, V, V, V, S, S, S, S, V,…
+## $ am   &lt;fct&gt; manual, manual, manual, automatic, automatic, automatic, automati…
+## $ gear &lt;dbl&gt; 4, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3,…
+## $ carb &lt;dbl&gt; 4, 4, 1, 1, 2, 1, 4, 2, 2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, 1, 2,…</code></pre>
+<hr />
+<p><strong>Zadatak 14.10 - stvaranje linearnog modela sa više prediktora</strong></p>
+<div class="sourceCode" id="cb712"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb712-1"><a href="regresija.html#cb712-1" tabindex="-1"></a><span class="co"># uz pomoć funkcije `lm` stvorite linearni model podataka iz tablice `mtcars`</span></span>
+<span id="cb712-2"><a href="regresija.html#cb712-2" tabindex="-1"></a><span class="co"># koristite varijable `am`,  `cyl` i `wt` kao ulaz</span></span>
+<span id="cb712-3"><a href="regresija.html#cb712-3" tabindex="-1"></a><span class="co"># i varijablu `mpg` kao izlaz</span></span>
+<span id="cb712-4"><a href="regresija.html#cb712-4" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb712-5"><a href="regresija.html#cb712-5" tabindex="-1"></a><span class="co"># proučite sažetak modela</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb713"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb713-1"><a href="regresija.html#cb713-1" tabindex="-1"></a>linMod <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> am <span class="sc">+</span> cyl <span class="sc">+</span> wt, <span class="at">data =</span> mtcars)</span>
+<span id="cb713-2"><a href="regresija.html#cb713-2" tabindex="-1"></a><span class="fu">summary</span>(linMod)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = mpg ~ am + cyl + wt, data = mtcars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.1735 -1.5340 -0.5386  1.5864  6.0812 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  39.4179     2.6415  14.923 7.42e-15 ***
+## ammanual      0.1765     1.3045   0.135  0.89334    
+## cyl          -1.5102     0.4223  -3.576  0.00129 ** 
+## wt           -3.1251     0.9109  -3.431  0.00189 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.612 on 28 degrees of freedom
+## Multiple R-squared:  0.8303, Adjusted R-squared:  0.8122 
+## F-statistic: 45.68 on 3 and 28 DF,  p-value: 6.51e-11</code></pre>
+</div>
+<hr />
+<p>Vidimo da se niti ovaj sažetak naizgled ne razlikuje od sažetaka koje smo viđali kada smo radili jednostavne linearne modele. Najveća razlika jest u tome što je svaka ulazna numerička varijabla dobija svoj pripadajući koeficijent, kao i svaka kategorija osim referentne za svaku pojedinu kategorijsku varijablu. Isto tako, svaki koeficijent ima svoju vlastitu “p-vrijednost” tj. vjerojatnost da je linearni odnos sa ciljnom varijablom slučajan - tako u ovom slučaju zbog visoke p-vrijednosti ulazne varijable <code>am</code> (kategorija <code>1</code>) možemo zaključiti je razlika između automatskog i ručnog mjenjača vrlo vjerojatno nebitna kad gledamo potrošnju automobila, što i nije nečekivan zaključak).</p>
+<p>No postoji i nekoliko bitnih razlika u interpretaciji dobivenih rezultata. Tako recimo koeficijent predstavlja pomak ciljne varijable za jednu jedinicu ulazne varijable, <em>ali pod uvjetom da svi ostali ulazni parametri ostaju fiksni</em>. Drugim riječima, koeficijenti se tretiraju kao da su nezavisni jedni od drugih. Naravno, ova pretpostavka često nije slučaj u stvarnom svijetu, a kako ova činjenica utječe na rezultate je nešto o čemu će više riječi biti kasnije.</p>
+<hr />
+<p>Pogledajmo sada mjeru “R-kvadrat”.Iako ova mjera ima jednaku interpretaciju za višestruku regresiju kao i u slučaju jednostavne regresije, ona može biti ponešto problematična zbog činjenice da se višestruka R-kvadrat vrijednost u pravilu <strong>uvijek smanjuje kako dodajemo varijable u model</strong>. Zbog toga kod višestruke regresije radije gledamo <strong>prilagođenu</strong> R-kvadrat vrijednost (engl. <em>adjusted R-squared</em>) koja to kompenzira, tj. koja je smišljena tako da uvodi dodatne “penale” za veći broj varijabli.</p>
+<p>Konačno, F-statistika ovdje ima više smisla nego u modelu jednostavne regresije. Ona nam govori kolika je šansa da nijedna ulazna varijabla nije povezana sa ciljnom. Ovo pogotovo postaje važno što više ulaznih varijabli koristimo - ako pretpostavimo iznimno veliki broj ulaznih varijabli, mogućnost slučajnog uočavanja nepostojećeg odnosa postaje nezanemariva, a ova statistika nam omogućuje da procijenimo koliko je izvjesno da do takve situacije dođe.</p>
+<hr />
+<p>Vratimo se navedenoj tvrdnji da koeficijenti višestruke linearne regresije tretiraju ulazne varijable kao da su nezavisne jedna od druge. To relativno često nije slučaj tj. ulazne varijable nisu samo kolinearne sa ciljem, nego i između sebe. Ovo je poznati problem <em>kolinearnosti ulaznih varijabli</em>.</p>
+<p>Ako možda nije odmah jasno zašto je ovo problematično, dovoljno je ponovo pogledati interpretaciju koeficijenata višestruke linearne regresije. Model pretpostavlja da možemo odabrati jedan prediktor i slobodno ga mijenjati dok vrijednosti ostalih prediktora ostaju fiksne. Pretpostavimo sada da su dva prediktora iznimno kolinearna, tj. da promjena jednog uvijek rezultira promjenom drugog. To znači da model pretpostavlja puno veći broj kombinacija vrijednosti ova dva prediktora nego što je on realno moguć, a budući da veliki broj tih kombinacija ne postoji u ulaznom skupu, to rezultira nuspojavom veće “nesigurnosti” modela u dobivene rezultate. Konkretno, izračunate p-vrijednosti prediktora mogu biti prilično velike do razine da one mogu biti tretirane kao irelevantne, iako su zapravo snažno linearno povezane s ciljem.</p>
+<p>Što možemo učiniti vezano uz ovu pojavu? Kao prvo, kolinearnost ulaznih varijabli možemo direktno provjeriti uz pomoć već korištene funkcije <code>cor</code>, koja će nam kao rezultat dati korelacijsku matricu. Čvrste granice što predstavlja “previsoku” kolinearnost nema, ali vrijednosti koje su po apsolutnom iznosu iznad 0.7 vjerojatno zaslužuju posebnu pažnju. Alternativno, možemo pozvati funkciju <code>ggpairs</code> koja će nam dati iznose koeficijenta korelacije, ali i vizualizacije pomoću kojih možemo uočiti linearne trendove između ulaznih varijabli.</p>
+<hr />
+<p><strong>Zadatak 14.11 - kolinearnost ulaznih varijabli</strong></p>
+<div class="sourceCode" id="cb715"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb715-1"><a href="regresija.html#cb715-1" tabindex="-1"></a><span class="co"># u podatkovni okvir `mtCarsNumPred` ubacite sve numeričke</span></span>
+<span id="cb715-2"><a href="regresija.html#cb715-2" tabindex="-1"></a><span class="co"># varijable podatkovnog okvira `mtcars` osim ciljne varijable `mpg`</span></span>
+<span id="cb715-3"><a href="regresija.html#cb715-3" tabindex="-1"></a></span>
+<span id="cb715-4"><a href="regresija.html#cb715-4" tabindex="-1"></a><span class="co"># uz pomoć funkcije `cor` ispišite korelacijsku matricu</span></span>
+<span id="cb715-5"><a href="regresija.html#cb715-5" tabindex="-1"></a><span class="co"># stupaca okvira `mtCarsNumPred`</span></span>
+<span id="cb715-6"><a href="regresija.html#cb715-6" tabindex="-1"></a></span>
+<span id="cb715-7"><a href="regresija.html#cb715-7" tabindex="-1"></a><span class="co"># proslijedite taj okvir funkciji `ggpairs` paketa `GGally`</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb716"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb716-1"><a href="regresija.html#cb716-1" tabindex="-1"></a><span class="co"># u podatkovni okvir `mtCarsNumPred` ubacite sve numeričke</span></span>
+<span id="cb716-2"><a href="regresija.html#cb716-2" tabindex="-1"></a><span class="co"># varijable podatkovnog okvira `mtcars` osim ciljne varijable `mpg`</span></span>
+<span id="cb716-3"><a href="regresija.html#cb716-3" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>mpg) <span class="sc">%&gt;%</span> <span class="fu">select_if</span>(is.numeric) <span class="ot">-&gt;</span> mtCarsNumPred</span>
+<span id="cb716-4"><a href="regresija.html#cb716-4" tabindex="-1"></a></span>
+<span id="cb716-5"><a href="regresija.html#cb716-5" tabindex="-1"></a><span class="co"># uz pomoć funkcije `cor` ispišite korelacijsku matricu</span></span>
+<span id="cb716-6"><a href="regresija.html#cb716-6" tabindex="-1"></a><span class="co"># stupaca okvira `mtCarsNumPred`</span></span>
+<span id="cb716-7"><a href="regresija.html#cb716-7" tabindex="-1"></a>mtCarsNumPred <span class="sc">%&gt;%</span> cor</span></code></pre></div>
+<pre><code>##             cyl       disp         hp        drat         wt        qsec
+## cyl   1.0000000  0.9020329  0.8324475 -0.69993811  0.7824958 -0.59124207
+## disp  0.9020329  1.0000000  0.7909486 -0.71021393  0.8879799 -0.43369788
+## hp    0.8324475  0.7909486  1.0000000 -0.44875912  0.6587479 -0.70822339
+## drat -0.6999381 -0.7102139 -0.4487591  1.00000000 -0.7124406  0.09120476
+## wt    0.7824958  0.8879799  0.6587479 -0.71244065  1.0000000 -0.17471588
+## qsec -0.5912421 -0.4336979 -0.7082234  0.09120476 -0.1747159  1.00000000
+## gear -0.4926866 -0.5555692 -0.1257043  0.69961013 -0.5832870 -0.21268223
+## carb  0.5269883  0.3949769  0.7498125 -0.09078980  0.4276059 -0.65624923
+##            gear       carb
+## cyl  -0.4926866  0.5269883
+## disp -0.5555692  0.3949769
+## hp   -0.1257043  0.7498125
+## drat  0.6996101 -0.0907898
+## wt   -0.5832870  0.4276059
+## qsec -0.2126822 -0.6562492
+## gear  1.0000000  0.2740728
+## carb  0.2740728  1.0000000</code></pre>
+</div>
+<div class="fold s o">
+<div class="sourceCode" id="cb718"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb718-1"><a href="regresija.html#cb718-1" tabindex="-1"></a><span class="co"># proslijedite taj okvir funkciji `ggpairs` paketa `GGally`</span></span>
+<span id="cb718-2"><a href="regresija.html#cb718-2" tabindex="-1"></a></span>
+<span id="cb718-3"><a href="regresija.html#cb718-3" tabindex="-1"></a><span class="co">#library(GGally) # ukoliko je potrebno</span></span>
+<span id="cb718-4"><a href="regresija.html#cb718-4" tabindex="-1"></a><span class="fu">ggpairs</span>(mtCarsNumPred)</span></code></pre></div>
+<p><img src="osnoveR_files/figure-html/unnamed-chunk-556-1.png" width="672" /></p>
+</div>
+<hr />
+<p>Još jedan zgodan način vizualizacije kolinearnosti nam pruža funkcija <code>ggcorrplot</code> istoimenog paketa.</p>
+<p><strong>Zadatak 14.12 - funkcija <code>ggcorrplot</code></strong></p>
+<div class="sourceCode" id="cb719"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb719-1"><a href="regresija.html#cb719-1" tabindex="-1"></a><span class="co"># učitajte paket `ggcorrplot` (instalirajte ako je potrebno)</span></span>
+<span id="cb719-2"><a href="regresija.html#cb719-2" tabindex="-1"></a><span class="co"># pozovite funkciju `ggcorrplot` kojoj ćete proslijediti korelacijsku matricu</span></span>
+<span id="cb719-3"><a href="regresija.html#cb719-3" tabindex="-1"></a><span class="co"># stupaca okvira `mtCarsNumPred`</span></span>
+<span id="cb719-4"><a href="regresija.html#cb719-4" tabindex="-1"></a><span class="co"># (proučite parametre funkcije za ljepši prikaz)</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb720"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb720-1"><a href="regresija.html#cb720-1" tabindex="-1"></a><span class="co"># učitajte paket `ggcorrplot` (instalirajte ako je potrebno)</span></span>
+<span id="cb720-2"><a href="regresija.html#cb720-2" tabindex="-1"></a><span class="co"># pozovite funkciju `ggcorrplot` kojoj ćete proslijediti korelacijsku matricu</span></span>
+<span id="cb720-3"><a href="regresija.html#cb720-3" tabindex="-1"></a><span class="co"># stupaca okvira `mtCarsNumPred`</span></span>
+<span id="cb720-4"><a href="regresija.html#cb720-4" tabindex="-1"></a><span class="co"># (proučite parametre funkcije za ljepši prikaz)</span></span>
+<span id="cb720-5"><a href="regresija.html#cb720-5" tabindex="-1"></a></span>
+<span id="cb720-6"><a href="regresija.html#cb720-6" tabindex="-1"></a><span class="co">#library(ggcorrplot) ako je potrebno</span></span>
+<span id="cb720-7"><a href="regresija.html#cb720-7" tabindex="-1"></a><span class="fu">ggcorrplot</span>(<span class="fu">cor</span>(mtCarsNumPred), <span class="at">type =</span> <span class="st">&quot;lower&quot;</span>, <span class="at">outline.color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">lab =</span> T)</span></code></pre></div>
+<p><img src="osnoveR_files/figure-html/unnamed-chunk-558-1.png" width="672" /></p>
+</div>
+<p>Vidimo da neke varijable (npr. <code>disp</code> i <code>wt</code>, koje predstavljaju volumen motora i težinu vozila) imaju vrlo visoku razinu kolinearnosti, što znači da zahtijevaju posebnu pažnju.</p>
+<p>Kolinearnost varijabli koju smo gledali tiče se parova varijablu, no moguća je i jedna interesantna pojava - tzv. <em>multikolinearnost</em>. Kod ove pojave moguće je da se kolinearnost očituje tek u kombinaciji tri i više varijabli, tj. kod gledanja zasebnih parova ne vidimo ništa neobično ali negativni učinak kolinearnosti i dalje postoji.</p>
+<p>Kako bi se olakšalo uočavanje ove pojave, razvijena je tzv. VIF mjera (engl. <em>variance inflation factor</em>). Ovdje nećemo detaljno objašnjavati značenje i teoriju iza ove mjere, nego samo navesti činjenicu kako ju upotrijebiti u našem linearnom modelu te kako interpretirati dobivene vrijednosti.</p>
+<p>VIF mjeru izračunavamo uz pomoć funkcije <code>vif</code> koju možemo naći u paketu <code>car</code>. Ova funkcija kao parametar očekuje linearni model kojeg analiziramo. Kao rezultat dobivamo numerički vektor sa VIF vrijednostima svake ulazne varijable. Opet, nema egzaktne granice što predstavlja “visoku” VIF vrijednost - u literaturi nailazimo na različite naputke, a kao granica se spominje vrijednost 5, vrijednost 10 i sl. Kao općenito pravilo možemo zapamtiti da dvoznamenkasti VIF označava “problematičnu” ulaznu varijablu.</p>
+<hr />
+<p><strong>Zadatak 14.13 - multikolinearnost</strong></p>
+<div class="sourceCode" id="cb721"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb721-1"><a href="regresija.html#cb721-1" tabindex="-1"></a><span class="co"># istrenirajte linearni model `lm_sve` koja za okvir `mtcars`</span></span>
+<span id="cb721-2"><a href="regresija.html#cb721-2" tabindex="-1"></a><span class="co"># gleda ovisnost varijable `mpg` o svim ostalim varijablama</span></span>
+<span id="cb721-3"><a href="regresija.html#cb721-3" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb721-4"><a href="regresija.html#cb721-4" tabindex="-1"></a><span class="co"># navedeni model proslijedite funkciji `vif` paketa `cars` i ispišite rezultat</span></span></code></pre></div>
+<div class="sourceCode" id="cb722"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb722-1"><a href="regresija.html#cb722-1" tabindex="-1"></a><span class="co">#library(car)  # ako je potrebno</span></span>
+<span id="cb722-2"><a href="regresija.html#cb722-2" tabindex="-1"></a>lm_sve <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> ., <span class="at">data =</span> mtcars)</span>
+<span id="cb722-3"><a href="regresija.html#cb722-3" tabindex="-1"></a><span class="fu">vif</span>(lm_sve)</span></code></pre></div>
+<pre><code>##       cyl      disp        hp      drat        wt      qsec        vs        am 
+## 15.373833 21.620241  9.832037  3.374620 15.164887  7.527958  4.965873  4.648487 
+##      gear      carb 
+##  5.357452  7.908747</code></pre>
+<hr />
+<p>Sad kada znamo da je kolinearnost ulaznih varijabli potencijalni problem, možemo postaviti pitanje - što učiniti kada uočimo navedenu pojavu? Neke od mogućih rješenja su:</p>
+<ul>
+<li>izbaciti jednu od para problematičnih varijabli</li>
+<li>transformirati kolinearne varijable u alternativnu jedinstvenu ulaznu varijablu</li>
+</ul>
+<hr />
+<p><strong>Zadatak 14.14 - linearni model sa kolinearnim ulazima</strong></p>
+<div class="sourceCode" id="cb724"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb724-1"><a href="regresija.html#cb724-1" tabindex="-1"></a><span class="co"># trenirajte sljedeće linearne modele:</span></span>
+<span id="cb724-2"><a href="regresija.html#cb724-2" tabindex="-1"></a><span class="co">#  `lm1` - `mpg` u ovisnosti o `disp`</span></span>
+<span id="cb724-3"><a href="regresija.html#cb724-3" tabindex="-1"></a><span class="co">#  `lm2` - `mpg` u ovisnosti o `wt`</span></span>
+<span id="cb724-4"><a href="regresija.html#cb724-4" tabindex="-1"></a><span class="co">#  `lm3` - `mpg` u ovisnosti o `disp` i `wt`</span></span>
+<span id="cb724-5"><a href="regresija.html#cb724-5" tabindex="-1"></a></span>
+<span id="cb724-6"><a href="regresija.html#cb724-6" tabindex="-1"></a><span class="co"># proučite sažetke dobivenih linearnih modela,</span></span>
+<span id="cb724-7"><a href="regresija.html#cb724-7" tabindex="-1"></a><span class="co"># poglavito t-vrijednosti parametara i prilagođenu R-kvadrat mjeru</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb725"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb725-1"><a href="regresija.html#cb725-1" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> disp, <span class="at">data =</span> mtcars)</span>
+<span id="cb725-2"><a href="regresija.html#cb725-2" tabindex="-1"></a>lm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> wt, <span class="at">data =</span> mtcars)</span>
+<span id="cb725-3"><a href="regresija.html#cb725-3" tabindex="-1"></a>lm3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> disp <span class="sc">+</span> wt, <span class="at">data =</span> mtcars)</span></code></pre></div>
+</div>
+<div class="fold s o">
+<div class="sourceCode" id="cb726"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb726-1"><a href="regresija.html#cb726-1" tabindex="-1"></a><span class="fu">summary</span>(lm1)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = mpg ~ disp, data = mtcars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.8922 -2.2022 -0.9631  1.6272  7.2305 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 29.599855   1.229720  24.070  &lt; 2e-16 ***
+## disp        -0.041215   0.004712  -8.747 9.38e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.251 on 30 degrees of freedom
+## Multiple R-squared:  0.7183, Adjusted R-squared:  0.709 
+## F-statistic: 76.51 on 1 and 30 DF,  p-value: 9.38e-10</code></pre>
+</div>
+<div class="fold s o">
+<div class="sourceCode" id="cb728"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb728-1"><a href="regresija.html#cb728-1" tabindex="-1"></a><span class="fu">summary</span>(lm2)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = mpg ~ wt, data = mtcars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.5432 -2.3647 -0.1252  1.4096  6.8727 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  37.2851     1.8776  19.858  &lt; 2e-16 ***
+## wt           -5.3445     0.5591  -9.559 1.29e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.046 on 30 degrees of freedom
+## Multiple R-squared:  0.7528, Adjusted R-squared:  0.7446 
+## F-statistic: 91.38 on 1 and 30 DF,  p-value: 1.294e-10</code></pre>
+</div>
+<div class="fold s o">
+<div class="sourceCode" id="cb730"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb730-1"><a href="regresija.html#cb730-1" tabindex="-1"></a><span class="fu">summary</span>(lm3)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = mpg ~ disp + wt, data = mtcars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.4087 -2.3243 -0.7683  1.7721  6.3484 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 34.96055    2.16454  16.151 4.91e-16 ***
+## disp        -0.01773    0.00919  -1.929  0.06362 .  
+## wt          -3.35082    1.16413  -2.878  0.00743 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.917 on 29 degrees of freedom
+## Multiple R-squared:  0.7809, Adjusted R-squared:  0.7658 
+## F-statistic: 51.69 on 2 and 29 DF,  p-value: 2.744e-10</code></pre>
+</div>
+<hr />
+<p>Usporedivši rezultate dobivenih linearnih modela možemo zaključiti kako linearni model <code>lm3</code> ima najmanju standardnu grešku reziduala i najveću “R-kvadrat” mjeru te je time najbolja od tri opcije. No potencijalni problem se očituje kada pogledamo p-vrijednosti, koje su obje znatno veće nego kada smo trenirali modele sa svakom varijablom zasebno. Dakle, kolinearnost varijabli ne mora nužno utjecati na prediktivnu moć modela, ali unosi potencijalno veliku nesigurnost u modelu smislu da sve kolinearne prediktore izbacimo iz modela kao irelevantne. To bi se mogao pokazati kao velik problem kada imamo više potencijalnih prediktora i pokušavamo odabrati relevantni podskup, što je tema kojom ćemo se baviti u nastavku.</p>
+<hr />
+<p>U prethodnom zadatku vidjeli smo kako se i kod relativno jednostavne prediktivne metode višestruke regresije sa dvije potencijalne ulazne varijable pojavljuje niz pitanja vezanih uz odabir formule tj. ulaznih varijabli. Ova problematika se višestruko komplicira kako broj potencijalnih ulaznih varijabli raste. Zbog toga je odabir varijabli (<em>variable selection</em>) jedan od ključnih izazova s kojima se suočavamo u izradi prediktivnih modela, ne samo kod linearne regresije već i općenito.</p>
+<p>Očito je da bi dobar model trebao sadržavati ulazne varijable koje dobro “objašnjavaju” ciljnu varijablu a koje su što više međusobno nezavisne. Mogući kriterij za odluku koje varijablu odabrati za ugrađivanje u model tako može biti utjecaj na povećanje zajedničke “R-kvadrat” mjere, smanjenje standardne greške reziduala ili p-vrijednost koeficijenta za tu ulaznu varijablu. Pored ovih “standardnih” kriterija postoje i razni drugi, kao npr. popularni AIC (engl. <em>Akaike information criterion</em>) koji procjenjuje informativnost modela uz penaliziranje većeg broj varijabli.</p>
+<hr />
+<p>Varijable možemo odabirati ručno, no puno je lakše taj posao ostaviti računalu. Statistički alati, uključujući i jezik R, često imaju ugrađene algoritme koji na osnovu zadanog kriterija izgrađuju prediktivni model iterativnim odabirom varijabli. Najčešće strategije izgradnje modela su:</p>
+<ul>
+<li>“unatrag” od potpunog modela, npr. iterativno se izbacuju varijable sa najvećom p-vrijednosti</li>
+<li>“unaprijed” od praznog modela, npr. iterativno se dodaju varijable koje najviše smanjuju RMSE</li>
+<li>razne hibridne metode</li>
+</ul>
+<hr />
+<p>Jezik R ima funkciju <code>step</code> za iterativno (engl. <em>stepwise</em>) stvaranje prediktivnih modela, no u praksi se preporučuje puno bolja funkcija <code>stepAIC</code> koju možemo naći u paketu <code>MASS</code>. Ova funkcija između ostalog očekuje sljedeće parametre:</p>
+<ul>
+<li><code>object</code> - inicijalni (linearni) model</li>
+<li><code>scope</code> - raspon modela koje uključujemo u strategiju; potreban je samo za izgradnju “unaprijed” a prosljeđujemo joj listu sa “najsiromašnijim” (<code>lower</code>) i “najbogatijim” (<code>upper</code>) modelom</li>
+<li><code>direction</code> - unaprijed (<code>forward</code>), unatrag (<code>backward</code>) ili hibridno (<code>both</code>)</li>
+<li><code>trace</code> - binarna varijabla koja opisuje želimo li ispis cijelog procesa odabira varijabli</li>
+</ul>
+<p>(Napomena: paket <code>MASS</code> ima “svoju” funkciju <code>select</code> koja može “prekriti” funkciju <code>select</code> iz paketa <code>dplyr</code>; ovo ne znači da je ta funkcija nedostupna, već da ju nakon učitavanja paketa <code>MASS</code> moramo pozivati sa njenim “punim” imenom, <code>dplyr::select</code>)</p>
+<p>Za kraj ćemo iterativno stvoriti prediktivni model za podatkovni okvir <code>mtcars</code> gdje će opet ciljna varijabla biti potrošnja (varijabla <code>mpg</code>) dok će kandidati za ulaznu varijablu biti sve ostale varijable.</p>
+<hr />
+<p><strong>Zadatak 14.15 - iterativna selekcija varijabli za linearnu regresiju</strong></p>
+<div class="sourceCode" id="cb732"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb732-1"><a href="regresija.html#cb732-1" tabindex="-1"></a><span class="co">#library(MASS) # ako je potrebno</span></span>
+<span id="cb732-2"><a href="regresija.html#cb732-2" tabindex="-1"></a></span>
+<span id="cb732-3"><a href="regresija.html#cb732-3" tabindex="-1"></a><span class="co"># stvaramo &quot;potpuni&quot; i &quot;prazni&quot; model </span></span>
+<span id="cb732-4"><a href="regresija.html#cb732-4" tabindex="-1"></a>lm_sve <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> ., <span class="at">data =</span> mtcars)   </span>
+<span id="cb732-5"><a href="regresija.html#cb732-5" tabindex="-1"></a>lm_prazan <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> mtcars)</span>
+<span id="cb732-6"><a href="regresija.html#cb732-6" tabindex="-1"></a></span>
+<span id="cb732-7"><a href="regresija.html#cb732-7" tabindex="-1"></a><span class="co"># pogledajte sažetke gornjih modela kako bi </span></span>
+<span id="cb732-8"><a href="regresija.html#cb732-8" tabindex="-1"></a><span class="co"># dobili dojam kako rade &quot;ekstremi&quot;</span></span>
+<span id="cb732-9"><a href="regresija.html#cb732-9" tabindex="-1"></a></span>
+<span id="cb732-10"><a href="regresija.html#cb732-10" tabindex="-1"></a><span class="co"># uz pomoć funkcije `stepAIC` stvorite modele `lm1` i `lm2` </span></span>
+<span id="cb732-11"><a href="regresija.html#cb732-11" tabindex="-1"></a><span class="co"># na sljedeći način</span></span>
+<span id="cb732-12"><a href="regresija.html#cb732-12" tabindex="-1"></a><span class="co"># `lm1` - nastaje selekcijom &quot;unatrag&quot; od punog modela</span></span>
+<span id="cb732-13"><a href="regresija.html#cb732-13" tabindex="-1"></a><span class="co">#         (parametar direction = &quot;backward&quot;)</span></span>
+<span id="cb732-14"><a href="regresija.html#cb732-14" tabindex="-1"></a><span class="co"># `lm2` - nastaje selekcijom &quot;unaprijed&quot; od praznog modela</span></span>
+<span id="cb732-15"><a href="regresija.html#cb732-15" tabindex="-1"></a><span class="co">#         (parametri direction = &quot;forward&quot; , </span></span>
+<span id="cb732-16"><a href="regresija.html#cb732-16" tabindex="-1"></a><span class="co">#         scope = list(upper = lm_sve, lower = lm_prazan))</span></span>
+<span id="cb732-17"><a href="regresija.html#cb732-17" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb732-18"><a href="regresija.html#cb732-18" tabindex="-1"></a><span class="co"># proučite sažetke dobivenih modela</span></span></code></pre></div>
+<div class="fold s o">
+<div class="sourceCode" id="cb733"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb733-1"><a href="regresija.html#cb733-1" tabindex="-1"></a><span class="fu">summary</span>(lm_sve)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = mpg ~ ., data = mtcars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.4506 -1.6044 -0.1196  1.2193  4.6271 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept) 12.30337   18.71788   0.657   0.5181  
+## cyl         -0.11144    1.04502  -0.107   0.9161  
+## disp         0.01334    0.01786   0.747   0.4635  
+## hp          -0.02148    0.02177  -0.987   0.3350  
+## drat         0.78711    1.63537   0.481   0.6353  
+## wt          -3.71530    1.89441  -1.961   0.0633 .
+## qsec         0.82104    0.73084   1.123   0.2739  
+## vsS          0.31776    2.10451   0.151   0.8814  
+## ammanual     2.52023    2.05665   1.225   0.2340  
+## gear         0.65541    1.49326   0.439   0.6652  
+## carb        -0.19942    0.82875  -0.241   0.8122  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.65 on 21 degrees of freedom
+## Multiple R-squared:  0.869,  Adjusted R-squared:  0.8066 
+## F-statistic: 13.93 on 10 and 21 DF,  p-value: 3.793e-07</code></pre>
+</div>
+<div class="fold s o">
+<div class="sourceCode" id="cb735"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb735-1"><a href="regresija.html#cb735-1" tabindex="-1"></a><span class="fu">summary</span>(lm_prazan)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = mpg ~ 1, data = mtcars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -9.6906 -4.6656 -0.8906  2.7094 13.8094 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   20.091      1.065   18.86   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 6.027 on 31 degrees of freedom</code></pre>
+</div>
+<div class="fold s o">
+<div class="sourceCode" id="cb737"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb737-1"><a href="regresija.html#cb737-1" tabindex="-1"></a>lm1 <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(lm_sve, <span class="at">direction=</span><span class="st">&quot;backward&quot;</span>, <span class="at">trace =</span> <span class="dv">0</span>) </span>
+<span id="cb737-2"><a href="regresija.html#cb737-2" tabindex="-1"></a><span class="fu">summary</span>(lm1)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = mpg ~ wt + qsec + am, data = mtcars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.4811 -1.5555 -0.7257  1.4110  4.6610 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   9.6178     6.9596   1.382 0.177915    
+## wt           -3.9165     0.7112  -5.507 6.95e-06 ***
+## qsec          1.2259     0.2887   4.247 0.000216 ***
+## ammanual      2.9358     1.4109   2.081 0.046716 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.459 on 28 degrees of freedom
+## Multiple R-squared:  0.8497, Adjusted R-squared:  0.8336 
+## F-statistic: 52.75 on 3 and 28 DF,  p-value: 1.21e-11</code></pre>
+</div>
+<div class="fold s o">
+<div class="sourceCode" id="cb739"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb739-1"><a href="regresija.html#cb739-1" tabindex="-1"></a>lm2 <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(lm_prazan, <span class="at">scope =</span> <span class="fu">list</span>(<span class="at">upper =</span> lm_sve, <span class="at">lower =</span> lm_prazan), </span>
+<span id="cb739-2"><a href="regresija.html#cb739-2" tabindex="-1"></a>                <span class="at">direction=</span><span class="st">&quot;forward&quot;</span>, <span class="at">trace =</span> <span class="dv">0</span>)</span>
+<span id="cb739-3"><a href="regresija.html#cb739-3" tabindex="-1"></a><span class="fu">summary</span>(lm2)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = mpg ~ wt + cyl + hp, data = mtcars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.9290 -1.5598 -0.5311  1.1850  5.8986 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 38.75179    1.78686  21.687  &lt; 2e-16 ***
+## wt          -3.16697    0.74058  -4.276 0.000199 ***
+## cyl         -0.94162    0.55092  -1.709 0.098480 .  
+## hp          -0.01804    0.01188  -1.519 0.140015    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.512 on 28 degrees of freedom
+## Multiple R-squared:  0.8431, Adjusted R-squared:  0.8263 
+## F-statistic: 50.17 on 3 and 28 DF,  p-value: 2.184e-11</code></pre>
+</div>
+<hr />
+<p>Vidimo da su dvije strategije rezultirale sa dva potpuno različita modela sličnih performansi. To znači da ne možemo očekivati pronalazak optimalnog modela, već samo automatizirani pokušaj pronalaska “najboljeg” uz kriterije i uvjete koje smo inicijalno postavili. Ukoliko nismo zadovoljni rezultatom, uvijek možemo pokušati sa alternativnim parametrima funkcije, drugom strategijom ili inicijalnim skupom ulaznih varijabli. U svakom slučaju, pronalazak zadovoljavajućeg prediktivnog modela nije jednostavan problem, a uvijek je poželjno sjetiti se citata koji se često pronalazi u knjigama o statistici i strojnom učenju, a kojeg je navodno izrekao statističar George Box - “Svi modeli su pogrešni, ali neki su korisni”.</p>
+<hr />
+</div>
+<div id="zadaci-za-vježbu-11" class="section level2 unnumbered hasAnchor">
+<h2>Zadaci za vježbu<a href="regresija.html#zadaci-za-vježbu-11" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Učitajte skup podataka <code>iris</code> u globalno okruženje.</li>
+</ol>
+<p>Nacrtajte raspršeni graf koji prikazuje odnos između duljine latice (<em>Petal</em>) i duljine čašnog lista (<em>Sepal</em>). Korištenjem geometrije za crtanje dijagonalnih referentnih linija (funkcija <code>geom_abline</code>) pokušajte pogoditi nagib i presjecište za liniju koja “najbolje odgovara”. Nemojte varati korištenjem funkcije <code>geom_smooth</code>!</p>
+<p>Primjer: <code>... + geom_abline(slope = 1, intercept = -3)</code></p>
+<p>Istrenirajte model linearne regresije s duljinom latice kao prediktorom i duljinom čašnog lista kao ciljnom varijablom. Usporedite dobivene parametre s onima koje ste sami procijenili.</p>
+<ol start="2" style="list-style-type: decimal">
+<li><p>Ponovno nacrtajte raspršeni graf iz 1), ali obojite točke na temelju vrste cvijeta. Objasnite zašto jedan regresijski model možda nije najbolji izbor za predviđanje duljine latice na temelju duljine čašnog lista.</p></li>
+<li><p>Istrenirajte model postupne linearne regresije gdje je duljina čašnog lista ciljna varijabla, a sve druge varijable potencijalni prediktori (uključujući i varijablu vrste). Usporedite sažetke modela između modela iz 2) i konačnog postupnog modela. Koji model preferirate i zašto?</p></li>
+</ol>
+<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Programirajmo u R-u</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.fer.unizg.hr/en/damir.pintar" property="cc:attributionName" rel="cc:attributionURL">Damir Pintar</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://ratnip.github.io/FER_OPJR/" rel="dct:source">https://ratnip.github.io/FER_OPJR/</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ggplot2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="prediktivno_modeliranje.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "google", "twitter", "weibo", "instapaper"],
+    "google": false,
+    "instapper": false
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section",
+    "scroll_highlight": true
+  },
+  "toolbar": {
+    "position": "fixed",
+    "edit": null,
+    "download": null,
+    "search": true
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
