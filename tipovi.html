@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 Osnovni elementi, vektori i matrice | Programirajmo u R-u</title>
   <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
-  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 Osnovni elementi, vektori i matrice | Programirajmo u R-u" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Damir Pintar" />
 
 
-<meta name="date" content="2026-01-26" />
+<meta name="date" content="2026-02-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1605,20 +1605,20 @@ div.csl-indent {
 <span id="cb103-5"><a href="tipovi.html#cb103-5" tabindex="-1"></a><span class="co"># dijagonalu matrice `m` zamijeni brojevima od 1 do 5</span></span>
 <span id="cb103-6"><a href="tipovi.html#cb103-6" tabindex="-1"></a><span class="co"># pomnoži matricu `m` jediničnom matricom dimenzija 5 x 5 i ispiši rezultat</span></span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5]
-## [1,]  799  633  620  395  304
-## [2,]  916  756  560  318  882
-## [3,]  284  418  574  553  845
-## [4,]  483  925  499  664  951
-## [5,]  875  619  720  762  439</code></pre>
+## [1,]  942  281  279  438  810
+## [2,]  973  229  729  590  818
+## [3,]  955  519  972  700  983
+## [4,]  251  247  851  925  142
+## [5,]  232  186  807  679  860</code></pre>
 <div class="fold s o">
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="tipovi.html#cb105-1" tabindex="-1"></a><span class="fu">diag</span>(m) <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
 <span id="cb105-2"><a href="tipovi.html#cb105-2" tabindex="-1"></a>m <span class="sc">%*%</span> <span class="fu">diag</span>(<span class="at">nrow =</span> <span class="dv">5</span>)</span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5]
-## [1,]    1  633  620  395  304
-## [2,]  916    2  560  318  882
-## [3,]  284  418    3  553  845
-## [4,]  483  925  499    4  951
-## [5,]  875  619  720  762    5</code></pre>
+## [1,]    1  281  279  438  810
+## [2,]  973    2  729  590  818
+## [3,]  955  519    3  700  983
+## [4,]  251  247  851    4  142
+## [5,]  232  186  807  679    5</code></pre>
 </div>
 <p>Funkcije <code>upper.tri</code> i <code>lower.tri</code> referenciraju elemente ispod tj. iznad dijagonale matrice, pri čemu dijagonala nije uključena u rezultat osim ako ne postavimo parametar <code>diag = TRUE</code>. Poziv funkcije nad matricom zapravo stvara logičku indeksnu matricu odgovarajućih dimenzija, što možemo vidjeti u sljedećem zadatku.</p>
 <p><strong>Zadatak 2.26 - Funkcija <code>upper.tri</code> i <code>lower.tri</code></strong></p>
@@ -1634,12 +1634,12 @@ div.csl-indent {
 <span id="cb107-10"><a href="tipovi.html#cb107-10" tabindex="-1"></a><span class="co"># - broj -1 ispod glavne dijagonale</span></span>
 <span id="cb107-11"><a href="tipovi.html#cb107-11" tabindex="-1"></a><span class="co"># - broj 0 na dijagonali</span></span></code></pre></div>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6]
-## [1,]   48   83   13   98   12   25
-## [2,]   34   29   94   26   46   92
-## [3,]   79   32   87   35   71   22
-## [4,]   10   76   97   20   58   47
-## [5,]   64   99   16   75   43   23
-## [6,]   96   15   81   52   44   37</code></pre>
+## [1,]   54   78   58   27   31   71
+## [2,]   76   52   25   85   83   37
+## [3,]   65   17   20   80   61   75
+## [4,]   95   56   21   62   87   18
+## [5,]   16   24   98   15   99   84
+## [6,]   97   66   44   89   53   30</code></pre>
 <div class="fold s o">
 <div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="tipovi.html#cb109-1" tabindex="-1"></a><span class="fu">upper.tri</span>(m)</span>
 <span id="cb109-2"><a href="tipovi.html#cb109-2" tabindex="-1"></a></span>

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>5 Paketi, ugrađene funkcije i okoline | Programirajmo u R-u</title>
   <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
-  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
 
   <meta property="og:title" content="5 Paketi, ugrađene funkcije i okoline | Programirajmo u R-u" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Damir Pintar" />
 
 
-<meta name="date" content="2026-01-26" />
+<meta name="date" content="2026-02-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -658,7 +658,7 @@ div.csl-indent {
 ## attr(,&quot;name&quot;)
 ## [1] &quot;package:sloop&quot;
 ## attr(,&quot;path&quot;)
-## [1] &quot;E:/R/R-4.4.3/library/sloop&quot;</code></pre>
+## [1] &quot;C:/R/R-4.4.3/library/sloop&quot;</code></pre>
 </div>
 <hr />
 <p>Pomalo neočekivano, roditelj globalne okoline jest zadnje učitani paket! Ovo zapravo nije neobično - globalna okolina ima “prioritet” kod referenciranja varijable, ali prioritetno odmah “ispod” nje su oni objekti i funkcije koje smo zadnje učitali u okolinu (što nam odgovara budući da je pretpostavka da je “najsvježije” učitani paket onaj kojeg namjeravamo odmah koristiti). Drugim riječima, učitavanjem paketa novi paket se uvijek “namjesti” između globalne okoline i paketa koji je prije njega bio zadnji učitan. Kada smo pozivali funkciju <code>search</code>, zapravo smo dobili hijerarhiju okolina koje predstavljaju učitane pakete. Ova hijerarhija okolina ujedno predstavlja i već spominjanu “stazu pretrage”.</p>

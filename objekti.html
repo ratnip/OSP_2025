@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>7 Objektni modeli | Programirajmo u R-u</title>
   <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
-  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
 
   <meta property="og:title" content="7 Objektni modeli | Programirajmo u R-u" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Damir Pintar" />
 
 
-<meta name="date" content="2026-01-26" />
+<meta name="date" content="2026-02-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -599,7 +599,7 @@ div.csl-indent {
 ## 
 ## function (object, ...) 
 ## standardGeneric(&quot;summary&quot;)
-## &lt;environment: 0x000001c2860bb120&gt;
+## &lt;environment: 0x000002d9b58a45c0&gt;
 ## Methods may be defined for arguments: object
 ## Use  showMethods(summary)  for currently available ones.
 ## function (object, maxsum = 100L, ...) 
@@ -620,7 +620,7 @@ div.csl-indent {
 ##         c(tt, `NA&#39;s` = sum(nas))
 ##     else tt
 ## }
-## &lt;bytecode: 0x000001c2932a13f8&gt;
+## &lt;bytecode: 0x000002d9c2d5ceb0&gt;
 ## &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <p>Razumijevanjem principa rada generičkih funkcija upotpunili smo sliku o S3 objektima. Najvažnija stvar koju moramo usvojiti jest da kod ovog modela funkcije nisu dio samog objekta, već se definiraju zasebno, a poveznica između objekta i “njegove” metode jest samo u nazivu funkcije pomoću kojeg će R “povezati” generičku funkciju i taj objekt. Iako je ovaj princip primitivan i podložan greškama u rukama nepažljivog programera, on je neumitno jednostavan za uporabu i vrlo učinkovit. Konačno, uočimo da ovaj pristup nije u potpunosti svojstven isključivo jeziku R - slične principe nalazimo i u drugim programskim jezicima (npr. <em>Python</em> povezuje <em>print</em> funkciju i objekt preko posebne metode objekta <code>__str__</code>). R je samo specifičan po tome što taj princip koristi otvoreno i gotovo isključivo.</p>

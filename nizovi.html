@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>10 Obrada znakovnih nizova | Programirajmo u R-u</title>
   <meta name="description" content="Udžbenik za predmet ‘Osnove statističkog programiranja’ na Fakultetu elektrotehnike i računarstva, Sveučilište u Zagrebu." />
-  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
 
   <meta property="og:title" content="10 Obrada znakovnih nizova | Programirajmo u R-u" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Damir Pintar" />
 
 
-<meta name="date" content="2026-01-26" />
+<meta name="date" content="2026-02-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -644,6 +644,7 @@ div.csl-indent {
 <p>Pogledajmo sada neke funkcije koje rade sa regularnim izrazima:</p>
 <ul>
 <li><code>str_detect(string, pattern)</code> - vraća <code>TRUE</code> ako niz sadrži uzorak, inače <code>FALSE</code></li>
+<li><code>str_count(string, pattern)</code> - vraća broj pojava uzorka</li>
 <li><code>str_extract(string, pattern)</code> - vraća niz znakova koji odgovara prvoj pojavi uzorka</li>
 <li><code>str_extract_all(string, pattern)</code> - vraća listu sa svim pojavama koje odgovaraju uzorku</li>
 <li><code>str_replace(string, pattern, replacement)</code> - mijenja prvu pojavu uzorka sa zadanim novim nizom</li>
